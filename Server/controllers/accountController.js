@@ -75,9 +75,8 @@ exports.delete = (req, res) => {
     Account.remove({
         _id: req.params.account_id
     }, (err, account) => {
-        if (err){
-            res.send(err);
-        }
+        if (err) res.send(err);
+
         res.json({
             status: "Success",
             message: "Account Deleted"
