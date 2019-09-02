@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 var env = process.env.NODE_ENV || 'development';
 var config = require('../config/config')[env];
 
+
 mongoose.connect(config.dbURI, config.options).then(
     () => {
         console.log("Database connection established!");
@@ -12,4 +13,3 @@ mongoose.connect(config.dbURI, config.options).then(
     }
 );
 
-// Set up models

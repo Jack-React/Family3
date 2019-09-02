@@ -1,5 +1,3 @@
-// Filename: api-routes.js
-
 // Import Modules
 let router = require('express').Router();
 const accountController = require("./controllers/accountController");

@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const familySchema = mongoose.Schema({
-    children: {
+    childrens: {
         type: Array,
         required: true
     },
 
-    parent: {
+    parents: {
         type: Array,
         required: true
     },
@@ -15,7 +15,7 @@ const familySchema = mongoose.Schema({
         type: Date,
         default: Date.now
     }
-}, {collections: "family"});
+});
 
 var Family = module.exports = mongoose.model('family', familySchema);
 
