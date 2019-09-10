@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "151347594039",
+    "firebase_url": "https://diamonddoesnt.firebaseio.com",
+    "project_id": "diamonddoesnt",
+    "storage_bucket": "diamonddoesnt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151347594039:android:6aba7477dcf67e120790b2",
+        "android_client_info": {
+          "package_name": "com.family3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151347594039-6i2jkjj1bi2r304pm4nhd4bg066en3s2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.family3",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "151347594039-eo0r4eeeq34rs4tsld44pikop90je12q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.family3",
+            "certificate_hash": "bfc15dd9de2ef03b2470ae2a103e3416ca289251"
+          }
+        },
+        {
+          "client_id": "151347594039-95vbncamplm3brr71hga2q53el0qf7at.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmuIzgYbuFmJbJiu-2USdYlJ18qjb4w_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151347594039-95vbncamplm3brr71hga2q53el0qf7at.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

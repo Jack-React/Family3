@@ -21,7 +21,6 @@ exports.new = (req, res) => {
     account.firstName = req.body.firstName;
     account.lastName = req.body.lastName;
     account.email = req.body.email;
-    account.dob = req.body.dob;
 
     account.save((err) => {
         if (err){
@@ -55,7 +54,6 @@ exports.update = (req, res) => {
         account.firstName = req.body.firstName;
         account.lastName = req.body.lastName;
         account.email = req.body.email;
-        account.dob = req.body.dob;
 
         account.save((err => {
             if (err){
