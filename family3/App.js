@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {AppRegistry, Text ,View, StyleSheet, Button, StatusBar} from 'react-native';
+import { StatusBar, View } from 'react-native';
 
-
-import AppNavigator from './src/AppNavigator';
-
+import { Color } from './src/assets/Assets'
+import Navigator from './src/navigator/Navigation'
 export default class App extends Component{
 	constructor(props) {
 		super(props);
@@ -11,20 +10,17 @@ export default class App extends Component{
    		this.state = {
 			  count: 0,
 		}
+		console.disableYellowBox = true;
 	}
 	
 	render(){
 
 		return (
-			// <View style = {styles.MainContainer}>
-				// {/* <LoginPage navigate = {navigate}/> */}
+			<View style ={{flex: 1}}>
+				<Navigator/>
+			</View>
 			
-				// <StatusBar
-				// 	backgroundColor = "#35394A"
-				// 	barStyle = "light-content"/>
-				<AppNavigator style={{backgroundColor: "#35394A"}}/>
-						
-			// </View>
+
 		);
 	};
 

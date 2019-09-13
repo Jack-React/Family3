@@ -22,7 +22,7 @@ public class MainActivity extends ReactActivity {
             @Override
             protected ReactRootView createRootView() {
                 return new RNGestureHandlerEnabledRootView(MainActivity.this);
-                }
+            }
         };
     }
 }

@@ -4,7 +4,7 @@ const ACCOUNTS = "http://52.14.226.1:8080/api/accounts"
 const FAMILIES = "http://52.14.226.1:8080/api/families"
 
 
-export default class APIHandler extends Component{
+export default class APIHandler{
     constructor(){
         super();
     }
