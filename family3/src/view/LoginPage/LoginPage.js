@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import {AppRegistry, Text ,View, StyleSheet, Button} from 'react-native';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 
-import { Color } from '../assets/Assets'
+import DBHandler from '../../api/DBHandler'
+import GoogleAPIHandler from '../../api/GoogleAPIHandler'
+import { Color } from '../../assets/Assets'
+import { Config } from '../../assets/GoogleConfig'
 
 export default class LoginPage extends Component {
 	static navigationOptions = {
@@ -18,35 +21,16 @@ export default class LoginPage extends Component {
 	}
 	constructor(props){
 		super(props);
+		this.DBHandler = new DBHandler();
+		this.GoogleAPIHandler = new GoogleAPIHandler();
 
-		GoogleSignin.configure({
-			scopes: ["https://www.googleapis.com/auth/drive.photos.readonly"],
-			webClientId:'151347594039-95vbncamplm3brr71hga2q53el0qf7at.apps.googleusercontent.com',
-			forceConsentPrompt: true
-		});
+		GoogleSignin.configure(Config);
 		this.state = {
 			isUserSignedIn: false,
 			userData: {},
 			checkingSignedInStatus: true
 		};
 	}
-	
-	googleSignInHandler = async () => {
-		console.log("Signing in...");
-		try {
-			await GoogleSignin.hasPlayServices();
-			const userData = await GoogleSignin.signIn();
-			this.setState({
-				userData,
-				isUserSignedIn: true,
-			});
-			console.log("Signed In");
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-
 	  
 	render(){
 		return (
@@ -60,14 +44,44 @@ export default class LoginPage extends Component {
 					onPress={() => {
 						this.googleSignInHandler()
 						.then(() => {
-							if (this.state.isUserSignedIn)
+							if (this.state.isUserSignedIn){
+								this.handleAcount();
 								this.props.navigation.navigate('Home', {userData: this.state.userData});
+							}
 						})
 					}}
 				/>
 			</View>
 		);
 	}
+
+	async handleAcount() {
+		if (!await this.DBHandler.hasAccount(this.state.userData.idToken)){
+			token = await GoogleSignin.getTokens();
+			const album = await this.GoogleAPIHandler.makeAlbum("Family3", token)
+			const response = await this.DBHandler.createAccount(album.id)
+			if (response.data != null){
+				console.log('Account Creation Success')
+			}
+		}
+	}
+
+	async googleSignInHandler() {
+		console.log("Signing in...");
+		try {
+			await GoogleSignin.hasPlayServices();
+			const userData = await GoogleSignin.signIn();
+			this.setState({
+				userData,
+				isUserSignedIn: true,
+			});
+			console.log("Signed In");
+			console.log(userData);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 }
 
 const styles = StyleSheet.create({

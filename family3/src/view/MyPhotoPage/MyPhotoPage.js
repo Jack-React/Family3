@@ -1,23 +1,39 @@
 import React, {Component} from 'react'
-import{ View, Text, StyleSheet, Button, StatusBar} from 'react-native';
+import{ View, StyleSheet, StatusBar} from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { GoogleSignin } from 'react-native-google-signin';
 
-
-import { Color } from '../assets/Assets'
+import GoogleAPIHandler from '../../api/GoogleAPIHandler'
+import { Color } from '../../assets/Assets'
+import ImageSwiperComponent from './component/ImageSwiperComponent';
+import NoImageComponent from './component/NoImageComponent';
 
 export default class MyPhotoPage extends Component {
     constructor(){
         super();
+        this.GoogleAPIHandler = new GoogleAPIHandler();
+        this.state = {
+            images: null
+        }
+        
     }
 
+    async componentDidMount(){
+        token = await GoogleSignin.getTokens();
+        const response = await this.GoogleAPIHandler.getMediaItems(token)
+        this.setState({images: response})
+    }
+    
+
     render() {
+        // this.setState({images:"ASD", console.log(this.state.images)});
         return (
             <View style={styles.MainContainer}>
                 <Header style = {styles.headerContainer}>
                     <StatusBar
-                        backgroundColor={Color.PRIMARY_DARK}
-                        barStyle="light-content"
+                        backgroundColor={Color.STATUS_BAR}
+                        barStyle="dark-content"
                     />
                     <Left>
                         <ButtonBase
@@ -28,23 +44,17 @@ export default class MyPhotoPage extends Component {
                         </ButtonBase>
                     </Left>
                     <Body>
-                        <Title>My Photos</Title>
+                        <Title style = {{color:Color.SECONDARY}}>My Photos</Title>
                     </Body>
                     <Right />
                 </Header>
-                <View style = {styles.contentContainer}>
-                    <Text style = {{color: Color.SECONDARY}}>
-                        My Photo Page
-                    </Text>
-                </View>
-                
+                {JSON.stringify(this.state.images) != '{}'? <ImageSwiperComponent/>: <NoImageComponent/>}
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-
     MainContainer: {
 		flex: 1,
         backgroundColor: Color.PRIMARY
@@ -60,4 +70,9 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         backgroundColor: Color.PRIMARY
     },
+
+    imageStyle: {
+        width: 400,
+        height: 400,
+    }
 })

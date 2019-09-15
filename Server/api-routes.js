@@ -24,8 +24,10 @@ router.route('/families/:family_id')
     
 // Route to accounts
 router.route('/accounts')
-	.get(accountController.index)
-	.post(accountController.new);
+    .get(accountController.index)
+    .post(accountController.new)
+
+
 
 
 router.route('/accounts/:account_id')

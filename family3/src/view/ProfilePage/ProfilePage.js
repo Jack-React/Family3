@@ -4,9 +4,9 @@ import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-import { Color } from '../assets/Assets'
+import { Color } from '../../assets/Assets'
 
-export default class MyPhotoPage extends Component {
+export default class ProfilePage extends Component {
     constructor(){
         super();
     }
@@ -28,13 +28,13 @@ export default class MyPhotoPage extends Component {
                         </ButtonBase>
                     </Left>
                     <Body>
-                        <Title style = {{color:Color.SECONDARY}}>Sample</Title>
+                        <Title style = {{color:Color.SECONDARY}}>Profile</Title>
                     </Body>
                     <Right />
                 </Header>
                 <View style = {styles.contentContainer}>
                     <Text style = {{color: Color.SECONDARY}}>
-                        Sample Page
+                        Profile
                     </Text>
                 </View>
                 

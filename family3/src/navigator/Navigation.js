@@ -2,15 +2,17 @@ import React from 'react';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createDrawerNavigator, DrawerNavigatorItems } from 'react-navigation-drawer';
-import { View, Button, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
 import { Color } from '../assets/Assets'
-import LoginPage from '../view/LoginPage';
-import HomePage from '../view/HomePage';
-import UploadPage from '../view/UploadPage';
+import LoginPage from '../view/LoginPage/LoginPage';
+import HomePage from '../view/HomePage/HomePage';
+import UploadPage from '../view/UploadPage/UploadPage';
 import SplashScreen from '../view/SplashScreen';
-import MyPhotoPage from '../view/MyPhotoPage';
-import SettingsPage from '../view/SettingsPage'; 
+import MyPhotoPage from '../view/MyPhotoPage/MyPhotoPage';
+import SettingsPage from '../view/SettingsPage/SettingsPage'; 
+import ProfilePage from '../view/ProfilePage/ProfilePage';
+
 
 const DrawerComponent = props => (
     <ScrollView style = {{flex: 1}}>
@@ -35,21 +37,24 @@ const AuthStack = createStackNavigator(
 const AppDrawerNavigator = createDrawerNavigator(
     {
         Home: HomePage,
+        Profile:ProfilePage,
         Upload: UploadPage,
         Photo: {
             screen: MyPhotoPage,
             navigationOptions: () => 
             ({
-                title: 'My Photo',
+                title: 'My Photos',
             }) 
         },
-        Settings: SettingsPage
+        Settings: SettingsPage,
+        
     }, 
     {
         drawerBackgroundColor: Color.PRIMARY,
         contentComponent: props => <DrawerComponent {...props} />,
         contentOptions: {
-            inactiveTintColor: Color.SECONDARY
+            inactiveTintColor: Color.SECONDARY,
+            activeTintColor: Color.DRAWER_TINT
         }
     }
 )

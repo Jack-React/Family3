@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import{ View, Text, StyleSheet, Button, StatusBar, TouchableHighlight, ScrollView } from 'react-native';
+import { Divider } from 'react-native-elements';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import { GoogleSignin } from 'react-native-google-signin';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dialog, { DialogContent, DialogFooter, DialogButton, DialogTitle } from 'react-native-popup-dialog';
 
 
-import { Color } from '../assets/Assets'
-import { Config } from '../assets/GoogleConfig'
+import { Color } from '../../assets/Assets'
+import { Config } from '../../assets/GoogleConfig'
 
 export default class Settings extends Component {
     constructor(){
@@ -25,8 +26,8 @@ export default class Settings extends Component {
             <View style={styles.MainContainer}>
                 <Header style = {styles.headerContainer}>
                     <StatusBar
-                        backgroundColor={Color.PRIMARY_DARK}
-                        barStyle="light-content"
+                        backgroundColor={Color.STATUS_BAR}
+                        barStyle="dark-content"
                     />
                     <Left>
                         <ButtonBase
@@ -37,7 +38,7 @@ export default class Settings extends Component {
                         </ButtonBase>
                     </Left>
                     <Body>
-                        <Title>Settings</Title>
+                        <Title style = {{color:Color.SECONDARY}}>Settings</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -69,11 +70,13 @@ export default class Settings extends Component {
                         <TouchableHighlight
                             style={styles.touchableButton}
                             activeOpacity= {0.5}
-                            underlayColo= {Color.SECONDARY}
+                            underlayColor= {Color.GREY}
                             onPress={() => {this.setState({settingDialogVisible: true})}}>
                         <Text style = {styles.textStyle}> Log Out </Text>
                         </TouchableHighlight>
+                    
                     </View> 
+                    <Divider style={styles.dividerStyle} />
                 </ScrollView>
             </View>
         )
@@ -90,9 +93,8 @@ export default class Settings extends Component {
     }
     
     signOut = async () => {
-        GoogleSignin.configure(Config);
         try {
-            // await GoogleSignin.revokeAccess();
+            GoogleSignin.configure(Config);
             await GoogleSignin.signOut();
         } catch (error) {
             console.error(error);
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'center',
         width: '100%',
-        height: 70,
+        height: 60,
         padding: 20,
         backgroundColor: Color.PRIMARY,
     },
@@ -129,5 +131,10 @@ const styles = StyleSheet.create({
     textStyle: {
         color: Color.SECONDARY,
         fontSize: 15
+    },
+
+    dividerStyle: {
+        backgroundColor: Color.GREY,
+        height: 1
     }
 })

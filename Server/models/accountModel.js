@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const accountSchema = mongoose.Schema({
+    _id: {
+        type: String,
+        required: true
+    },
+
     firstName: {
         type: String,
         required: true
@@ -19,8 +24,18 @@ const accountSchema = mongoose.Schema({
     create_date: {
         type: Date,
         default: Date.now
+    },
+    
+    family: {
+        type: Number,
+        required: false
+    },
+
+    album: {
+        type: String,
+        required: false
     }
-});
+}, { _id: false });
 
 var Account = module.exports = mongoose.model('account', accountSchema);
 

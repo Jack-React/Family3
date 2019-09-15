@@ -35,7 +35,7 @@ export default class SplashScreen extends Component {
     }
 
     // Checks if user has logged into google
-    checkAuthentication = async () => {
+    async checkAuthentication() {
         console.log("Checking Log In Status...")
         const isSignedIn = await GoogleSignin.isSignedIn();
         

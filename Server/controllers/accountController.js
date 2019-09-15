@@ -1,4 +1,6 @@
 Account = require("../models/accountModel");
+const {ObjectId} = require('mongodb'); // or ObjectID 
+
 
 exports.index = (req, res) => {
     Account.get((err, accounts) => {
@@ -21,7 +23,10 @@ exports.new = (req, res) => {
     account.firstName = req.body.firstName;
     account.lastName = req.body.lastName;
     account.email = req.body.email;
-
+    account.album = req.body.album;
+    account.family = req.body.family;
+    account._id = req.body._id;
+    
     account.save((err) => {
         if (err){
             res.json(err);
@@ -54,6 +59,9 @@ exports.update = (req, res) => {
         account.firstName = req.body.firstName;
         account.lastName = req.body.lastName;
         account.email = req.body.email;
+        account.album = req.body.album;
+        account.family = req.body.family;
+
 
         account.save((err => {
             if (err){
