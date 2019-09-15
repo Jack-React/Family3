@@ -94,7 +94,8 @@ export default class GoogelAPIHandler {
                  "albumId": this.dbUserData.album
             })
         }
-        return  await this.APIHandler.sendRequest(data);
+        response =  await this.APIHandler.sendRequest(data);
+        return response.mediaItems
     }
     
     

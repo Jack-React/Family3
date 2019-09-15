@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import{ View, Text, StyleSheet, Button, StatusBar} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import DrawerIcon from 'react-native-vector-icons/FontAwesome';
 
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
@@ -9,9 +8,9 @@ import { Color } from '../../assets/Assets';
 
 export default class HomeScreen extends Component {
     static navigationOptions = {
-        drawerIcon: () => {
-            <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>
-        }
+        // drawerIcon: () => {
+        //     <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>
+        // }
     }
     constructor(props){
         super(props);
@@ -33,7 +32,7 @@ export default class HomeScreen extends Component {
                             transparent
                             onPress={() => this.props.navigation.openDrawer()}
                             >
-                            <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
+                            <DrawerIcon name="navicon" size={20} color= {Color.SECONDARY}/>
                         </ButtonBase>
                     </Left>
                     <Body>
