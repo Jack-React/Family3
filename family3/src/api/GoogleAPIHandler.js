@@ -1,9 +1,9 @@
-import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import RNFetchBlob from 'react-native-fetch-blob'
 
 import APIHandler from './APIHandler'
 import DBHandler from './DBHandler'
 
+// Helper class to connect to GoogleApi
 export default class GoogelAPIHandler {
     constructor() {
         this.APIHandler = new APIHandler();
@@ -32,7 +32,6 @@ export default class GoogelAPIHandler {
     };
 
     async getUploadToken(image, token){
-        console.log(token)
         let name = image.path.split('/')
         name = name[name.length-1]
         data = {
@@ -73,14 +72,11 @@ export default class GoogelAPIHandler {
             })
         }
         response =  await this.APIHandler.sendRequest(data);
-        console.log(response)
-        return response.mediaItem
+        return response
     }
 
     async getMediaItems(token){
-        /* 
-         * Reponse contains an array of (id, description, productUr, mediaMetaData, filename)
-         */
+        //Reponse contains an array of (id, description, productUr, mediaMetaData, filename)
         await this.getDbUserData();
         data = {
             URI: 'https://photoslibrary.googleapis.com/v1/mediaItems:search',
@@ -97,12 +93,5 @@ export default class GoogelAPIHandler {
         response =  await this.APIHandler.sendRequest(data);
         return response.mediaItems
     }
-    
-    
-
-    async getUser(){
-        return await GoogleSignin.getCurrentUser();
-    }
-
 }
 

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const accountSchema = mongoose.Schema({
     _id: {
-        type: String,
+        type: Number,
         required: true
     },
 

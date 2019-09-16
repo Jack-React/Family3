@@ -7,5 +7,5 @@ export const Config = {
              "https://www.googleapis.com/auth/userinfo.email"],
 
     webClientId:'151347594039-95vbncamplm3brr71hga2q53el0qf7at.apps.googleusercontent.com',
-    // forceConsentPrompt: true
+    forceConsentPrompt: false
 }

@@ -1,33 +1,26 @@
 import React from 'react';
-import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createDrawerNavigator, DrawerNavigatorItems } from 'react-navigation-drawer';
-import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
+import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import DrawerIcon from 'react-native-vector-icons/AntDesign';
 
-
 import { Color } from '../assets/Assets'
-import LoginPage from '../view/LoginPage/LoginPage';
-import HomePage from '../view/HomePage/HomePage';
-import UploadPage from '../view/UploadPage/UploadPage';
-import SplashScreen from '../view/SplashScreen';
-import MyPhotoPage from '../view/MyPhotoPage/MyPhotoPage';
-import SettingsPage from '../view/SettingsPage/SettingsPage'; 
-import ProfilePage from '../view/ProfilePage/ProfilePage';
 
-// import Logo from '../assets/icon/family3-icon.svg';
+// Pages
+import SplashScreen from '../page/SplashScren/SplashScreen';
+import SettingsPage from '../page/SettingsPage/SettingsPage'; 
+import ProfilePage from '../page/ProfilePage/ProfilePage';
+
+// Navigation Stacks
+import UploadStack from './stackNavigator/UploadStack'
+import HomeStack from './stackNavigator/HomeStack';
+import AuthStack from './stackNavigator/AuthStack';
+import MyPhotoStack from './stackNavigator/MyPhotoStack'
 
 const DrawerComponent = props => (
     <ScrollView style = {{flex: 1}}>
         <View style = {styles.DrawerHeader}>
-            {/* <Image source ={require('../assets/icon/family3-icon.svg')} style = {styles.iconStyle}/> */}
-            {/* <SvgUri
-                width="100%"
-                height="100%"
-                uri='../assets/icon/family3-icon.svg'
-            /> */}
-            {/* <Logo width={120} height={40} /> */}
-            <Text style = {{color: Color.SECONDARY}}>App Logo Here</Text>
+            <Image source ={require('../assets/icon/icon.png')} style = {styles.iconStyle}/>
         </View>
         <View>
             <DrawerNavigatorItems {...props} />
@@ -35,19 +28,10 @@ const DrawerComponent = props => (
     </ScrollView>
 );
 
-const AuthStack = createStackNavigator(
-    {
-        Login: LoginPage
-    },
-    {  
-        headerLayoutPreset: 'center'
-    }
-)
-
 const AppDrawerNavigator = createDrawerNavigator(
     {
         Home: {
-            screen: HomePage,
+            screen: HomeStack,
             navigationOptions: () => 
             ({ drawerIcon: ( <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>) }) 
         },
@@ -59,13 +43,13 @@ const AppDrawerNavigator = createDrawerNavigator(
         },
 
         Upload: {
-            screen: UploadPage,
+            screen: UploadStack,
             navigationOptions: () => 
             ({ drawerIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) }) 
         },
 
         Photo: {
-            screen: MyPhotoPage,
+            screen: MyPhotoStack,
             navigationOptions: () => ({
                 title: 'My Photos',
                 drawerIcon: ( <DrawerIcon name="picture" size={20} color= {Color.SECONDARY} />)
@@ -83,24 +67,24 @@ const AppDrawerNavigator = createDrawerNavigator(
         contentComponent: props => <DrawerComponent {...props} />,
         contentOptions: {
             inactiveTintColor: Color.SECONDARY,
-            activeTintColor: Color.DRAWER_TINT,
+            activeTintColor: Color.SECONDARY,
             iconContainerStyle: {
                 opacity: 1,
                 color: Color.PRIMARY
-              }
+            }
         }
     }
 )
 
-const AppSwitchNavigator = createSwitchNavigator(
-    {
-        Splash: SplashScreen,
-        Auth: AuthStack,
-        App: AppDrawerNavigator
-    },  
+export default createAppContainer(
+    createSwitchNavigator(
+        {
+            Splash: SplashScreen,
+            Auth: AuthStack,
+            App: AppDrawerNavigator
+        },  
+    )
 )
-export default createAppContainer(AppSwitchNavigator)
-
 
 const styles = StyleSheet.create({
     DrawerHeader: {
@@ -111,7 +95,7 @@ const styles = StyleSheet.create({
     },
 
     iconStyle: {
-        height: 100,
-        width: 100
+        width: 100, 
+        height: 100
     }
 })

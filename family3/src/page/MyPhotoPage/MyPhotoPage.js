@@ -68,8 +68,6 @@ export default class MyPhotoPage extends Component {
                 <View style = {styles.MainContainer}>
                 <Spinner
                     visible={this.state.spinner}
-                    textContent={'Loading...'}
-                    textStyle={styles.spinnerTextStyle}
                 />
                 </View>
             )
@@ -100,8 +98,4 @@ const styles = StyleSheet.create({
         width: 400,
         height: 400,
     },
-
-    spinnerTextStyle: {
-        color: Color.SECONDARY
-      },
 })

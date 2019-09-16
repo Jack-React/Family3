@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, Text ,View, StyleSheet, Button} from 'react-native';
+import { Text ,View, StyleSheet, StatusBar, Image} from 'react-native';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 
 import DBHandler from '../../api/DBHandler'
@@ -35,6 +35,11 @@ export default class LoginPage extends Component {
 	render(){
 		return (
 			<View style = {styles.MainContainer}>
+				<StatusBar
+					backgroundColor={Color.STATUS_BAR}
+					barStyle="dark-content"
+				/>
+				<Image source ={require('../../assets/icon/icon.png')} style = {styles.iconStyle}/>
 				<Text style = {styles.Header}>Family3</Text>
 				
 				<GoogleSigninButton 
@@ -45,8 +50,8 @@ export default class LoginPage extends Component {
 						this.googleSignInHandler()
 						.then(() => {
 							if (this.state.isUserSignedIn){
-								this.handleAcount();
-								this.props.navigation.navigate('Home', {userData: this.state.userData});
+								this.checkAccount();
+								this.props.navigation.navigate('App', {userData: this.state.userData});
 							}
 						})
 					}}
@@ -55,7 +60,7 @@ export default class LoginPage extends Component {
 		);
 	}
 
-	async handleAcount() {
+	async checkAccount() {
 		if (!await this.DBHandler.hasAccount(this.state.userData.idToken)){
 			token = await GoogleSignin.getTokens();
 			const album = await this.GoogleAPIHandler.makeAlbum("Family3", token)
@@ -76,9 +81,8 @@ export default class LoginPage extends Component {
 				isUserSignedIn: true,
 			});
 			console.log("Signed In");
-			console.log(userData);
 		} catch (error) {
-			console.log(error);
+			console.warn(error);
 		}
 	};
 
@@ -105,6 +109,8 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: 0
 	},
+	iconStyle: {
+        width: 80, 
+        height: 80,
+    },
 });
-
-AppRegistry.registerComponent("LoginPage", () => LoginPage);

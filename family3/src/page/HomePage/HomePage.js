@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import{ View, Text, StyleSheet, Button, StatusBar} from 'react-native';
 import DrawerIcon from 'react-native-vector-icons/FontAwesome';
+import { GoogleSignin } from 'react-native-google-signin';
 
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import { Color } from '../../assets/Assets';
@@ -14,18 +15,26 @@ export default class HomeScreen extends Component {
     }
     constructor(props){
         super(props);
+        this.state = {
+            userData: {
+                user: {
+                    name: 'a'
+                }
+            }
+        }
+    }
+    async componentDidMount(){
+        const userData = await GoogleSignin.getCurrentUser()
+        this.setState({ userData })
     }
 
     render(){
-        const userData = (this.props.navigation.getParam('userData'));
         return(
             <View style={styles.MainContainer}>
-                
                 <Header style = {styles.headerContainer}>
                     <StatusBar
                         backgroundColor={Color.STATUS_BAR}
                         barStyle="dark-content"
-                        // translucent backgroundColor="transparent"
                     />
                     <Left>
                         <ButtonBase
@@ -41,15 +50,13 @@ export default class HomeScreen extends Component {
                     <Right />
                 </Header>
                 <View style = {styles.contentContainer}>
-                    <Text style = {styles.Text}>Welcome {userData.user.givenName}!</Text>
+                    <Text style = {styles.Text}>Welcome {this.state.userData.user.givenName}!</Text>
                     <Text style = {styles.Text}>This is the home screen</Text>
                 </View>
                 <View style = {styles.bottomView}>
-                
                 </View>
                 
             </View>
-            // </DrawerContainer>
         )
     }
 }

@@ -22,7 +22,7 @@ export default class ImageSwiperComponent extends Component {
 				loadMinimal
 				showsPagination	= {false}
 				onMomentumScrollEnd={(e, { index }, context) => this.updatePage(index)} >
-				>
+				
 				{this.renderScreenComponent()}
 				{this.renderScreenComponent()}
 				{this.renderScreenComponent()}

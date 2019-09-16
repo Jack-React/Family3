@@ -1,6 +1,5 @@
 import RNFetchBlob from 'react-native-fetch-blob'
 
-
 const ACCOUNTS = "http://52.14.226.1:8080/api/accounts"
 const FAMILIES = "http://52.14.226.1:8080/api/families"
 
@@ -19,7 +18,7 @@ export default class APIHandler {
     }
 
     async getAccount(id){
-        console.log('Getting account...');
+        // console.log('Getting account...');
         data = {
             URI: `${ACCOUNTS}/${id}`,
             method: 'GET'
@@ -29,7 +28,7 @@ export default class APIHandler {
 
 
     async createAccount(body){
-        console.log("Creating Account...");
+        // console.log("Creating Account...");
         data = {
             URI: ACCOUNTS,
             method: 'POST',
@@ -41,7 +40,7 @@ export default class APIHandler {
 
 
     async deleteAccount(id){
-        console.log('Deleting Account...')
+        // console.log('Deleting Account...')
         data = {
             URI:`${ACCOUNTS}/${id}`,
             method: 'DELETE',
@@ -50,7 +49,7 @@ export default class APIHandler {
     };
 
     async updateAccount(id, body){
-        console.log('Updating account...');
+        // console.log('Updating account...');
         data = {
             URI:`${ACCOUNTS}/${id}`,
             method: 'PUT',
@@ -64,9 +63,10 @@ export default class APIHandler {
     async sendRequest(data){
         try {
             const response = await RNFetchBlob.fetch(data.method, data.URI, data.headers, data.body);
-            // console.log(response)
+            // if data send expects a json response
             if (data.isJson == true)
-               return response
+                // No need to convert to json object
+                return response
             else 
                 return response.json()
         }
