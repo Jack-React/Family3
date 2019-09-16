@@ -3,7 +3,6 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createDrawerNavigator, DrawerNavigatorItems } from 'react-navigation-drawer';
 import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
-import { SvgUri } from 'react-native-svg';
 import DrawerIcon from 'react-native-vector-icons/AntDesign';
 
 
