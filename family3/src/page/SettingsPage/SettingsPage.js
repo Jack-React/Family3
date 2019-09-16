@@ -6,7 +6,6 @@ import { GoogleSignin } from 'react-native-google-signin';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dialog, { DialogContent, DialogFooter, DialogButton, DialogTitle } from 'react-native-popup-dialog';
 
-
 import { Color } from '../../assets/Assets'
 import { Config } from '../../assets/GoogleConfig'
 

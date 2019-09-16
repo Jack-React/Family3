@@ -89,7 +89,7 @@ export default createAppContainer(
 const styles = StyleSheet.create({
     DrawerHeader: {
         height: 150,
-        backgroundColor: Color.PRIMARY,
+        backgroundColor: Color.SECONDARY,
         justifyContent: "center",
         alignItems: "center"
     },

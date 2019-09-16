@@ -1,6 +1,3 @@
-import React from 'react';
-
-
 export const Color = {
     PRIMARY: '#ffffff',
     SECONDARY: '#376432',

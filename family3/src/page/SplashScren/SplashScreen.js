@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import { GoogleSignin } from 'react-native-google-signin';
 import { View, Text, StyleSheet, Image, StatusBar } from 'react-native';
-import { Color }  from '../../assets/Assets'
 
+import { Color }  from '../../assets/Assets'
 
 export default class SplashScreen extends Component {
     static navigationOptions = {
         headerTransparent: true,
     }
 
-    constructor(){
-        super();
-    }    
-        
     componentDidMount() {
         // Spend some time on the splash screen
         setTimeout(() => {
@@ -40,7 +36,6 @@ export default class SplashScreen extends Component {
     async checkAuthentication() {
         console.log("Checking Log In Status...")
         const isSignedIn = await GoogleSignin.isSignedIn();
-        
         if (isSignedIn)
             this.props.navigation.navigate('App')
         else 

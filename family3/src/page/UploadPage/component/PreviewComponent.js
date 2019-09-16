@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import{ View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import{ View, StyleSheet, Image, ScrollView} from 'react-native';
 import { Button } from 'react-native-elements';
 import { GoogleSignin } from 'react-native-google-signin';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-
 import { Color } from '../../../assets/Assets'
 import GoogleAPIHandler from '../../../api/GoogleAPIHandler'
-
-
 
 export default class PreviewComponent extends Component {
     constructor(){
@@ -45,29 +42,27 @@ export default class PreviewComponent extends Component {
                     <Spinner visible={this.state.isSubmitting} />
 
                     <ScrollView>
-                        {this.renderImage(0)}
-                        {this.renderImage(1)}
-                        {this.renderImage(2)}
-                        {this.renderImage(3)}
-                        {this.renderImage(4)}
-                        {this.renderImage(5)}
-                        {this.renderImage(6)}
-                        {this.renderImage(7)}
-                        {this.renderImage(8)}
-                        {this.renderImage(9)}
+                        {this.state.images.map((image) => {
+                            return (
+                                <View key= {image.path} style = {{ alignItems: 'center', paddingBottom: 10}}>
+                                    <Image source={{uri: image.path}}
+                                            style={styles.imageStyle} />
+                                </View>
+                            )
+                        })}
                     </ScrollView>
 
                     <View style = {styles.bottomView}>
                         <Button 
                             title = "Cancel"
-                            type="clear"
+                            type = "clear"
                             titleStyle = {{color: Color.SECONDARY}}
                             buttonStyle = {{width: 200}}
-                            onPress = {() => { this.handleCancel(); }}/>
+                            onPress = {() => { this.props.navigation.goBack() }}/>
 
                         <Button 
                             title = "Confirm"
-                            type="clear"
+                            type = "clear"
                             titleStyle = {{color: Color.SECONDARY}}
                             buttonStyle = {{width: 200}}
                             onPress = {() => {
@@ -79,12 +74,10 @@ export default class PreviewComponent extends Component {
             )
         }
         return (
-            <View></View>
+            <View style = {styles.MainContainer}>
+                <Spinner visible= {true} />
+            </View>
         )
-    }
-
-    handleCancel(){
-        this.props.navigation.goBack()
     }
 
     async handleSubmit(){
@@ -102,33 +95,11 @@ export default class PreviewComponent extends Component {
         }
         console.log("Image Submitted");
     }
-
-    renderImage(index){
-        if (index < this.state.count){
-            return (
-                <View style = {{ alignItems: 'center', paddingBottom: 10}}>
-                    <Image source={{uri: this.state.images[index].path}}
-                            style={{width: 400, height: 400}} />
-                </View>
-            )
-        }
-    }
 }
 
 const styles = StyleSheet.create({
     MainContainer: {
 		flex: 1,
-        backgroundColor: Color.PRIMARY
-    },
-
-    contentContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    headerContainer: {
-        alignItems: 'flex-start',
         backgroundColor: Color.PRIMARY
     },
 
@@ -143,7 +114,8 @@ const styles = StyleSheet.create({
 		bottom: 0
     },
 
-    Text: {
-        color: Color.SECONDARY,
-    },
+    imageStyle: {
+        width: 400,
+        height: 400
+    }
 });

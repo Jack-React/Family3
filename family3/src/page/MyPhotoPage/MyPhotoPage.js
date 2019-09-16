@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import{ View, StyleSheet, StatusBar} from 'react-native';
+import{ View, StyleSheet, StatusBar, Text, Image, FlatList, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GoogleSignin } from 'react-native-google-signin';
@@ -8,18 +8,18 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import { Color } from '../../assets/Assets'
-import ImageSwiperComponent from './component/ImageSwiperComponent';
 import NoImageComponent from './component/NoImageComponent';
 
+const IMAGE_WIDTH = Dimensions.get('window').width
 export default class MyPhotoPage extends Component {
     constructor(){
         super();
         this.GoogleAPIHandler = new GoogleAPIHandler();
         this.state = {
             images: {},
-            size: 0,
             loaded: false,
-            spinner: true
+            spinner: true,
+            numColumns: 3
         }
        
     }
@@ -32,49 +32,72 @@ export default class MyPhotoPage extends Component {
         }, 3000);
         token = await GoogleSignin.getTokens();
         const response = await this.GoogleAPIHandler.getMediaItems(token)
-        this.setState({images: response, size: response.length, loaded: true, spinner: false})
-        
+        this.setState({images: response, loaded: true, spinner: false})
     }
 
     render() {
+        const {images, numColumns} = this.state;
         if (this.state.loaded){
-            return (
-                <View style={styles.MainContainer}>
-                    <Header style = {styles.headerContainer}>
-                        <StatusBar
-                            backgroundColor={Color.STATUS_BAR}
-                            barStyle="dark-content"
-                        />
-                        <Left>
-                            <ButtonBase
-                                transparent
-                                onPress={() => this.props.navigation.openDrawer()}
-                                >
-                                <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
-                            </ButtonBase>
-                        </Left>
-                        <Body>
-                            <Title style = {{color:Color.SECONDARY}}>My Photos</Title>
-                        </Body>
-                        <Right />
-                    </Header>
-                    {(JSON.stringify(this.state.images) != '{}') ? 
-                        <ImageSwiperComponent images={this.state.images} size={this.state.size}/>: <NoImageComponent/>}
-                </View>
-            )
+            if (JSON.stringify(images) != '{}'){
+                return (
+                    <View style={styles.MainContainer}>
+                        <Header style = {styles.headerContainer}>
+                            <StatusBar
+                                backgroundColor={Color.STATUS_BAR}
+                                barStyle="dark-content"
+                            />
+                            <Left>
+                                <ButtonBase
+                                    transparent
+                                    onPress={() => this.props.navigation.openDrawer()}
+                                    >
+                                    <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
+                                </ButtonBase>
+                            </Left>
+                            <Body>
+                                <Title style = {{color:Color.SECONDARY}}>My Photos</Title>
+                            </Body>
+                            <Right />
+                        </Header>
+                        <SafeAreaView style = {{flex: 1, alignItems: 'center'}}>
+                            <FlatList
+                                numColumns = {numColumns}
+                                data = {images}
+                                renderItem = {({item, index}) => {
+                                    return(
+                                        <TouchableOpacity
+                                        activeOpacity= {0.5}
+                                        underlayColor= {Color.GREY}
+                                        onPress={() => {this.loadImage(index)}}>
+                                            <View style = {{ alignItems: 'center', paddingBottom: 2, paddingLeft: 2, paddingRight: 2}}>
+                                                <Image source={{uri: item.baseUrl}}
+                                                    style={{width: IMAGE_WIDTH/this.state.numColumns - 6, height: IMAGE_WIDTH/this.state.numColumns - 6}}/>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )
+                                }}
+                                keyExtractor = {item => item.id} 
+                            />
+                        </SafeAreaView>
+                    </View>
+                )
+            }
+            else {
+                return <NoImageComponent/>
+            }
         }
         else {
             return (
                 <View style = {styles.MainContainer}>
-                <Spinner
-                    visible={this.state.spinner}
-                />
+                    <Spinner visible={this.state.spinner} />
                 </View>
             )
         }
     }
-
     
+    loadImage(index){
+        this.props.navigation.navigate(('ImageSwiper'), {index: index, images: this.state.images})
+    }
 }
 
 const styles = StyleSheet.create({
@@ -97,5 +120,5 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: 400,
         height: 400,
-    },
+    }
 })

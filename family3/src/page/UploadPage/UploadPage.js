@@ -28,8 +28,7 @@ export default class UploadPage extends Component {
                 <Header style = {styles.headerContainer}>
                     <StatusBar
                         backgroundColor = {Color.STATUS_BAR}
-                        barStyle = 'dark-content'
-                    />
+                        barStyle = 'dark-content' />
                     <Left>
                         <ButtonBase
                             transparent
@@ -43,11 +42,13 @@ export default class UploadPage extends Component {
                     </Body>
                     <Right />
                 </Header>
+
                 <View style = {styles.contentContainer}>
                     <Text style = {{color: Color.SECONDARY}}>
                         Upload an Image!
                     </Text>
                 </View> 
+                
                 <View style = {styles.bottomView}>
                     <Button 
                         title = "Open Gallery"
@@ -87,7 +88,6 @@ export default class UploadPage extends Component {
             const response =  await ImagePicker.openCamera({
                                 width: 400,
                                 height: 400 })
-            // data = [response]
             this.props.navigation.navigate(('Preview'), {images: [response]})
         }
         catch (error) {
@@ -124,9 +124,5 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		position: 'absolute',
 		bottom: 0
-    },
-
-    Text: {
-        color: Color.SECONDARY,
     },
 });

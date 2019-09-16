@@ -17,7 +17,7 @@ export default UploadStack = createStackNavigator(
         Preview: {
             screen:PreviewComponent,
             navigationOptions:{
-                title: 'Preview',
+                title: 'Preview Images',
                 headerTintColor:  Color.SECONDARY,
                 headerTitleStyle: {color: Color.SECONDARY, fontSize: 18},
             }
