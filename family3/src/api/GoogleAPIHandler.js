@@ -3,6 +3,35 @@ import RNFetchBlob from 'react-native-fetch-blob'
 import APIHandler from './APIHandler'
 import DBHandler from './DBHandler'
 
+const searchTags = [
+  'LANDSCAPES',
+  'RECEIPTS',
+  'CITYSCAPES',
+  'LANDMARKS',
+  'SELFIES',
+  'PEOPLE',
+  'PETS',
+  'WEDDINGS',
+  'BIRTHDAYS',
+  'DOCUMENTS',
+  'TRAVEL',
+  'ANIMALS',
+  'FOOD',
+  'SPORT',
+  'NIGHT',
+  'PERFORMANCES',
+  'WHITEBOARDS',
+  'SCREENSHOTS',
+  'UTILITY',
+  'ARTS',
+  'CRAFTS',
+  'FASHION',
+  'HOUSES',
+  'GARDENS',
+  'FLOWERS',
+  'HOLIDAYS',
+]
+
 // Helper class to connect to GoogleApi
 export default class GoogelAPIHandler {
     constructor() {
@@ -93,5 +122,36 @@ export default class GoogelAPIHandler {
         response =  await this.APIHandler.sendRequest(data);
         return response.mediaItems
     }
-}
 
+    async searchMediaItems(token, filter){
+        //Reponse contains an array of (id, description, productUr, mediaMetaData, filename)
+        // console.log(token); //// DEBUG: 
+        await this.getDbUserData();
+        if (searchTags.includes(filter)) {
+          data = {
+              URI: 'https://photoslibrary.googleapis.com/v1/mediaItems:search',
+              method: 'POST',
+              headers: {
+                  'Authorization': 'Bearer '+ token.accessToken,
+                  'Content-type': 'application/json'
+              },
+              body: JSON.stringify({
+                  "pageSize":"100",
+                   "albumId": this.dbUserData.album,
+                   "filters": {
+                    "contentFilter": {
+                      "includedContentCategories": [
+                        filter,
+                      ]
+                    }
+                  }
+              })
+          }
+          response =  await this.APIHandler.sendRequest(data);
+          return response.mediaItems // may need nextpage tokens
+
+        }
+      return Error('searchMediaItems error: filter doesnt match searchTags')
+    }
+
+}

@@ -5,6 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { GoogleSignin } from 'react-native-google-signin';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+import { SearchBar } from 'react-native-elements';
+
+
 
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import { Color } from '../../assets/Assets'
@@ -19,10 +22,21 @@ export default class MyPhotoPage extends Component {
             images: {},
             loaded: false,
             spinner: true,
-            numColumns: 3
+            numColumns: 3,
+            search: '',
+            token : {},
         }
-       
+
     }
+
+    updateSearch = search => {
+      this.setState({ search });
+      this.setState({loaded:false,spinner:true});
+      console.log("searching for " + this.state.search);
+      const response = this.GoogleAPIHandler.searchMediaItems(this.state.token, this.state.search);
+      this.setState({images: response, loaded: true, spinner: false}) //// TODO: it loads back the original photos if empty
+      // this.GoogleAPIHandler.getMediaItems(this.token);
+  };
 
     async componentDidMount(){
         setInterval(() => {
@@ -32,11 +46,12 @@ export default class MyPhotoPage extends Component {
         }, 3000);
         token = await GoogleSignin.getTokens();
         const response = await this.GoogleAPIHandler.getMediaItems(token)
-        this.setState({images: response, loaded: true, spinner: false})
+        this.setState({images: response, loaded: true, spinner: false, token : token})
     }
 
     render() {
         const {images, numColumns} = this.state;
+        const { search } = this.state;
         if (this.state.loaded){
             if (JSON.stringify(images) != '{}'){
                 return (
@@ -57,8 +72,15 @@ export default class MyPhotoPage extends Component {
                             <Body>
                                 <Title style = {{color:Color.SECONDARY}}>My Photos</Title>
                             </Body>
+
                             <Right />
                         </Header>
+                        <SearchBar
+                            style = {styles.SearchBar}
+                            placeholder="search image"
+                            onChangeText={this.updateSearch}
+                            value={search}
+                          />
                         <SafeAreaView style = {{flex: 1, alignItems: 'center'}}>
                             <FlatList
                                 numColumns = {numColumns}
@@ -76,7 +98,7 @@ export default class MyPhotoPage extends Component {
                                         </TouchableOpacity>
                                     )
                                 }}
-                                keyExtractor = {item => item.id} 
+                                keyExtractor = {item => item.id}
                             />
                         </SafeAreaView>
                     </View>
@@ -94,7 +116,7 @@ export default class MyPhotoPage extends Component {
             )
         }
     }
-    
+
     loadImage(index){
         this.props.navigation.navigate(('ImageSwiper'), {index: index, images: this.state.images})
     }
@@ -120,5 +142,11 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: 400,
         height: 400,
-    }
+    },
+    SearchBar:{
+        backgroundColor: Color.PRIMARY,
+        //lightTheme : true,
+
+    },
+
 })
