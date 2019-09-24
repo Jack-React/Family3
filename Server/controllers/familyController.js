@@ -34,6 +34,19 @@ exports.new = (req, res) => {
 
 // TODO: Create relation schema and push it into family
 exports.addrelationship = (req, res) => { 
+    data = {
+        person1: req.body.person1,
+        person2: req.body.person2,
+        relationship: req.body.relationship
+    }
+    Family.findOneAndUpdate(
+        { _id: req.params.family_id },
+        { $push: { relations: data } },
+        (err, success) => {
+            if (err) res.json({ status: 'error', message: err })
+            res.json({status: 'success', message: 'successfully added family member'})
+        }
+    );
 };
 
 exports.view = (req, res) => {
@@ -53,8 +66,7 @@ exports.update = (req, res) => {
     Family.findById(req.params.family_id, (err, family) => {
         if (err) res.status(400).send(err);
 
-        family.children = req.body.children;
-        family.parent = req.body.parent;
+        family.name = req.body.name;
 
         family.save((err => {
             if (err){

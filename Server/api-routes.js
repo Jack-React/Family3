@@ -18,23 +18,24 @@ router.route('/families')
 router.route('/families/:family_id')
     .get(familyController.view)
     .put(familyController.update)
-    .patch(familyController.update)
     .delete(familyController.delete);
 
+router.route('families/members/:family_id')
+    .get(familyController.getmembers)
+    .put(familyController.addrelationship);
     
 // Route to accounts
 router.route('/accounts')
     .get(accountController.index)
     .post(accountController.new)
 
-
-
-
 router.route('/accounts/:account_id')
 	.get(accountController.view)
     .put(accountController.update)
-    .patch(accountController.update)
     .delete(accountController.delete);
+
+router.route('/accounts/join/:family_id')
+    .put(accountController.joinfamily);
 
 
 // Exports API Routes
