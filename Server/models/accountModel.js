@@ -15,7 +15,12 @@ const accountSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
+    DOB: {
+        type: Date
+    },
+    gender: {
+        type: String
+    },
     email: {
         type: String,
         required: true
@@ -25,9 +30,9 @@ const accountSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    
+    // belong to which family
     family: {
-        type: Number,
+        type: Number, // family id
         required: false
     },
 

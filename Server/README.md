@@ -19,12 +19,19 @@ Account:
 Family:
     /api/families
         Body: {
-            parents: array
-            childrens: array
+            name: String
+            relationship: array
+        }
+
+    relationship element
+        Body: {
+            person1: account_id of the 1st person
+            person2: account_id of the 2nd person
+            relationship: String
         }
 
     /api/families/:family_id
         param: {
-            account_id: _id
+            family_id: _id
         }
 

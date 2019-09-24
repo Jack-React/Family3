@@ -22,9 +22,10 @@ exports.new = (req, res) => {
     var account = new Account();
     account.firstName = req.body.firstName;
     account.lastName = req.body.lastName;
+    account.DOB = req.body.DOB;
+    account.gender = req.body.gender;
     account.email = req.body.email;
     account.album = req.body.album;
-    account.family = req.body.family;
     account._id = req.body._id;
     
     account.save((err) => {
@@ -58,9 +59,10 @@ exports.update = (req, res) => {
         };
         account.firstName = req.body.firstName;
         account.lastName = req.body.lastName;
+        account.DOB = req.body.DOB;
+        account.gender = req.body.gender;
         account.email = req.body.email;
         account.album = req.body.album;
-        account.family = req.body.family;
 
 
         account.save((err => {
@@ -89,3 +91,22 @@ exports.delete = (req, res) => {
         });
     });
 };
+
+exports.joinfamily = (req, res) => { 
+    Account.findById(req.params.account_id, (err, account) => {
+        if (err) {
+            res.send(err);
+        };
+        account.family = req.body.family;
+
+        account.save((err => {
+            if (err) {
+                res.json(err);
+            }
+            res.json({
+                message: "Join family Success!",
+                data: account
+            });
+        }));
+    });
+}
