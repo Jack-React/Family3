@@ -62,8 +62,6 @@ exports.update = (req, res) => {
         account.DOB = req.body.DOB;
         account.gender = req.body.gender;
         account.email = req.body.email;
-        account.album = req.body.album;
-
 
         account.save((err => {
             if (err){

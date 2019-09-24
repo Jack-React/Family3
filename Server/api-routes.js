@@ -6,7 +6,7 @@ const familyController = require("./controllers/familyController");
 router.get('/', (_req, res) => {
     res.json({
         status: "Success!",
-        message: "Welcome to COMP3022 Project 1 API"
+        message: "Welcome to COMP30022 Project 1 API"
     });
 });
 
@@ -20,7 +20,7 @@ router.route('/families/:family_id')
     .put(familyController.update)
     .delete(familyController.delete);
 
-router.route('families/members/:family_id')
+router.route('/families/members/:family_id')
     .get(familyController.getmembers)
     .put(familyController.addrelationship);
     
@@ -34,7 +34,7 @@ router.route('/accounts/:account_id')
     .put(accountController.update)
     .delete(accountController.delete);
 
-router.route('/accounts/join/:family_id')
+router.route('/accounts/join/:account_id')
     .put(accountController.joinfamily);
 
 
