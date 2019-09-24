@@ -4,21 +4,21 @@ import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Avatar} from 'react-native-elements';
+import {ListItem} from 'react-native-elements';
 import { GoogleSignin } from 'react-native-google-signin';
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import DBHandler from '../../api/DBHandler'
-
-
 import { Color } from '../../assets/Assets'
 
-export default class ProfilePage extends Component {
+
+export default class EditProfilePage extends Component {
     constructor(props){
         super(props);
         this.state = {
             userData: {
                 user: {
                     name: 'a',
-                    lastName: '', 
+                    lastName: '',
                     phoneNumber: '',
                     email: ''
                 }
@@ -44,51 +44,80 @@ export default class ProfilePage extends Component {
                     <Left>
                         <ButtonBase
                             transparent
-                            onPress={() => {this.props.navigation.openDrawer()}}
+                            onPress={() => this.props.navigation.openDrawer()}
                             >
                             <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
                         </ButtonBase>
                     </Left>
                     <Body>
-                        <Title style = {{color:Color.SECONDARY}}>Profile</Title>
+                        <Title style = {{color:Color.SECONDARY}}>Edit Profile</Title>
                     </Body>
                     <Right />
                 </Header>
+                <View style = {styles.detailsContainer}>
+                <TextInput
+                style={{height:40}}
+                placeholder="First name"
+                value={this.state.userData.user.givenName}
+                onChangeText={(value) => this.setState({firstName:value})}
+                />
+
+                <TextInput
+                style={{height:40}}
+                placeholder="Last name"
+                value={this.state.userData.user.lastName}
+                onChangeText={(value) => this.setState({lastName:value})}
+                />
+
+                <TextInput
+                style={{height:40}}
+                placeholder="Phone number"
+                value={this.state.userData.user.phoneNumber}
+                onChangeText={(value) => this.setState({phoneNumber:value})}
+                />
+
+                <TextInput
+                style={{height:40}}
+                placeholder="Email"
+                value={this.state.userData.user.email}
+                onChangeText={(value) => this.setState({email:value})}
+                />
                 
+                <Text style={{padding: 10, fontSize:25}}>
+                </Text>
+                </View>
+                <View style = {styles.buttonContainer}>
+                    <Button
+                        title = "Save"
+                        type="clear"
+                        titleStyle = {{color: Color.SECONDARY}}
+                        buttonStyle = {{width: 180}}
+                        onPress = {() => this.props.navigation.navigate('Profile')}/>
+                </View>
 
                 <View style = {styles.avatarContainer}>
                 <Avatar
                 size="xlarge"
                 rounded
                 title={this.state.userData.user.givenName}
+                showEditButton editButton={{ onPress: () => this.handleGallery()}}
                 activeOpacity={0.7}
+                
                 />
                 </View>
-                <View style = {styles.contentContainer}>
-                    <Text style = {{color: Color.SECONDARY}}>
-                       
-                    {this.state.userData.user.givenName} 
-                    {"\n"}
-                    {this.state.userData.user.lastName}
-                    {"\n"}
-                    {this.state.userData.user.phoneNumber}
-                    {"\n"}
-                    {this.state.userData.user.email} 
-                    </Text>                   
-                </View>
-                <View style = {styles.buttonContainer}>
-                    <Button
-                        title = "Edit"
-                        type="clear"
-                        titleStyle = {{color: Color.SECONDARY}}
-                        buttonStyle = {{width: 180}}
-                        
-                        onPress={() => this.props.navigation.navigate('EditProfile')}/>
-                </View>
-
                 
             </View>
         )
+    }
+    async handleGallery(){
+        console.log("Choosing Photo from gallery...");
+        try {
+            const response = await ImagePicker.openPicker({ multiple: true})
+            this.props.navigation.navigate(('Preview'), {images: response})
+        }
+        catch (error) {
+            console.warn(error)
+        }
     }
 }
 
@@ -114,10 +143,20 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
 
+    detailsContainer: {
+         alignItems: 'flex-start',
+         left: 20, 
+         top: 200,
+         justifyContent: 'space-between',
+         flexDirection: 'column', 
+         letterSpacing: 10,
+         color: 'pink'
+    },
+
     buttonContainer: {
         position: 'absolute',
         top: 80,
-        left: 220,
+        left: 240,
         paddingLeft: 60
     },
 

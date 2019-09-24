@@ -16,6 +16,7 @@ import UploadStack from './stackNavigator/UploadStack'
 import HomeStack from './stackNavigator/HomeStack';
 import AuthStack from './stackNavigator/AuthStack';
 import MyPhotoStack from './stackNavigator/MyPhotoStack'
+import EditProfileStack from './stackNavigator/EditProfileStack';
 
 const DrawerComponent = props => (
     <ScrollView style = {{flex: 1}}>
@@ -81,7 +82,8 @@ export default createAppContainer(
         {
             Splash: SplashScreen,
             Auth: AuthStack,
-            App: AppDrawerNavigator
+            App: AppDrawerNavigator,
+            EditProfile: EditProfileStack
         },  
     )
 )
