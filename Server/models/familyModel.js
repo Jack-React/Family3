@@ -1,20 +1,26 @@
 const mongoose = require("mongoose");
 
-const familySchema = mongoose.Schema({
-    childrens: {
-        type: Array,
+const relationSchema = mongoose.Schema({
+    person1: {
+        type: Number, // acount id
         required: true
     },
-
-    parents: {
-        type: Array,
+    person2: {
+        type: Number, // different account id
         required: true
     },
-
-    create_date: {
-        type: Date,
-        default: Date.now
+    relationship: {
+        type: String,
+        required: true
     }
+});
+
+const familySchema = mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    relations: [relationSchema]
 });
 
 var Family = module.exports = mongoose.model('family', familySchema);

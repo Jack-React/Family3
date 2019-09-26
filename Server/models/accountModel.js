@@ -25,9 +25,9 @@ const accountSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    
+    // belong to which family
     family: {
-        type: Number,
+        type: Number, // family id
         required: false
     },
 
