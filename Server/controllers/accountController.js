@@ -22,6 +22,8 @@ exports.new = (req, res) => {
     var account = new Account();
     account.firstName = req.body.firstName;
     account.lastName = req.body.lastName;
+    account.DOB = req.body.DOB;
+    account.gender = req.body.gender;
     account.email = req.body.email;
     account.album = req.body.album;
     account._id = req.body._id;
@@ -57,9 +59,9 @@ exports.update = (req, res) => {
         };
         account.firstName = req.body.firstName;
         account.lastName = req.body.lastName;
+        account.DOB = req.body.DOB;
+        account.gender = req.body.gender;
         account.email = req.body.email;
-        account.album = req.body.album;
-
 
         account.save((err => {
             if (err){

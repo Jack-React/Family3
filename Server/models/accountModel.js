@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const accountSchema = mongoose.Schema({
     _id: {
-        type: Number,
+        type: String,
         required: true
     },
 
@@ -15,10 +15,14 @@ const accountSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
+    DOB: {
+        type: Date
+    },
+    gender: {
+        type: String
+    },
     email: {
-        type: String,
-        required: true
+        type: String
     },
 
     create_date: {
@@ -27,7 +31,7 @@ const accountSchema = mongoose.Schema({
     },
     // belong to which family
     family: {
-        type: Number, // family id
+        type: String, // family id
         required: false
     },
 
