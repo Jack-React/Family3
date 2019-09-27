@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// TODO need to test google login work with this model, especially String id
 const accountSchema = mongoose.Schema({
     _id: {
         type: String,

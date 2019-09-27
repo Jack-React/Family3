@@ -8,14 +8,6 @@ const familySchema = mongoose.Schema({
     relations: [{person1: String, person2: String, relationship: String}]
 });
 
-const familySchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    relations: [relationSchema]
-});
-
 var Family = module.exports = mongoose.model('family', familySchema);
 
 module.exports.get = (callback, limit) => {
