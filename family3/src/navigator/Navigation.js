@@ -9,14 +9,13 @@ import { Color } from '../assets/Assets'
 // Pages
 import SplashScreen from '../page/SplashScren/SplashScreen';
 import SettingsPage from '../page/SettingsPage/SettingsPage'; 
-import ProfilePage from '../page/ProfilePage/ProfilePage';
 
 // Navigation Stacks
 import UploadStack from './stackNavigator/UploadStack'
 import HomeStack from './stackNavigator/HomeStack';
 import AuthStack from './stackNavigator/AuthStack';
 import MyPhotoStack from './stackNavigator/MyPhotoStack'
-import EditProfileStack from './stackNavigator/EditProfileStack';
+import ProfileStack from './stackNavigator/ProfileStack';
 
 const DrawerComponent = props => (
     <ScrollView style = {{flex: 1}}>
@@ -38,7 +37,7 @@ const AppDrawerNavigator = createDrawerNavigator(
         },
 
         Profile:{
-            screen: ProfilePage,
+            screen: ProfileStack,
             navigationOptions: () => 
             ({ drawerIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) }) 
         },
@@ -83,7 +82,6 @@ export default createAppContainer(
             Splash: SplashScreen,
             Auth: AuthStack,
             App: AppDrawerNavigator,
-            EditProfile: EditProfileStack
         },  
     )
 )
