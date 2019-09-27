@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const accountSchema = mongoose.Schema({
     _id: {
-        type: Number,
+        type: String,
         required: true
     },
 
@@ -33,8 +33,19 @@ const accountSchema = mongoose.Schema({
 
     album: {
         type: String,
-        required: false
+        required: true
+    },
+
+    gender: {
+        type: String,
+        required: true
+    },
+
+    dob: {
+        type: String,
+        required: true
     }
+    
 }, { _id: false });
 
 var Account = module.exports = mongoose.model('account', accountSchema);

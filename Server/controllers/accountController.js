@@ -26,6 +26,8 @@ exports.new = (req, res) => {
     account.album = req.body.album;
     account.family = req.body.family;
     account._id = req.body._id;
+    account.dob = req.body.dob;
+    account.gender = req.body.gender;
     
     account.save((err) => {
         if (err){
@@ -61,7 +63,8 @@ exports.update = (req, res) => {
         account.email = req.body.email;
         account.album = req.body.album;
         account.family = req.body.family;
-
+        account.dob = req.body.dob;
+        account.gender = req.body.gender;
 
         account.save((err => {
             if (err){

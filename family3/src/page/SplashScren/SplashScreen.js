@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { GoogleSignin } from 'react-native-google-signin';
 import { View, Text, StyleSheet, Image, StatusBar } from 'react-native';
 
-import { Color }  from '../../assets/Assets'
-
+import { Color }  from '../../assets/Assets';
+import DBHandler from '../../api/DBHandler';
 export default class SplashScreen extends Component {
     static navigationOptions = {
         headerTransparent: true,
+    }
+
+    constructor(){
+        super()
+        this.DBHandler = new DBHandler()
     }
 
     componentDidMount() {
@@ -32,11 +37,13 @@ export default class SplashScreen extends Component {
         )
     }
 
-    // Checks if user has logged into google
+    // Checks if user has logged into google and has an account in the databse 
     async checkAuthentication() {
         console.log("Checking Log In Status...")
-        const isSignedIn = await GoogleSignin.isSignedIn();
-        if (isSignedIn)
+        const isGoogleSignedIn = await GoogleSignin.isSignedIn();
+        const isDBSignedIn = await this.DBHandler.hasAccount();
+
+        if (isGoogleSignedIn && isDBSignedIn)
             this.props.navigation.navigate('App')
         else 
             this.props.navigation.navigate('Auth')

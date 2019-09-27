@@ -1,37 +1,37 @@
 import APIHandler from '../api/APIHandler'
 import { GoogleSignin } from 'react-native-google-signin';
 
-// Helper class to connect to database
+/* Helper class to connect to database */
 export default class DBHandler {
     constructor(){
         this.APIHandler = new APIHandler();
     }
 
+    /* This function checks if the current google account also has an account with us in the database */
     async hasAccount(){
         userData = await GoogleSignin.getCurrentUser();
         const response = await this.APIHandler.getAccount(userData.user.id);
         return response.data == null?  false: true
     }
 
-    async getAccount(){
+    /* This function creates an account on the database */
+    async createAccount(details){
         userData = await GoogleSignin.getCurrentUser();
-        const response = await this.APIHandler.getAccount(userData.user.id);
-        return response.data
-    }
-
-    async createAccount(albumUrl){
-        userData = await GoogleSignin.getCurrentUser();
+        console.log(details)
         body = {
             firstName: userData.user.givenName,
             lastName: userData.user.familyName,
             _id: userData.user.id,
             email: userData.user.email,
-            album: albumUrl
+            album: details.albumID,
+            gender: details.gender,
+            dob: details.dob
         }
         const response = await this.APIHandler.createAccount(body);
         return response
     }
 
+    /* This function returns the details of the account from database */
     async getDBUserData(){
         userData = await GoogleSignin.getCurrentUser();
         const response = await this.APIHandler.getAccount(userData.user.id);

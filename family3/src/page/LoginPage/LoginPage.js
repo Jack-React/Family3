@@ -47,30 +47,24 @@ export default class LoginPage extends Component {
 					size={GoogleSigninButton.Size.Standard}
 					color={GoogleSigninButton.Color.Light}
 					onPress={() => {
-						this.googleSignInHandler()
-						.then(() => {
-							if (this.state.isUserSignedIn){
-								this.checkAccount();
-								this.props.navigation.navigate('App', {userData: this.state.userData});
-							}
-						})
+						this.handleSignIn()
 					}}
 				/>
 			</View>
 		);
 	}
-
-	async checkAccount() {
-		if (!await this.DBHandler.hasAccount(this.state.userData.idToken)){
-			token = await GoogleSignin.getTokens();
-			const album = await this.GoogleAPIHandler.makeAlbum("Family3", token)
-			const response = await this.DBHandler.createAccount(album.id)
-			if (response.data != null){
-				console.log('Account Creation Success')
+	/* Checks if the user has an account in database. Navigate to home page if true, signup page otherwise */
+	async handleSignIn(){
+		await this.googleSignInHandler()
+		if (this.state.isUserSignedIn){
+			if (await this.DBHandler.hasAccount(this.state.userData.idToken)){
+				this.props.navigation.navigate('App', {userData: this.state.userData});
 			}
+			this.props.navigation.navigate('Signup', {userData: this.state.userData});
 		}
 	}
 
+	/* Function to sign in using google account */
 	async googleSignInHandler() {
 		console.log("Signing in...");
 		try {

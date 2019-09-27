@@ -17,6 +17,7 @@ export default class APIHandler {
         return formBody;
     }
 
+    /* sends a get request to back end to retrieve account details */
     async getAccount(id){
         // console.log('Getting account...');
         data = {
@@ -26,7 +27,7 @@ export default class APIHandler {
        return await this.sendRequest(data)
     };
 
-
+    /* Sends a post request to back end for accout creation*/
     async createAccount(body){
         // console.log("Creating Account...");
         data = {
@@ -38,7 +39,7 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
-
+    /* Sends a delete request to back end to delete account */
     async deleteAccount(id){
         // console.log('Deleting Account...')
         data = {
@@ -48,6 +49,7 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
+    /* Sends a put request to back end to update account */ 
     async updateAccount(id, body){
         // console.log('Updating account...');
         data = {
@@ -59,7 +61,7 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
-    
+    /* Sends data to any uri based on method, headers and body */
     async sendRequest(data){
         try {
             const response = await RNFetchBlob.fetch(data.method, data.URI, data.headers, data.body);

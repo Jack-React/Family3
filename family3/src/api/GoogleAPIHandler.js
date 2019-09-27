@@ -11,11 +11,13 @@ export default class GoogelAPIHandler {
         this.dbUserData = null;
     }
 
+    /* Gets user data from database */
     async getDbUserData(){
         if (this.dbUserData == null)
             this.dbUserData = await this.DBHandler.getDBUserData();
     }
 
+    /* Creates an album in google photos */
     async makeAlbum (title, token) {
         data = {
             URI: 'https://photoslibrary.googleapis.com/v1/albums',
@@ -31,6 +33,7 @@ export default class GoogelAPIHandler {
         return await this.APIHandler.sendRequest(data)
     };
 
+    /* Gets an upload token from google photos api in order to submit and image */
     async getUploadToken(image, token){
         let name = image.path.split('/')
         name = name[name.length-1]
@@ -50,6 +53,7 @@ export default class GoogelAPIHandler {
         return response.data
     }
 
+    /* Submits an image to google photos api */
     async submitImage(uploadToken, description, token){
         await this.getDbUserData();
         data = {
@@ -75,6 +79,7 @@ export default class GoogelAPIHandler {
         return response
     }
 
+    /* Gets media items (images) from a google photo library */
     async getMediaItems(token){
         //Reponse contains an array of (id, description, productUr, mediaMetaData, filename)
         await this.getDbUserData();
