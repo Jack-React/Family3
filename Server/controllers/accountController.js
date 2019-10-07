@@ -1,5 +1,5 @@
 Account = require("../models/accountModel");
-// const sha256 = require('sha256');
+const crypto = require('crypto');
 const {ObjectId} = require('mongodb'); // or ObjectID 
 
 // const hash = crypto.createHash('sha256').update('password').digest('hex');
@@ -8,6 +8,14 @@ const {ObjectId} = require('mongodb'); // or ObjectID
 // ! for now we have no access to modify email, album, _id
 // ? Do we need to add independent access later, 
 // ? e.g.link register user to virtual account
+exports.test = (req, res) => { 
+    var data = 'Xiaojian';
+    data += 'Zhang';
+    data += '1963-05-12';
+    const hash = crypto.createHash('sha256').update(data).digest('hex');
+    console.log(hash);
+    res.send(hash);
+}
 
 // get all accounts
 exports.index = (req, res) => {
@@ -26,18 +34,22 @@ exports.index = (req, res) => {
     });
 };
 
-// ! need to modify
 // create new account
 exports.new = (req, res) => {
     var account = new Account();
-    account.firstName = req.body.firstName;
-    account.lastName = req.body.lastName;
-    account.DOB = req.body.DOB;
-    account.gender = req.body.gender;
-    // TODO modify this id to hash function
+    
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const DOB = req.body.DOB;
 
-    console.log(code);
-    account._id = req.body._id;
+    account.firstName = firstName;
+    account.lastName = lastName;
+    account.DOB = DOB;
+    account.gender = req.body.gender;
+
+    var data = firstName + lastName + DOB;
+    const hash = crypto.createHash('sha256').update(data).digest('hex');
+    account._id = hash;
     
     account.save((err) => {
         if (err){
@@ -74,7 +86,7 @@ exports.update = (req, res) => {
         account.lastName = req.body.lastName;
         account.DOB = req.body.DOB;
         account.gender = req.body.gender;
-        console.log(sha256("XiaojianZhang1963-05-12"));
+        
         account.save((err => {
             if (err){
                 res.json(err);
