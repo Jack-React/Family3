@@ -9,12 +9,7 @@ const {ObjectId} = require('mongodb'); // or ObjectID
 // ? Do we need to add independent access later, 
 // ? e.g.link register user to virtual account
 exports.test = (req, res) => { 
-    var data = 'Xiaojian';
-    data += 'Zhang';
-    data += '1963-05-12';
-    const hash = crypto.createHash('sha256').update(data).digest('hex');
-    console.log(hash);
-    res.send(hash);
+    res.send('use to test');
 }
 
 // get all accounts
