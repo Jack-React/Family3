@@ -113,7 +113,7 @@ exports.findRelations = (req, res) => {
                 res.send(err);
             }
 
-            var relations = family.relations.filter(relation => relation.person1 == user_id || relations.person2 == user_id);
+            var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
 
             res.json({
                 message: "Find all relations",
