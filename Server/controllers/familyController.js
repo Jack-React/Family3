@@ -1,6 +1,7 @@
 Family = require("../models/familyModel");
 Account = require("../models/accountModel");
 
+// get all families
 exports.index = (req, res) => {
     Family.get((err, family) => {
         if (err){
@@ -17,6 +18,7 @@ exports.index = (req, res) => {
     });
 };
 
+// create new families
 exports.new = (req, res) => {
     var family = new Family();
     family.name = req.body.name;
@@ -32,7 +34,7 @@ exports.new = (req, res) => {
     });
 };
 
-// TODO: Create relation schema and push it into family
+// Create relation schema and push it into family
 exports.addrelationship = (req, res) => { 
     data = {
         person1: req.body.person1,
@@ -49,6 +51,7 @@ exports.addrelationship = (req, res) => {
     );
 };
 
+// View one family by id
 exports.view = (req, res) => {
     Family.findById(req.params.family_id, (err, family) => {
         if (err) {
@@ -61,7 +64,7 @@ exports.view = (req, res) => {
     });
 };
 
-
+// Update one family
 exports.update = (req, res) => {
     Family.findById(req.params.family_id, (err, family) => {
         if (err) res.status(400).send(err);
@@ -81,7 +84,7 @@ exports.update = (req, res) => {
 };
 
 
-
+// Delete one family
 exports.delete = (req, res) => {
     Family.remove({
         _id: req.params.family_id
@@ -95,23 +98,43 @@ exports.delete = (req, res) => {
     });
 };
 
+// find relations of one account
+exports.findRelations = (req, res) => {
+    var user_id = req.params.account_id;
+
+    Account.findById(user_id, (err, account) => {
+        if (err) {
+            res.send(err);
+        }
+
+        var family_id = account.family;
+        Family.findById(family_id, (err, family) => {
+            if (err) {
+                res.send(err);
+            }
+
+            var relations = family.relations.filter(relation => relation.person1 == user_id || relations.person2 == user_id);
+
+            res.json({
+                message: "Find all relations",
+                data: relations
+            });
+        });
+    });
+}
+
+// get all members in one family
 exports.getmembers = (req, res) => {
-    Family.findById(req.params.family_id, (err, family) => { 
+    Family.findById(req.params.family_id , (err, family) => { 
         if (err) {
             res.send(err);
         }
         
-        var people1 = family.map((e) => { return e.person1; });
-        var people2 = family.map((e) => { return e.person2; });
+        var people1 = family.relations.map((e) => { return e.person1; });
+        var people2 = family.relations.map((e) => { return e.person2; });
         var members = people1.concat(people2);
-            
-        var arrayUnique = function (arr) {
-            return arr.filter(function (item, index) {
-                return arr.indexOf(item) >= index;
-            });
-        };
 
-        var membersid =  arrayUnique(members);
+        var membersid = arrayUnique(members);
 
         Account.find({
             '_id': {
@@ -126,5 +149,11 @@ exports.getmembers = (req, res) => {
                 data: results
             });
         });
+    });
+};
+
+var arrayUnique = (arr) => {
+    return arr.filter(function (item, index) {
+        return arr.indexOf(item) >= index;
     });
 };

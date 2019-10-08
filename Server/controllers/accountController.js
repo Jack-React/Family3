@@ -1,7 +1,18 @@
 Account = require("../models/accountModel");
+const crypto = require('crypto');
 const {ObjectId} = require('mongodb'); // or ObjectID 
 
+// const hash = crypto.createHash('sha256').update('password').digest('hex');
+// const salt = "test";
 
+// ! for now we have no access to modify email, album, _id
+// ? Do we need to add independent access later, 
+// ? e.g.link register user to virtual account
+exports.test = (req, res) => { 
+    res.send('use to test');
+}
+
+// get all accounts
 exports.index = (req, res) => {
     Account.get((err, accounts) => {
         if (err){
@@ -18,15 +29,22 @@ exports.index = (req, res) => {
     });
 };
 
+// create new account
 exports.new = (req, res) => {
     var account = new Account();
-    account.firstName = req.body.firstName;
-    account.lastName = req.body.lastName;
-    account.DOB = req.body.DOB;
+    
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const DOB = req.body.DOB;
+
+    account.firstName = firstName;
+    account.lastName = lastName;
+    account.DOB = DOB;
     account.gender = req.body.gender;
-    account.email = req.body.email;
-    account.album = req.body.album;
-    account._id = req.body._id;
+
+    var data = firstName + lastName + DOB;
+    const hash = crypto.createHash('sha256').update(data).digest('hex');
+    account._id = hash;
     
     account.save((err) => {
         if (err){
@@ -39,6 +57,8 @@ exports.new = (req, res) => {
     });
 };
 
+
+// view one account by id
 exports.view = (req, res) => {
     Account.findById(req.params.account_id, (err, account) => {
         if (err){
@@ -51,7 +71,7 @@ exports.view = (req, res) => {
     });
 };
 
-
+// update one account
 exports.update = (req, res) => {
     Account.findById(req.params.account_id, (err, account) => {
         if (err){
@@ -61,8 +81,7 @@ exports.update = (req, res) => {
         account.lastName = req.body.lastName;
         account.DOB = req.body.DOB;
         account.gender = req.body.gender;
-        account.email = req.body.email;
-
+        
         account.save((err => {
             if (err){
                 res.json(err);
@@ -75,8 +94,7 @@ exports.update = (req, res) => {
     });
 };
 
-
-
+// delete one account
 exports.delete = (req, res) => {
     Account.remove({
         _id: req.params.account_id
@@ -90,6 +108,7 @@ exports.delete = (req, res) => {
     });
 };
 
+// set the family to given acount
 exports.joinfamily = (req, res) => { 
     Account.findById(req.params.account_id, (err, account) => {
         if (err) {

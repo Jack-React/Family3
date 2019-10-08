@@ -37,6 +37,10 @@ router.route('/accounts/:account_id')
 router.route('/accounts/join/:account_id')
     .put(accountController.joinfamily);
 
+router.route('/accounts/relations/:account_id')
+    .get(familyController.findRelations);
 
+router.route('/test')
+    .get(accountController.test);
 // Exports API Routes
 module.exports = router;
