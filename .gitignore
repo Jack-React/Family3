@@ -1,2 +1,6 @@
 #VScode generate
 .idea
+
+#eclipse generate
+family3/android/.settings/org.eclipse.buildship.core.prefs
+family3/android/.project
