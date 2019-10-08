@@ -35,7 +35,7 @@ exports.new = (req, res) => {
 };
 
 // Create relation schema and push it into family
-exports.addrelationship = (req, res) => { 
+exports.addRelation = (req, res) => { 
     data = {
         person1: req.body.person1,
         person2: req.body.person2,
@@ -50,6 +50,24 @@ exports.addrelationship = (req, res) => {
         }
     );
 };
+
+// Delete relation of family
+// TODO complete this function
+// exports.deleteRelation = (req, res) => { 
+//     Family.findById(req.params.family_id, (err, family) => { 
+//         if (err) { 
+//             res.send(err);
+//         }
+//         family.relations
+//         for (var i = 0; i < arrayOfObjects.length; i++) {
+//             var obj = arrayOfObjects[i];
+
+//             if (listToDelete.indexOf(obj.id) !== -1) {
+//                 arrayOfObjects.splice(i, 1);
+//             }
+//         }
+//     });
+// }
 
 // View one family by id
 exports.view = (req, res) => {

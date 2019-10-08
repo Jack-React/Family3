@@ -22,7 +22,8 @@ router.route('/families/:family_id')
 
 router.route('/families/members/:family_id')
     .get(familyController.getmembers)
-    .put(familyController.addrelationship);
+    .put(familyController.addRelation);
+    // .delete(familyController.deleteRelation);
     
 // Route to accounts
 router.route('/accounts')
