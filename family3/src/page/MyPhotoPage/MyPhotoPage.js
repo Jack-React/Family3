@@ -4,7 +4,7 @@ import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GoogleSignin } from 'react-native-google-signin';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import ImageView from 'react-native-image-view';
 
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import { Color } from '../../assets/Assets'
@@ -19,7 +19,9 @@ export default class MyPhotoPage extends Component {
             images: {},
             loaded: false,
             spinner: true,
-            numColumns: 3
+            numColumns: 3,
+            loadSingleImage: false,
+            currentIndex: 0
         }
        
     }
@@ -32,13 +34,14 @@ export default class MyPhotoPage extends Component {
         }, 3000);
         token = await GoogleSignin.getTokens();
         const response = await this.GoogleAPIHandler.getMediaItems(token)
-        this.setState({images: response, loaded: true, spinner: false})
+        const images = this.prepareImages(response);
+        this.setState({ images: images, loaded: true, spinner: false})
     }
 
     render() {
-        const {images, numColumns} = this.state;
+        const {images, numColumns, loadSingleImage, currentIndex} = this.state;
         if (this.state.loaded){
-            if (JSON.stringify(images) != '{}'){
+            if (images.length > 0){
                 return (
                     <View style={styles.MainContainer}>
                         <Header style = {styles.headerContainer}>
@@ -57,9 +60,26 @@ export default class MyPhotoPage extends Component {
                             <Body>
                                 <Title style = {{color:Color.SECONDARY}}>My Photos</Title>
                             </Body>
-                            <Right />
+                            <Right>
+                            <ButtonBase
+                                transparent
+                                onPress={() => this.refreshPage()}
+                                >
+                                <Icon name="refresh" size={20} color= {Color.SECONDARY}/>
+                            </ButtonBase>
+                            </Right>
                         </Header>
                         <SafeAreaView style = {{flex: 1, alignItems: 'center'}}>
+                            <ImageView
+                                images={images}
+                                imageIndex={currentIndex}
+                                isVisible={loadSingleImage}
+                                renderFooter={(currentImage) => (<View style = {styles.singleImageFooter}>
+                                                                    <Text style = {styles.singleImageText}>{currentImage.title}</Text>
+                                                                </View>)}
+
+                                onClose={() => {this.setState({loadSingleImage: false})}}>
+                            </ImageView>
                             <FlatList
                                 numColumns = {numColumns}
                                 data = {images}
@@ -68,24 +88,27 @@ export default class MyPhotoPage extends Component {
                                         <TouchableOpacity
                                         activeOpacity= {0.5}
                                         underlayColor= {Color.GREY}
-                                        onPress={() => {this.loadImage(index)}}>
+                                        onPress={() => {this.setState({currentIndex: index, loadSingleImage: true})}}>
                                             <View style = {{ alignItems: 'center', paddingBottom: 2, paddingLeft: 2, paddingRight: 2}}>
-                                                <Image source={{uri: item.baseUrl}}
+                                                <Image source={{uri: item.source.uri}}
                                                     style={{width: IMAGE_WIDTH/this.state.numColumns - 6, height: IMAGE_WIDTH/this.state.numColumns - 6}}/>
                                             </View>
                                         </TouchableOpacity>
                                     )
                                 }}
-                                keyExtractor = {item => item.id} 
+                                keyExtractor={item => item.id} 
                             />
+                             
                         </SafeAreaView>
                     </View>
                 )
             }
+            // No Images to display
             else {
                 return <NoImageComponent/>
             }
         }
+        // Show spinner while loading images
         else {
             return (
                 <View style = {styles.MainContainer}>
@@ -94,9 +117,39 @@ export default class MyPhotoPage extends Component {
             )
         }
     }
+
+    // This function converts the output from google api to something that imageViewer can understand
+    prepareImages(images){
+        const imageList = []
+
+        // Return if empty
+        if (JSON.stringify(images) == "{}"){
+            return imageList;
+        }
+
+        // Else convert
+        for (i = 0; i < images.length; i ++){
+            output = {
+                source: { uri: images[i].baseUrl },
+                id: images[i].id,
+                title: images[i].description,
+                width: parseInt(images[i].mediaMetadata.width, 10),
+                height: parseInt(images[i].mediaMetadata.height, 10)
+            }
+            imageList.push(output);
+        }
+        return imageList
+    }
     
-    loadImage(index){
-        this.props.navigation.navigate(('ImageSwiper'), {index: index, images: this.state.images})
+    // Refresh the images
+    refreshPage(){
+        this.setState({
+            images: {},
+            loaded: false,
+            spinner: true,
+            numColumns: 3
+        })
+        this.componentDidMount();
     }
 }
 
@@ -120,5 +173,15 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: 400,
         height: 400,
+    },
+
+    singleImageFooter: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    singleImageText: {
+        color: Color.PRIMARY,
+        paddingBottom: 10
     }
 })

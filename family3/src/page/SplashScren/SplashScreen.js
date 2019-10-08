@@ -41,10 +41,14 @@ export default class SplashScreen extends Component {
     async checkAuthentication() {
         console.log("Checking Log In Status...")
         const isGoogleSignedIn = await GoogleSignin.isSignedIn();
-        const isDBSignedIn = await this.DBHandler.hasAccount();
 
-        if (isGoogleSignedIn && isDBSignedIn)
-            this.props.navigation.navigate('App')
+        if (isGoogleSignedIn){
+            const isDBSignedIn = await this.DBHandler.hasAccount();
+            if (isDBSignedIn)
+                this.props.navigation.navigate('App')
+            else 
+                this.props.navigation.navigate('Auth')
+        }
         else 
             this.props.navigation.navigate('Auth')
     };

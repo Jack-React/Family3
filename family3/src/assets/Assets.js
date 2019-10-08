@@ -5,4 +5,5 @@ export const Color = {
     STATUS_BAR: '#ffffffff',
     DRAWER_TINT: '#82d882',
     GREY: '#F4F4F4',
+    BLACK: '#000000'
 }

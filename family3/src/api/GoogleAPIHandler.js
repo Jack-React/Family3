@@ -76,6 +76,7 @@ export default class GoogelAPIHandler {
             })
         }
         response =  await this.APIHandler.sendRequest(data);
+        console.log(response)
         return response
     }
 

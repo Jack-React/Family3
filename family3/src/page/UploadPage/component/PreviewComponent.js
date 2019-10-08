@@ -1,121 +1,120 @@
 import React, { Component } from 'react';
-import{ View, StyleSheet, Image, ScrollView} from 'react-native';
-import { Button } from 'react-native-elements';
-import { GoogleSignin } from 'react-native-google-signin';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
+import { Button as ButtonBase } from 'native-base'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { Color } from '../../../assets/Assets'
-import GoogleAPIHandler from '../../../api/GoogleAPIHandler'
+
+import Swiper from 'react-native-swiper'
+import { Color } from '../../../assets/Assets';
 
 export default class PreviewComponent extends Component {
+	static navigationOptions = {
+		title: 'Preview Images',
+		headerTintColor:  Color.SECONDARY,
+		headerTitleStyle: {color: Color.SECONDARY, fontSize: 18},
+		headerRight: (
+			<ButtonBase
+					transparent
+					onPress={() => this.handleSubmit()}
+					>
+					<Icon name="check" size={20} color= {Color.SECONDARY}/>
+			</ButtonBase>
+		)
+	}
     constructor(){
-        super()
-        this.state = {
-            images: null,
-            count: 0,
-            loaded: false,
-            isSubmitting:false,
-        }
-        this.GoogleAPIHandler = new GoogleAPIHandler()
-    }
+		super()
+    	this.state = {
+			autoPlay: false
+		}
+	}
+	
+	
+    render() {
+		const images = this.props.navigation.getParam('images')
+		const index = this.props.navigation.getParam('index')
 
-    componentDidMount(){
-        this.setState({
-            images: this.props.navigation.getParam('images'),
-            count: this.props.navigation.getParam('images').length,
-            loaded: true
-        })
-    }
-
-    componentWillUnmount(){
-        this.setState({
-            images: null,
-            count: 0,
-            loaded: false
-        })
-    }
-
-    render (){
-        if (this.state.loaded){
-            return (
-                <View style = {styles.MainContainer}>
-                    <Spinner visible={this.state.isSubmitting} />
-
-                    <ScrollView>
-                        {this.state.images.map((image) => {
-                            return (
-                                <View key= {image.path} style = {{ alignItems: 'center', paddingBottom: 10}}>
-                                    <Image source={{uri: image.path}}
-                                            style={styles.imageStyle} />
-                                </View>
-                            )
-                        })}
-                    </ScrollView>
-
-                    <View style = {styles.bottomView}>
-                        <Button 
-                            title = "Cancel"
-                            type = "clear"
-                            titleStyle = {{color: Color.SECONDARY}}
-                            buttonStyle = {{width: 200}}
-                            onPress = {() => { this.props.navigation.goBack() }}/>
-
-                        <Button 
-                            title = "Confirm"
-                            type = "clear"
-                            titleStyle = {{color: Color.SECONDARY}}
-                            buttonStyle = {{width: 200}}
-                            onPress = {() => {
-                                this.setState({isSubmitting:true})
-                                this.handleSubmit();
-                            }}/>
-                    </View>
-                </View>
-            )
-        }
-        return (
-            <View style = {styles.MainContainer}>
-                <Spinner visible= {true} />
-            </View>
+		console.log(images)
+		return (
+			<View style = {styles.MainContainer}>
+				<Swiper
+					loadMinimalSize={3}
+					index = {index}
+					loadMinimal
+					loop = {false}
+					autoplay = {this.state.autoPlay}
+					showsPagination	= {false}>
+					{images.map((image) => {
+						return(
+							<View key={image.path} style={styles.imageStyle}>
+								<Image source={{uri: image.path}}
+										style={{width: '100%', height: 400}} />
+								<View style = {styles.textContainer}>
+									<Text style = {styles.textStyle}>Description:</Text>
+									<TextInput
+										placeholder="Image Description"
+										style={styles.textStyle}
+										onChangeText={text => image.description = text}
+										value={image.description}
+									/>
+								</View>	
+							</View>
+						)
+					})}
+				</Swiper>
+			</View>
         )
-    }
+	}
 
-    async handleSubmit(){
+	// This function handles the event where submit button is pressed
+	async handleSubmit(){
         await this.submitImages()
         this.setState({isSubmitting:false})
         this.props.navigation.goBack()
     }
 
+	// Submits the images to google photos
     async submitImages(){
-        token = await GoogleSignin.getTokens();
-        description = 'test'
+		token = await GoogleSignin.getTokens();
+		const {images} = this.state;
         for (i = 0; i < (this.state.count) ; i ++){
-            uploadToken = await this.GoogleAPIHandler.getUploadToken(this.state.images[i], token)
-            this.GoogleAPIHandler.submitImage(uploadToken, description, token);
+            uploadToken = await this.GoogleAPIHandler.getUploadToken(images[i], token)
+            this.GoogleAPIHandler.submitImage(uploadToken, images[i].description, token);
         }
         console.log("Image Submitted");
     }
 }
 
 const styles = StyleSheet.create({
-    MainContainer: {
+	MainContainer: {
 		flex: 1,
         backgroundColor: Color.PRIMARY
-    },
-
-    bottomView:{
-		width: '100%', 
-        height: 50, 
-        flexDirection: 'row',
-		backgroundColor: Color.PRIMARY,
-		justifyContent: 'space-evenly', 
-		alignItems: 'center',
-		position: 'absolute',
-		bottom: 0
-    },
-
+	},
+	
+	headerContainer: {
+        alignItems: 'flex-start',
+        backgroundColor: Color.PRIMARY
+	},
+	
     imageStyle: {
-        width: 400,
-        height: 400
-    }
-});
+		paddingTop: 30,
+		flex: 1,
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		backgroundColor: Color.PRIMARY
+	},
+	
+	textContainer: {
+		flex:1,
+		justifyContent: 'flex-start',
+		alignSelf: 'flex-start',
+		paddingTop: 10,
+		paddingLeft: 10
+	},
+
+    textStyle: {
+	  color: Color.BLACK,
+	  fontSize: 15,
+	//   justifyContent: 'flex-start',
+	//   alignItems: 'flex-start'
+	}
+})

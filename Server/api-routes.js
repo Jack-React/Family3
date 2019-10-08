@@ -2,6 +2,7 @@
 let router = require('express').Router();
 const accountController = require("./controllers/accountController");
 const familyController = require("./controllers/familyController");
+const albumController = require("./controllers/albumController")
 
 router.get('/', (_req, res) => {
     res.json({
@@ -27,14 +28,24 @@ router.route('/accounts')
     .get(accountController.index)
     .post(accountController.new)
 
-
-
-
 router.route('/accounts/:account_id')
 	.get(accountController.view)
     .put(accountController.update)
     .patch(accountController.update)
     .delete(accountController.delete);
+
+
+
+router.route('/albums')
+    .get(albumController.index)
+    .post(albumController.new)
+    .delete(albumController.delete)
+
+
+router.route('/albums/:album_id')
+    .get(albumController.view)
+    .put(albumController.addPhoto)
+    // .delete(albumController.deletePhoto)
 
 
 // Exports API Routes
