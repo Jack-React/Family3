@@ -93,7 +93,7 @@ export default class GoogelAPIHandler {
             },
             body: JSON.stringify({
                 "pageSize":"100",
-                 "albumId": this.dbUserData.album
+                "albumId": this.dbUserData.album
             })
         }
         response =  await this.APIHandler.sendRequest(data);

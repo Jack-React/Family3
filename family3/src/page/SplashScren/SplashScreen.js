@@ -44,8 +44,9 @@ export default class SplashScreen extends Component {
 
         if (isGoogleSignedIn){
             const isDBSignedIn = await this.DBHandler.hasAccount();
-            if (isDBSignedIn)
+            if (isDBSignedIn){
                 this.props.navigation.navigate('App')
+            }
             else 
                 this.props.navigation.navigate('Auth')
         }

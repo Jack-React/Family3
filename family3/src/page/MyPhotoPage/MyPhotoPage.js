@@ -8,7 +8,6 @@ import ImageView from 'react-native-image-view';
 
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import { Color } from '../../assets/Assets'
-import NoImageComponent from './component/NoImageComponent';
 
 const IMAGE_WIDTH = Dimensions.get('window').width
 export default class MyPhotoPage extends Component {
@@ -35,12 +34,13 @@ export default class MyPhotoPage extends Component {
         token = await GoogleSignin.getTokens();
         const response = await this.GoogleAPIHandler.getMediaItems(token)
         const images = this.prepareImages(response);
-        this.setState({ images: images, loaded: true, spinner: false})
+        this.setState({ images: images, loaded: true, spinner: false}, () => console.log(this.state.images))
     }
 
     render() {
         const {images, numColumns, loadSingleImage, currentIndex} = this.state;
         if (this.state.loaded){
+            console.log(images)
             if (images.length > 0){
                 return (
                     <View style={styles.MainContainer}>
@@ -98,14 +98,17 @@ export default class MyPhotoPage extends Component {
                                 }}
                                 keyExtractor={item => item.id} 
                             />
-                             
                         </SafeAreaView>
                     </View>
                 )
             }
             // No Images to display
             else {
-                return <NoImageComponent/>
+                <View style = {styles.mainContainer}>
+                    <Text style = {{color: Color.SECONDARY}}>
+                        No Image Found
+                    </Text>
+                </View>
             }
         }
         // Show spinner while loading images
