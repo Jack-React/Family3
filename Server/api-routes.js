@@ -41,6 +41,9 @@ router.route('/accounts/join/:account_id')
 router.route('/accounts/relations/:account_id')
     .get(familyController.findRelations);
 
+router.route('/accounts/relationsinfo/:account_id')
+    .get(familyController.findRelationsInfo);
+
 router.route('/test')
     .get(accountController.test);
 // Exports API Routes

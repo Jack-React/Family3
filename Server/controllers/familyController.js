@@ -141,6 +141,59 @@ exports.findRelations = (req, res) => {
     });
 }
 
+// find relation info of one account
+exports.findRelationsInfo = (req, res) => {
+    var user_id = req.params.account_id;
+
+    Account.findById(user_id, (err, account) => {
+        if (err) {
+            res.send(err);
+        }
+
+        var family_id = account.family;
+        Family.findById(family_id, (err, family) => {
+            if (err) {
+                res.send(err);
+            }
+
+            var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
+
+            // get unique id from links
+            var userids = [];
+
+            for (var i = 0; i < relations.length; i++) {
+                var person1id = relations[i].person1;
+                var person2id = relations[i].person2;
+                if (userids.indexOf(person1id) < 0)
+                    userids.push(person1id);
+                if (userids.indexOf(person2id) < 0)
+                    userids.push(person2id);
+            }
+
+            Account.find({
+                '_id': {
+                    $in: userids
+                }
+            }, (err, results) => {
+                    var output = results.map(e => { 
+                        var data = {
+                            _id: e._id,
+                            name: e.firstName + " " + e.lastName
+                        }
+                        return data;
+                    });
+                if (err) {
+                    res.json(err);
+                }
+                res.json({
+                    message: "Find all relations info nodes",
+                    data: output
+                });
+            });
+        });
+    });
+}
+
 // get all members in one family
 exports.getmembers = (req, res) => {
     Family.findById(req.params.family_id , (err, family) => { 
