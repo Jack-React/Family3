@@ -17,12 +17,7 @@ export default EditProfileStack = createStackNavigator(
             }
         },
 
-        EditProfile: {
-            screen: EditProfilePage,
-            navigationOptions:{
-                header: null
-            }
-        }
+        
     },
     {  
         initialRouteName: 'Profile',
