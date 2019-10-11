@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import{ View, Text, StyleSheet, Button, StatusBar, Image, TextInput} from 'react-native';
+import{ View, Text, StyleSheet, Button, StatusBar, Image, TextInput, AsyncStorage} from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -15,25 +15,27 @@ export default class ProfilePage extends Component {
     constructor(props){
         super(props);
         this.state = {
-            userData: {
-                user: {
-                    name: 'a',
-                    lastName: '', 
-                    phoneNumber: '',
-                    email: ''
-                }
-            }
+            userData: null
     };
     this.GoogleAPIHandler = new GoogleAPIHandler()
         this.DBHandler = new DBHandler()
     }
     async componentDidMount(){
         const userData = await GoogleSignin.getCurrentUser()
-        this.setState({ userData })
+        this.setState({ userData });
+        
     }
 
     render() {
+       
+        if (this.state.userData == null){
+            return (
+                <View></View>
+            )
+        }
+        
         return (
+
             <View style={styles.MainContainer}>
                 
                 <Header style = {styles.headerContainer}>
@@ -60,23 +62,27 @@ export default class ProfilePage extends Component {
                 <Avatar
                 size="xlarge"
                 rounded
-                title={this.state.userData.user.givenName}
+                source={{uri: this.state.userData.user.photo}}
+                
+                //showEditButton editButton={{ onPress: () => //this.handleGallery()}}
                 activeOpacity={0.7}
+                
                 />
                 </View>
+                
                 <View style = {styles.contentContainer}>
                     <Text style = {{color: Color.SECONDARY}}>
                        
                     {this.state.userData.user.givenName} 
+                    {" "}
+                    {this.state.userData.user.familyName}
+                    
                     {"\n"}
-                    {this.state.userData.user.lastName}
-                    {"\n"}
-                    {this.state.userData.user.phoneNumber}
                     {"\n"}
                     {this.state.userData.user.email} 
                     </Text>                   
                 </View>
-                <View style = {styles.buttonContainer}>
+                {/* <View style = {styles.buttonContainer}>
                     <Button
                         title = "Edit"
                         type="clear"
@@ -84,7 +90,7 @@ export default class ProfilePage extends Component {
                         buttonStyle = {{width: 180}}
                         
                         onPress={() => this.props.navigation.navigate('EditProfile')}/>
-                </View>
+                </View> */}
 
                 
             </View>
@@ -114,18 +120,12 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
 
-    buttonContainer: {
-        position: 'absolute',
-        top: 80,
-        left: 220,
-        paddingLeft: 60
-    },
 
     avatarContainer: {
         position: 'absolute',
         top: 100,
         left: 100,
-        right: 70
+        right: 0
     }
     
 })
