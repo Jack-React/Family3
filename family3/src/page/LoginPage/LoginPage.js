@@ -37,7 +37,7 @@ export default class LoginPage extends Component {
 			<View style = {styles.MainContainer}>
 				<StatusBar
 					backgroundColor={Color.STATUS_BAR}
-					barStyle="dark-content"
+					barStyle="light-content"
 				/>
 				<Image source ={require('../../assets/icon/icon.png')} style = {styles.iconStyle}/>
 				<Text style = {styles.Header}>Family3</Text>

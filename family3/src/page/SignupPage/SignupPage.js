@@ -66,8 +66,7 @@ export default class MyPhotoPage extends Component {
         console.log('Creating Account...')
         // Checks if details are correct
         if (this.verifyDetails()){
-            const token = await GoogleSignin.getTokens();
-            const album = await this.GoogleAPIHandler.makeAlbum("Family3", token)
+            const album = await this.GoogleAPIHandler.createAlbum("Family3")
             const response = await this.DBHandler.createAccount({
                 dob: this.state.dob.toString(),
                 gender: this.state.gender,

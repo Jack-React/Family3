@@ -1,6 +1,7 @@
 import React from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createDrawerNavigator, DrawerNavigatorItems } from 'react-navigation-drawer';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import DrawerIcon from 'react-native-vector-icons/AntDesign';
 
@@ -16,6 +17,7 @@ import UploadStack from './stackNavigator/UploadStack'
 import HomeStack from './stackNavigator/HomeStack';
 import AuthStack from './stackNavigator/AuthStack';
 import MyPhotoStack from './stackNavigator/MyPhotoStack'
+import AlbumStack from './stackNavigator/AlbumStack'
 
 const DrawerComponent = props => (
     <ScrollView style = {{flex: 1}}>
@@ -27,6 +29,54 @@ const DrawerComponent = props => (
         </View>
     </ScrollView>
 );
+
+
+const AppTabNavigator = createBottomTabNavigator(
+    {
+        Home: {
+            screen: HomeStack,
+            navigationOptions: () => 
+            ({ tabBarIcon: ( <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>) }) 
+            // {
+            //     tabBarLabel: 'home'
+            // }
+        },
+
+        Profile:{
+            screen: ProfilePage,
+            navigationOptions: () => 
+            ({ tabBarIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) }) 
+        },
+
+        // Upload: {
+        //     screen: UploadStack,
+        //     navigationOptions: () => 
+        //     ({ tabBarIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) }) 
+        // },
+
+        Album: {
+            screen: AlbumStack,
+            navigationOptions: () => ({
+                title: 'My Albums',
+                tabBarIcon: ( <DrawerIcon name="picture" size={20} color= {Color.SECONDARY} />)
+            }) 
+        },
+
+        Settings: {
+            screen: SettingsPage,
+            navigationOptions: () => 
+            ({ tabBarIcon: ( <DrawerIcon name="setting" size={20} color= {Color.SECONDARY}/>) }) 
+        }
+    },
+    {   
+        initialRouteName: 'Home',
+        tabBarOptions: {
+            activeTintColor: Color.SECONDARY,
+            inactiveTintColor: 'gray',
+        },
+    }
+)
+
 
 const AppDrawerNavigator = createDrawerNavigator(
     {
@@ -81,7 +131,7 @@ export default createAppContainer(
         {
             Splash: SplashScreen,
             Auth: AuthStack,
-            App: AppDrawerNavigator
+            App: AppTabNavigator
         },  
     )
 )

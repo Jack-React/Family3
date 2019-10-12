@@ -28,67 +28,65 @@ export default class UploadPage extends Component {
                 <Header style = {styles.headerContainer}>
                     <StatusBar
                         backgroundColor = {Color.STATUS_BAR}
-                        barStyle = 'dark-content' />
+                        barStyle = 'light-content' />
                     <Left>
                         <ButtonBase
                             transparent
-                            onPress={() => this.props.navigation.openDrawer()}
+                            onPress={() => this.props.navigation.goBack()}
                             >
-                            <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
+                            <Icon name="angle-left" size={20} color= {Color.PRIMARY}/>
                         </ButtonBase>
                     </Left>
                     <Body>
-                        <Title style = {{color:Color.SECONDARY}}>Upload</Title>
+                        <Title style = {{color:Color.PRIMARY}}>Upload</Title>
                     </Body>
                     <Right />
                 </Header>
 
                 <View style = {styles.contentContainer}>
-                    <Text style = {{color: Color.SECONDARY}}>
-                        Upload an Image!
-                    </Text>
-                </View> 
-                
-                <View style = {styles.bottomView}>
                     <Button 
-                        title = "Open Gallery"
-                        type="clear"
+                        title = "Gallery"
+                        type="outline"
                         titleStyle = {{color: Color.SECONDARY}}
                         buttonStyle = {{width: 200}}
                         onPress = {() => {
                             this.handleGallery();
                     }}/>
+                    <View style={{paddingBottom:10}}></View>
                     <Button 
-                        title = "Open Camera"
-                        type="clear"
+                        title = "Camera"
+                        type="outline"
                         titleStyle = {{color: Color.SECONDARY}}
                         buttonStyle = {{width: 200}}
                         onPress = {() => {
                             this.handleCamera();
                     }}/>
+                </View> 
+                <View style = {styles.bottomView}>
+                    
                 </View>
             </View>
         )
     }
 
+    // Handles the event where user selectes photo throught gallery
     async handleGallery(){
-        console.log("Choosing Photo from gallery...");
         try {
             const response = await ImagePicker.openPicker({ multiple: true})
-            this.props.navigation.navigate(('Preview'), {images: response})
+            this.props.navigation.navigate(('Preview'), {images: response, album: this.props.navigation.getParam('album')})
         }
         catch (error) {
             console.warn(error)
         }
     }
 
+    // Handles the event where user selectes photo throught camera
     async handleCamera(){
-        console.log("Choosing Photo from camera...");
         try {
             const response =  await ImagePicker.openCamera({
                                 width: 400,
                                 height: 400 })
-            this.props.navigation.navigate(('Preview'), {images: [response]})
+            this.props.navigation.navigate(('Preview'), {images: [response], album: this.props.navigation.getParam('album')})
         }
         catch (error) {
             console.warn(error)
@@ -112,7 +110,7 @@ const styles = StyleSheet.create({
 
     headerContainer: {
         alignItems: 'flex-start',
-        backgroundColor: Color.PRIMARY
+        backgroundColor: Color.SECONDARY
     },
 
     bottomView:{

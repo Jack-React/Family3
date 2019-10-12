@@ -1,4 +1,5 @@
 import RNFetchBlob from 'react-native-fetch-blob'
+import { GoogleSignin } from 'react-native-google-signin';
 
 import APIHandler from './APIHandler'
 import DBHandler from './DBHandler'
@@ -18,7 +19,8 @@ export default class GoogelAPIHandler {
     }
 
     /* Creates an album in google photos */
-    async makeAlbum (title, token) {
+    async createAlbum (title) {
+        const token = await GoogleSignin.getTokens();
         data = {
             URI: 'https://photoslibrary.googleapis.com/v1/albums',
             method: 'POST',
@@ -30,13 +32,38 @@ export default class GoogelAPIHandler {
                 "album": {"title": title}
             })
         }
-        return await this.APIHandler.sendRequest(data)
+        response = await this.APIHandler.sendRequest(data)
+        return response
     };
 
+     /* Makes an album shareable */
+    async shareAlbum(albumID){
+        const token = await GoogleSignin.getTokens();
+        data = {
+            URI: `https://photoslibrary.googleapis.com/v1/albums/${albumID}:share`,
+            method: 'POST',
+            headers:  {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ token.accessToken
+            },
+            body:JSON.stringify({
+                "sharedAlbumOptions": {
+                    "isCollaborative": true,
+                    "isCommentable": true  
+                }
+            })
+        }
+        response = await this.APIHandler.sendRequest(data)
+        return response
+    }
+
+
     /* Gets an upload token from google photos api in order to submit and image */
-    async getUploadToken(image, token){
+    async getUploadToken(image){
+        console.log(image)
         let name = image.path.split('/')
         name = name[name.length-1]
+        const token = await GoogleSignin.getTokens();
         data = {
             URI: 'https://photoslibrary.googleapis.com/v1/uploads',
             method: 'POST',
@@ -54,8 +81,9 @@ export default class GoogelAPIHandler {
     }
 
     /* Submits an image to google photos api */
-    async submitImage(uploadToken, description, token){
-        await this.getDbUserData();
+    async submitImage(uploadData, albumID){
+        const mediaItems = this.processUploadData(uploadData)
+        const token = await GoogleSignin.getTokens();
         data = {
             URI: 'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate',
             headers: {
@@ -64,25 +92,31 @@ export default class GoogelAPIHandler {
             },
             method: 'POST',
             body: JSON.stringify({
-                "albumId": this.dbUserData.album,
-                "newMediaItems": [
-                    {
-                        "description": description,
-                        "simpleMediaItem": {
-                            "uploadToken": uploadToken
-                        }
-                    }
-                ]
+                "albumId": albumID,
+                "newMediaItems": mediaItems
             })
         }
         response =  await this.APIHandler.sendRequest(data);
-        console.log(response)
         return response
+    }
+    // Converts the form of uploadData to something google photos api understands
+    processUploadData(uploadData){
+        mediaItems = []
+        for (i = 0; i < uploadData.length; i ++){
+            mediaItems.push({
+                "description": uploadData[i].description,
+                "simpleMediaItem": {
+                    "uploadToken": uploadData[i].uploadToken
+                }
+            })
+        }
+        return mediaItems
     }
 
     /* Gets media items (images) from a google photo library */
-    async getMediaItems(token){
+    async getMediaItems(albumID){
         //Reponse contains an array of (id, description, productUr, mediaMetaData, filename)
+        const token = await GoogleSignin.getTokens();
         await this.getDbUserData();
         data = {
             URI: 'https://photoslibrary.googleapis.com/v1/mediaItems:search',
@@ -93,11 +127,27 @@ export default class GoogelAPIHandler {
             },
             body: JSON.stringify({
                 "pageSize":"100",
-                "albumId": this.dbUserData.album
+                "albumId": albumID
             })
         }
         response =  await this.APIHandler.sendRequest(data);
         return response.mediaItems
+    }
+
+    /* Retrieve all albums created by this app from google photo */
+    async getAlbums(){
+        const token = await GoogleSignin.getTokens();
+        await this.getDbUserData();
+        data = {
+            URI: 'https://photoslibrary.googleapis.com/v1/albums?excludeNonAppCreatedData=true',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token.accessToken,
+                'Content-type': 'application/json'
+            },
+        }
+        response =  await this.APIHandler.sendRequest(data);
+        return response
     }
 }
 

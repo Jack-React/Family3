@@ -4,12 +4,14 @@ import { Button } from 'react-native-elements';
 
 import { GoogleSignin } from 'react-native-google-signin';
 import { Color } from '../../assets/Assets'
+import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 
 const IMAGE_WIDTH = Dimensions.get('window').width
 
 export default class PreviewPage extends Component {
     constructor(){
         super();
+        this.GoogleAPIHandler = new GoogleAPIHandler()
         this.state = {
             numColumns: 3,
             loadSingleImage: false,
@@ -66,12 +68,22 @@ export default class PreviewPage extends Component {
 
     // Submits an image to google photo API
     async submitImages(){
-        token = await GoogleSignin.getTokens();
-        description = 'test'
-        for (i = 0; i < (this.state.count) ; i ++){
-            uploadToken = await this.GoogleAPIHandler.getUploadToken(this.state.images[i], token)
-            this.GoogleAPIHandler.submitImage(uploadToken, description, token);
+        const images = this.props.navigation.getParam('images')
+        const album = this.props.navigation.getParam('album')
+        console.log(images.length)
+        var datas = []
+        for (i = 0; i < (images.length); i ++){
+            uploadToken = await this.GoogleAPIHandler.getUploadToken(images[i])
+            data = {
+                uploadToken: uploadToken,
+                description: images.description
+            }
+            datas.push(data)
         }
+        console.log(album.id)
+        console.log(datas)
+        await this.GoogleAPIHandler.submitImage(datas ,album.id);
+        // console.log(data)
         console.log("Image Submitted");
     }         
 }

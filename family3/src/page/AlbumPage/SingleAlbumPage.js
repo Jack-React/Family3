@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import{ View, StyleSheet, StatusBar, Text, Image, FlatList, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
-import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
+import { Header, Left, Button as ButtonBase, Right, Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ImageView from 'react-native-image-view';
@@ -9,63 +9,76 @@ import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import { Color } from '../../assets/Assets'
 
 const IMAGE_WIDTH = Dimensions.get('window').width
-export default class MyPhotoPage extends Component {
+
+export default class SingleAlbumPage extends Component {
     constructor(){
         super();
         this.GoogleAPIHandler = new GoogleAPIHandler();
         this.state = {
+            album: {},
             images: {},
             loaded: false,
             spinner: true,
             numColumns: 3,
             loadSingleImage: false,
-            currentIndex: 0
+            currentIndex: 0,
+            hasImage: false
         }
-       
     }
 
     async componentDidMount(){
-        setInterval(() => {
-            this.setState({
-                spinner: false
-            });
-        }, 3000);
-        const response = await this.GoogleAPIHandler.getMediaItems()
-        const images = this.prepareImages(response);
-        this.setState({ images: images, loaded: true, spinner: false})
+        album = this.props.navigation.getParam('album')
+        if (album.mediaItemsCount){
+            const response = await this.GoogleAPIHandler.getMediaItems(album.id)
+            const images = this.prepareImages(response);
+
+            setInterval(() => {
+                this.setState({
+                    hasImage: true,
+                    spinner: false,
+                    album: album,
+                    images: images,
+                    loaded: true
+                })
+            }, 3000);
+        }
+        else {
+            this.setState({ loaded: true, album: album, spinner: false})
+        }
     }
 
     render() {
+        const {album} = this.state
         const {images, numColumns, loadSingleImage, currentIndex} = this.state;
         if (this.state.loaded){
-            if (images.length > 0){
-                return (
-                    <View style={styles.MainContainer}>
-                        <Header style = {styles.headerContainer}>
-                            <StatusBar
-                                backgroundColor={Color.STATUS_BAR}
-                                barStyle="light-content"
-                            />
-                            <Left>
-                                <ButtonBase
-                                    transparent
-                                    onPress={() => this.props.navigation.openDrawer()}
-                                    >
-                                    <Icon name="navicon" size={20} color= {Color.PRIMARY}/>
-                                </ButtonBase>
-                            </Left>
-                            <Body>
-                                <Title style = {{color:Color.PRIMARY}}>My Photos</Title>
-                            </Body>
-                            <Right>
+            return (
+                <View style={styles.MainContainer}>
+                    <Header style = {styles.headerContainer}>
+                        <StatusBar
+                            backgroundColor={Color.STATUS_BAR}
+                            barStyle="light-content"
+                        />
+                        <Left>
                             <ButtonBase
                                 transparent
-                                onPress={() => this.refreshPage()}
+                                onPress={() => this.props.navigation.goBack()}
                                 >
-                                <Icon name="refresh" size={20} color= {Color.PRIMARY}/>
+                                <Icon name="angle-left" size={20} color= {Color.PRIMARY}/>
                             </ButtonBase>
-                            </Right>
-                        </Header>
+                        </Left>
+                        <Body>
+                            <Title style = {{color:Color.PRIMARY}}>{album.title}</Title>
+                        </Body>
+                        <Right style = {{paddingRight: 10}}>
+                        <ButtonBase
+                            transparent
+                            onPress={() => { this.props.navigation.navigate('Upload', {album})}}
+                        >
+                            <Icon name="plus" size={20} color= {Color.PRIMARY}/>
+                        </ButtonBase>
+                        </Right>
+                    </Header>
+                    {this.state.hasImage? 
                         <SafeAreaView style = {{flex: 1, alignItems: 'center'}}>
                             <ImageView
                                 images={images}
@@ -96,17 +109,15 @@ export default class MyPhotoPage extends Component {
                                 keyExtractor={item => item.id} 
                             />
                         </SafeAreaView>
-                    </View>
-                )
-            }
-            // No Images to display
-            else {
-                <View style = {styles.mainContainer}>
-                    <Text style = {{color: Color.SECONDARY}}>
-                        No Image Found
-                    </Text>
+                        :
+                        <View style = {styles.contentContainer}>
+                            <Text style = {{color: Color.SECONDARY}}>
+                                No Image Found
+                            </Text>
+                        </View>
+                    }
                 </View>
-            }
+            )
         }
         // Show spinner while loading images
         else {
@@ -121,12 +132,11 @@ export default class MyPhotoPage extends Component {
     // This function converts the output from google api to something that imageViewer can understand
     prepareImages(images){
         const imageList = []
-
         // Return if empty
         if (JSON.stringify(images) == "{}"){
             return imageList;
         }
-
+        
         // Else convert
         for (i = 0; i < images.length; i ++){
             output = {
@@ -140,48 +150,22 @@ export default class MyPhotoPage extends Component {
         }
         return imageList
     }
-    
-    // Refresh the images
-    refreshPage(){
-        this.setState({
-            images: {},
-            loaded: false,
-            spinner: true,
-            numColumns: 3
-        })
-        this.componentDidMount();
-    }
 }
 
 const styles = StyleSheet.create({
+
     MainContainer: {
 		flex: 1,
         backgroundColor: Color.PRIMARY
     },
 
     contentContainer: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     },
 
     headerContainer: {
         alignItems: 'flex-start',
-        backgroundColor: Color.PRIMARY
+        backgroundColor: Color.SECONDARY
     },
-
-    imageStyle: {
-        width: 400,
-        height: 400,
-    },
-
-    singleImageFooter: {
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    singleImageText: {
-        color: Color.PRIMARY,
-        paddingBottom: 10
-    }
 })

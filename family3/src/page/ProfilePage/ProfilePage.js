@@ -3,7 +3,6 @@ import{ View, Text, StyleSheet, Button, StatusBar, Image} from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 import { Color } from '../../assets/Assets'
 
 export default class ProfilePage extends Component {
@@ -17,18 +16,10 @@ export default class ProfilePage extends Component {
                 <Header style = {styles.headerContainer}>
                     <StatusBar
                         backgroundColor={Color.STATUS_BAR}
-                        barStyle="dark-content"
+                        barStyle="light-content"
                     />
-                    <Left>
-                        <ButtonBase
-                            transparent
-                            onPress={() => this.props.navigation.openDrawer()}
-                            >
-                            <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
-                        </ButtonBase>
-                    </Left>
                     <Body>
-                        <Title style = {{color:Color.SECONDARY}}>Profile</Title>
+                        <Title style = {{paddingLeft: 20, color:Color.PRIMARY}}>Profile</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -58,6 +49,6 @@ const styles = StyleSheet.create({
 
     headerContainer: {
         alignItems: 'flex-start',
-        backgroundColor: Color.PRIMARY
+        backgroundColor: Color.SECONDARY
     },
 })

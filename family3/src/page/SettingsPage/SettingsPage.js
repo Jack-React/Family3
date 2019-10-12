@@ -26,18 +26,10 @@ export default class Settings extends Component {
                 <Header style = {styles.headerContainer}>
                     <StatusBar
                         backgroundColor={Color.STATUS_BAR}
-                        barStyle="dark-content"
+                        barStyle="light-content"
                     />
-                    <Left>
-                        <ButtonBase
-                            transparent
-                            onPress={() => this.props.navigation.openDrawer()}
-                            >
-                            <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
-                        </ButtonBase>
-                    </Left>
                     <Body>
-                        <Title style = {{color:Color.SECONDARY}}>Settings</Title>
+                        <Title style = {{paddingLeft: 20, color:Color.PRIMARY}}>Settings</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -102,7 +94,6 @@ export default class Settings extends Component {
 } 
 
 const styles = StyleSheet.create({
-
     MainContainer: {
 		flex: 1,
         backgroundColor: Color.PRIMARY
@@ -110,12 +101,13 @@ const styles = StyleSheet.create({
 
     contentContainer: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingTop: 2
     },
 
     headerContainer: {
         alignItems: 'flex-start',
-        backgroundColor: Color.PRIMARY
+        backgroundColor: Color.SECONDARY
     },
 
     touchableButton: {

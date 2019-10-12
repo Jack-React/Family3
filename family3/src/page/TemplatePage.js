@@ -17,7 +17,7 @@ export default class MyPhotoPage extends Component {
                 <Header style = {styles.headerContainer}>
                     <StatusBar
                         backgroundColor={Color.STATUS_BAR}
-                        barStyle="dark-content"
+                        barStyle="light-content"
                     />
                     <Left>
                         <ButtonBase

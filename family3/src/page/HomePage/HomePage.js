@@ -16,11 +16,7 @@ export default class HomeScreen extends Component {
     constructor(props){
         super(props);
         this.state = {
-            userData: {
-                user: {
-                    name: 'a'
-                }
-            }
+            userData: null
         }
     }
     async componentDidMount(){
@@ -29,35 +25,32 @@ export default class HomeScreen extends Component {
     }
 
     render(){
-        return(
-            <View style={styles.MainContainer}>
-                <Header style = {styles.headerContainer}>
-                    <StatusBar
-                        backgroundColor={Color.STATUS_BAR}
-                        barStyle="dark-content"
-                    />
-                    <Left>
-                        <ButtonBase
-                            transparent
-                            onPress={() => this.props.navigation.openDrawer()}
-                            >
-                            <DrawerIcon name="navicon" size={20} color= {Color.SECONDARY}/>
-                        </ButtonBase>
-                    </Left>
-                    <Body>
-                        <Title style = {{color:Color.SECONDARY}}>Home</Title>
-                    </Body>
-                    <Right />
-                </Header>
-                <View style = {styles.contentContainer}>
-                    <Text style = {styles.Text}>Welcome {this.state.userData.user.givenName}!</Text>
-                    <Text style = {styles.Text}>This is the home screen</Text>
+        if (this.state.userData != null){
+            return(
+                <View style={styles.MainContainer}>
+                    <Header style = {styles.headerContainer}>
+                        <StatusBar
+                            backgroundColor={Color.STATUS_BAR}
+                            barStyle="light-content"
+                        />
+                        <Body>
+                            <Title style = {{paddingLeft: 20, color:Color.PRIMARY}}>Home</Title>
+                        </Body>
+                        <Right />
+                    </Header>
+                    <View style = {styles.contentContainer}>
+                        <Text style = {styles.Text}>Welcome {this.state.userData.user.givenName}!</Text>
+                        <Text style = {styles.Text}>This is the home screen</Text>
+                    </View>
+                    <View style = {styles.bottomView}>
+                    </View>
+                    
                 </View>
-                <View style = {styles.bottomView}>
-                </View>
-                
-            </View>
-        )
+            )
+        }
+        else {
+            return null
+        }
     }
 }
 
@@ -77,7 +70,7 @@ const styles = StyleSheet.create({
 
     headerContainer: {
         alignItems: 'flex-start',
-        backgroundColor: Color.PRIMARY
+        backgroundColor: Color.SECONDARY
     },
 
     bottomView:{
