@@ -6,12 +6,22 @@ import DBHandler from './DBHandler'
 
 // Helper class to connect to GoogleApi
 export default class GoogelAPIHandler {
+    static instance = null
+
+    static getInstance() {
+        if (GoogelAPIHandler.instance == null) {
+            GoogelAPIHandler.instance = new GoogelAPIHandler();
+        }
+        return this.instance;
+    }
+
     constructor() {
-        this.APIHandler = new APIHandler();
-        this.DBHandler = new DBHandler();
+        this.APIHandler = APIHandler.getInstance();
+        this.DBHandler = DBHandler.getInstance();
         this.dbUserData = null;
     }
 
+    
     /* Gets user data from database */
     async getDbUserData(){
         if (this.dbUserData == null)

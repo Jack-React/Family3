@@ -3,8 +3,17 @@ import { GoogleSignin } from 'react-native-google-signin';
 
 /* Helper class to connect to database */
 export default class DBHandler {
+    static instance = null
+
+    static getInstance() {
+        if (DBHandler.instance == null) {
+            DBHandler.instance = new DBHandler();
+        }
+        return this.instance;
+    }
+
     constructor(){
-        this.APIHandler = new APIHandler();
+        this.APIHandler = APIHandler.getInstance();
     }
 
     /* This function checks if the current google account also has an account with us in the database */

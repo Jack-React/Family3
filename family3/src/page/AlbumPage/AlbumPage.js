@@ -15,7 +15,7 @@ import AddAlbumDialogComponent from './component/AddAlbumDialogComponent';
 export default class AlbumPage extends Component {
     constructor(){
         super();
-        this.GoogleAPIHandler = new GoogleAPIHandler();
+        this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
         this.state = {
             albums: [],
             loaded: false,

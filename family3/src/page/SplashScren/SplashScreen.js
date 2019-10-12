@@ -11,7 +11,7 @@ export default class SplashScreen extends Component {
 
     constructor(){
         super()
-        this.DBHandler = new DBHandler()
+        this.DBHandler = DBHandler.getInstance()
     }
 
     componentDidMount() {

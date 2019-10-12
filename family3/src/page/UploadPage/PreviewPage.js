@@ -11,7 +11,7 @@ const IMAGE_WIDTH = Dimensions.get('window').width
 export default class PreviewPage extends Component {
     constructor(){
         super();
-        this.GoogleAPIHandler = new GoogleAPIHandler()
+        this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
         this.state = {
             numColumns: 3,
             loadSingleImage: false,

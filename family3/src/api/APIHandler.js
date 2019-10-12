@@ -5,6 +5,15 @@ const FAMILIES = "http://52.14.226.1:8080/api/families"
 
 
 export default class APIHandler {
+    static instance = null
+
+    static getInstance() {
+        if (APIHandler.instance == null) {
+            APIHandler.instance = new APIHandler();
+        }
+        return this.instance;
+    }
+
     // Builds a form body based on data to be used for post requests
     buildFormBody(data){
         var formBody = [];

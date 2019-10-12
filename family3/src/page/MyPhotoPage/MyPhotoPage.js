@@ -12,7 +12,7 @@ const IMAGE_WIDTH = Dimensions.get('window').width
 export default class MyPhotoPage extends Component {
     constructor(){
         super();
-        this.GoogleAPIHandler = new GoogleAPIHandler();
+        this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
         this.state = {
             images: {},
             loaded: false,

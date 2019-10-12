@@ -13,8 +13,8 @@ import { GoogleSignin } from 'react-native-google-signin';
 export default class MyPhotoPage extends Component {
     constructor(){
         super();
-        this.DBHandler = new DBHandler();
-        this.GoogleAPIHandler = new GoogleAPIHandler();
+        this.DBHandler = DBHandler.getInstance();
+        this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
 
         this.state = {
             dob: null, 

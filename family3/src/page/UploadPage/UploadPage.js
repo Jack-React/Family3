@@ -17,8 +17,8 @@ export default class UploadPage extends Component {
             image: null,
             imageSelected: false
         }
-        this.GoogleAPIHandler = new GoogleAPIHandler()
-        this.DBHandler = new DBHandler()
+        this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
+        this.DBHandler = DBHandler.getInstance()
     }
 
 

@@ -13,7 +13,7 @@ const IMAGE_WIDTH = Dimensions.get('window').width
 export default class SingleAlbumPage extends Component {
     constructor(){
         super();
-        this.GoogleAPIHandler = new GoogleAPIHandler();
+        this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
         this.state = {
             album: {},
             images: {},

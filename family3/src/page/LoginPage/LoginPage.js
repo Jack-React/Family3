@@ -21,8 +21,8 @@ export default class LoginPage extends Component {
 	}
 	constructor(props){
 		super(props);
-		this.DBHandler = new DBHandler();
-		this.GoogleAPIHandler = new GoogleAPIHandler();
+		this.DBHandler = DBHandler.getInstance();
+		this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
 
 		GoogleSignin.configure(Config);
 		this.state = {
