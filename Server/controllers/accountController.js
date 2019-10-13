@@ -40,8 +40,8 @@ exports.new = (req, res) => {
     account.firstName = firstName;
     account.lastName = lastName;
     account.DOB = DOB;
-    account.gender = req.body.gender;
 
+    account.gender = req.body.gender;
     account.email = req.body.email;
     account.album = req.body.album;
     account.family = req.body.family;
