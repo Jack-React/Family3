@@ -32,7 +32,7 @@ exports.index = (req, res) => {
 // create new account
 exports.new = (req, res) => {
     var account = new Account();
-    
+
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const DOB = req.body.DOB;
@@ -42,9 +42,17 @@ exports.new = (req, res) => {
     account.DOB = DOB;
     account.gender = req.body.gender;
 
-    var data = firstName + lastName + DOB;
-    const hash = crypto.createHash('sha256').update(data).digest('hex');
-    account._id = hash;
+    account.email = req.body.email;
+    account.album = req.body.album;
+    account.family = req.body.family;
+
+    if (req.body._id !== null) {
+        account._id = req.body._id;
+    } else {
+        var data = firstName + lastName + DOB;
+        const hash = crypto.createHash('sha256').update(data).digest('hex');
+        account._id = hash;
+    }
     
     account.save((err) => {
         if (err){
@@ -57,6 +65,25 @@ exports.new = (req, res) => {
     });
 };
 
+exports.new = (req, res) => {
+    var account = new Account();
+    account.firstName = req.body.firstName;
+    account.lastName = req.body.lastName;
+    account.email = req.body.email;
+    account.album = req.body.album;
+    account.family = req.body.family;
+    account._id = req.body._id;
+
+    account.save((err) => {
+        if (err) {
+            res.json(err);
+        }
+        res.json({
+            message: "New Account created!",
+            data: account
+        });
+    });
+};
 
 // view one account by id
 exports.view = (req, res) => {
