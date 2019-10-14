@@ -22,6 +22,7 @@ exports.index = (req, res) => {
 exports.new = (req, res) => {
     var family = new Family();
     family.name = req.body.name;
+    family.sharedAlbums = req.body.sharedAlbums;
 
     family.save((err) => {
         if (err){
@@ -88,6 +89,7 @@ exports.update = (req, res) => {
         if (err) res.status(400).send(err);
 
         family.name = req.body.name;
+        family.sharedAlbums = req.body.sharedAlbums;
 
         family.save((err => {
             if (err){

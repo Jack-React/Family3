@@ -5,6 +5,7 @@ const familySchema = mongoose.Schema({
         type: String,
         required: true
     },
+    sharedAlbums: String,
     relations: [{
         person1: {
             type: String,
