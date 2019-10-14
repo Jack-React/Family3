@@ -33,10 +33,6 @@ const accountSchema = mongoose.Schema({
     // belong to which family
     family: {
         type: String // family id
-    },
-
-    album: {
-        type: String
     }
 }, { _id: false });
 
