@@ -32,9 +32,8 @@ export default class DBHandler {
             lastName: userData.user.familyName,
             _id: userData.user.id,
             email: userData.user.email,
-            album: details.albumID,
             gender: details.gender,
-            dob: details.dob
+            DOB: details.dob
         }
         const response = await this.APIHandler.createAccount(body);
         return response

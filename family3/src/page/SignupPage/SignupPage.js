@@ -26,7 +26,7 @@ export default class MyPhotoPage extends Component {
                     <Text style = {styles.textHeader}> Date of Birth: </Text>
                     <DatePicker
                         style={{width: 200}}
-                        date={this.state.date}
+                        date={this.state.dob}
                         mode="date"
                         format="DD-MM-YYYY"
                         showIcon= {false}
@@ -64,7 +64,7 @@ export default class MyPhotoPage extends Component {
         if (this.verifyDetails()){
             const response = await this.DBHandler.createAccount({
                 dob: this.state.dob.toString(),
-                gender: this.state.gender,
+                gender: this.state.gender
             })
             if (response.data != null){
                 console.log("Account Creation Success!")

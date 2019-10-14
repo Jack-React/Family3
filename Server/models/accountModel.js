@@ -31,11 +31,6 @@ const accountSchema = mongoose.Schema({
         required: false
     },
 
-    album: {
-        type: String,
-        required: true
-    },
-
     gender: {
         type: String,
         required: true
