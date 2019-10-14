@@ -32,7 +32,6 @@ exports.index = (req, res) => {
 // create new account
 exports.new = (req, res) => {
     var account = new Account();
-    console.log("test new")
 
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
