@@ -22,9 +22,13 @@ router.route('/families/:family_id')
 
 router.route('/families/members/:family_id')
     .get(familyController.getmembers)
-    .put(familyController.addRelation);
-    // .delete(familyController.deleteRelation);
-    
+    .put(familyController.addRelation)
+    .delete(familyController.deleteRelation);
+
+router.route('/families/albums/:family_id')
+    .put(familyController.addShareAlbum)
+    .delete(familyController.deleteShareAlbum);
+
 // Route to accounts
 router.route('/accounts')
     .get(accountController.index)

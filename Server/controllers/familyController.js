@@ -22,7 +22,6 @@ exports.index = (req, res) => {
 exports.new = (req, res) => {
     var family = new Family();
     family.name = req.body.name;
-    family.sharedAlbums = req.body.sharedAlbums;
 
     family.save((err) => {
         if (err){
@@ -35,40 +34,105 @@ exports.new = (req, res) => {
     });
 };
 
+// added share albums
+exports.addShareAlbum = (req, res) => { 
+    Family.findById(req.params.family_id, (err, family) => {
+        if (err) res.status(400).send(err);
+        if (req.body.sharedAlbums !== null) {
+            var data = {
+                Album: req.body.sharedAlbums
+            }
+            family.sharedAlbums.push(data);
+        }
+
+        family.save(err => {
+            if (err) {
+                res.json(err);
+            }
+            res.json({
+                message: "Share Albums added",
+                data: family
+            });
+        });
+    });
+}
+
 // Create relation schema and push it into family
 exports.addRelation = (req, res) => { 
-    data = {
-        person1: req.body.person1,
-        person2: req.body.person2,
-        relationship: req.body.relationship
-    }
-    Family.findOneAndUpdate(
-        { _id: req.params.family_id },
-        { $push: { relations: data } },
-        (err, success) => {
-            if (err) res.json({ status: 'error', message: err })
-            res.json({status: 'success', message: 'successfully added family member'})
+    Family.findById(req.params.family_id, (err, family) => {
+        if (err) res.status(400).send(err);
+
+        var data = {
+            person1: req.body.person1,
+            person2: req.body.person2,
+            relationship: req.body.relationship
         }
-    );
-};
 
-// Delete relation of family
-// TODO complete this function
-// exports.deleteRelation = (req, res) => { 
-//     Family.findById(req.params.family_id, (err, family) => { 
-//         if (err) { 
-//             res.send(err);
-//         }
-//         family.relations
-//         for (var i = 0; i < arrayOfObjects.length; i++) {
-//             var obj = arrayOfObjects[i];
+        family.relations.push(data);
 
-//             if (listToDelete.indexOf(obj.id) !== -1) {
-//                 arrayOfObjects.splice(i, 1);
-//             }
-//         }
-//     });
-// }
+        family.save(err => {
+            if (err) {
+                res.json(err);
+            }
+            res.json({
+                message: "successfully added family relationship",
+                data: family
+            });
+        });
+    });
+}
+
+// Delete a share albums of family
+exports.deleteShareAlbum = (req, res) => { 
+    Family.findById(req.params.family_id, (err, family) => {
+        if (err) {
+            res.send(err);
+        }
+        if (req.body.sharedAlbums !== null) {
+            var deleteid = req.body.albumid;
+            var originAlbums = family.sharedAlbums;
+            family.sharedAlbums = originAlbums.filter(album => album._id != deleteid);
+
+            family.save((err => {
+                if (err) {
+                    res.json(err);
+                }
+                res.json({
+                    message: "Album delete successfully.",
+                    data: family
+                });
+            }));
+        } else {
+            res.send("[Warning] No albumid detected, please check again");
+        }
+    });
+}
+
+// Delete a relation of family
+exports.deleteRelation = (req, res) => { 
+    Family.findById(req.params.family_id, (err, family) => {
+        if (err) {
+            res.send(err);
+        }
+        if (req.body.relationid !== null) {
+            var deleteid = req.body.relationid;
+            var originRelations = family.relations;
+            family.relations = originRelations.filter(relation => relation._id != deleteid);
+
+            family.save((err => {
+                if (err) {
+                    res.json(err);
+                }
+                res.json({
+                    message: "Relation delete successfully.",
+                    data: family
+                });
+            }));
+        } else { 
+            res.send("[Warning] No relationid detected, please check again");
+        }
+    });
+}
 
 // View one family by id
 exports.view = (req, res) => {
@@ -89,7 +153,6 @@ exports.update = (req, res) => {
         if (err) res.status(400).send(err);
 
         family.name = req.body.name;
-        family.sharedAlbums = req.body.sharedAlbums;
 
         family.save((err => {
             if (err){
