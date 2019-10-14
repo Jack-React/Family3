@@ -12,7 +12,6 @@ export default AlbumStack = createStackNavigator(
                 header: null
             }
         },
-        
         SingleAlbum: {
             screen: SingleAlbumPage,
             navigationOptions:{

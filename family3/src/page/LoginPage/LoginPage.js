@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import { Text ,View, StyleSheet, StatusBar, Image} from 'react-native';
-import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import { GoogleSigninButton } from 'react-native-google-signin';
 
 import DBHandler from '../../api/DBHandler'
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import { Color } from '../../assets/Assets'
-import { Config } from '../../assets/GoogleConfig'
 
 export default class LoginPage extends Component {
 	static navigationOptions = {
@@ -23,8 +22,6 @@ export default class LoginPage extends Component {
 		super(props);
 		this.DBHandler = DBHandler.getInstance();
 		this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
-
-		GoogleSignin.configure(Config);
 		this.state = {
 			isUserSignedIn: false,
 			userData: {},
@@ -56,34 +53,17 @@ export default class LoginPage extends Component {
 	
 	/* Checks if the user has an account in database. Navigate to home page if true, signup page otherwise */
 	async handleSignIn(){
-		await this.googleSignInHandler()
+		const userData = await this.GoogleAPIHandler.googleSignInHandler()
+		console.log(userData)
+		this.setState({ userData: userData, isUserSignedIn: true });
 		if (this.state.isUserSignedIn){
-			if (await this.DBHandler.hasAccount(this.state.userData.idToken)){
-				this.props.navigation.navigate('App', {userData: this.state.userData});
+			if (await this.DBHandler.hasAccount(userData.idToken)){
+				this.props.navigation.navigate('App', {userData: userData});
 			}
 			else
-				this.props.navigation.navigate('Signup', {userData: this.state.userData});
-			
-			
+				this.props.navigation.navigate('Signup', {userData: userData});
 		}
 	}
-
-	/* Function to sign in using google account */
-	async googleSignInHandler() {
-		console.log("Signing in...");
-		try {
-			await GoogleSignin.hasPlayServices();
-			const userData = await GoogleSignin.signIn();
-			this.setState({
-				userData,
-				isUserSignedIn: true,
-			});
-			console.log("Signed In");
-		} catch (error) {
-			console.warn(error);
-		}
-	};
-
 }
 
 const styles = StyleSheet.create({

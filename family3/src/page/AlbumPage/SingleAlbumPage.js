@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import{ View, StyleSheet, StatusBar, Text, Image, FlatList, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
-import { Header, Left, Button as ButtonBase, Right, Body, Title } from 'native-base'
+import { Header, Left, Button as ButtonBase, Right, Body, Title, Fab, Button } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ImageView from 'react-native-image-view';
+import { SearchBar } from 'react-native-elements';
 
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import { Color } from '../../assets/Assets'
+import ShareConfirmationDialog from './component/ShareConfimationDialog';
 
 const IMAGE_WIDTH = Dimensions.get('window').width
 
@@ -22,7 +24,12 @@ export default class SingleAlbumPage extends Component {
             numColumns: 3,
             loadSingleImage: false,
             currentIndex: 0,
-            hasImage: false
+            hasImage: false,
+            active: true,
+            shared: false,
+            showDialog: false,
+            search: "",
+            searchedImages: null
         }
     }
 
@@ -38,18 +45,25 @@ export default class SingleAlbumPage extends Component {
                     spinner: false,
                     album: album,
                     images: images,
-                    loaded: true
+                    loaded: true,
+                    shared: (album.shareInfo != undefined)
                 })
             }, 3000);
         }
         else {
-            this.setState({ loaded: true, album: album, spinner: false})
+            this.setState({ 
+                loaded: true, 
+                album: album,
+                spinner: false, 
+                shared: (album.shareInfo != undefined)
+            })
         }
     }
 
     render() {
-        const {album} = this.state
-        const {images, numColumns, loadSingleImage, currentIndex} = this.state;
+        
+        
+        const {images, numColumns, loadSingleImage, currentIndex, album, shared, searchedImages } = this.state;
         if (this.state.loaded){
             return (
                 <View style={styles.MainContainer}>
@@ -76,23 +90,41 @@ export default class SingleAlbumPage extends Component {
                         >
                             <Icon name="plus" size={20} color= {Color.PRIMARY}/>
                         </ButtonBase>
+                        <TouchableOpacity
+                        onPress={() => this.setState({showDialog: true})}>
+                            <Text style = {styles.headerButtonStyle}>
+                                {shared? "Unshare": "Share"}
+                            </Text>
+                        </TouchableOpacity>
                         </Right>
                     </Header>
                     {this.state.hasImage? 
-                        <SafeAreaView style = {{flex: 1, alignItems: 'center'}}>
+                        <SafeAreaView style = {{flex: 1, alignItems: 'flex-start'}}>
+                             <View style = {{width: '100%', borderColor: 'black'}}>
+                                <SearchBar
+                                    platform= 'android'
+                                    underlineColorAndroid= {Color.DRAK_GREY}
+                                    placeholder="Search"
+                                    inputContainerStyle = {{height: 40}}
+                                    onChangeText= {(search) => this.updateSearch(search)}
+                                    value={this.state.search}
+                                />
+                             </View>
+                            
                             <ImageView
-                                images={images}
+                                images={(searchedImages == null)? images: searchedImages}
                                 imageIndex={currentIndex}
                                 isVisible={loadSingleImage}
-                                renderFooter={(currentImage) => (<View style = {styles.singleImageFooter}>
-                                                                    <Text style = {styles.singleImageText}>{currentImage.title}</Text>
-                                                                </View>)}
-
+                                renderFooter={(currentImage) =>(
+                                    <View style = {styles.singleImageFooter}>
+                                        <Text style = {styles.singleImageText}>{currentImage.title}</Text>
+                                    </View>)
+                                }
                                 onClose={() => {this.setState({loadSingleImage: false})}}>
                             </ImageView>
                             <FlatList
                                 numColumns = {numColumns}
-                                data = {images}
+                                data = {(searchedImages == null)? images: searchedImages}
                                 renderItem = {({item, index}) => {
                                     return(
                                         <TouchableOpacity
@@ -108,7 +140,13 @@ export default class SingleAlbumPage extends Component {
                                 }}
                                 keyExtractor={item => item.id} 
                             />
-                        </SafeAreaView>
+                            <ShareConfirmationDialog
+                            visible={this.state.showDialog}
+                            share={!shared}
+                            disableDialog={this.disableDialog.bind(this)}
+                            approvalRecieved={this.approvalRecieved.bind(this)}
+                            />
+                        </SafeAreaView> 
                         :
                         <View style = {styles.contentContainer}>
                             <Text style = {{color: Color.SECONDARY}}>
@@ -150,10 +188,50 @@ export default class SingleAlbumPage extends Component {
         }
         return imageList
     }
+
+    // Handles the event where share button is pressed
+    async handleShare(){
+        const { shared } = this.state
+        if (shared){
+            await this.GoogleAPIHandler.unShareAlbum(album.id)
+            this.state.album.shareInfo = null
+            this.setState({shared: false})
+        }
+        else {
+            await this.GoogleAPIHandler.shareAlbum(album.id)
+            this.state.album.shareInfo = {}
+            this.setState({shared: true})
+        }
+    }
+
+    // Disables the dialog
+    disableDialog(){
+        this.setState({
+            showDialog: false
+        })
+    }
+
+    // recieve confirmation
+    approvalRecieved(){
+        this.handleShare()
+    }
+
+    // Update the searched images
+    updateSearch(search){
+        searchedImages = [];
+        for (i = 0; i < this.state.images.length; i ++){
+            if (this.state.images[i].title.includes(search)){
+                searchedImages.push(this.state.images[i])
+            }
+        }
+        if (search == "")
+            this.setState({search: search, searchedImages: null})
+        else 
+            this.setState({search: search, searchedImages: searchedImages})
+    }
 }
 
 const styles = StyleSheet.create({
-
     MainContainer: {
 		flex: 1,
         backgroundColor: Color.PRIMARY
@@ -168,4 +246,26 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         backgroundColor: Color.SECONDARY
     },
+
+    headerButtonStyle: {
+        paddingTop: 10, 
+        paddingBottom: 10, 
+        paddingLeft: 10, 
+        fontSize: 20,
+        color:Color.PRIMARY
+    },
+
+    singleImageFooter: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        // position: "absolute",
+        // marginBottom: 20,
+
+    },
+
+    singleImageText: {
+        color: Color.PRIMARY,
+        paddingBottom: 10
+    }
+
 })

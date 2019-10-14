@@ -71,9 +71,10 @@ export default class MyPhotoPage extends Component {
                                 images={images}
                                 imageIndex={currentIndex}
                                 isVisible={loadSingleImage}
-                                renderFooter={(currentImage) => (<View style = {styles.singleImageFooter}>
-                                                                    <Text style = {styles.singleImageText}>{currentImage.title}</Text>
-                                                                </View>)}
+                                renderFooter={(currentImage) => 
+                                    (<View>
+                                        <Text>{currentImage.title}</Text>
+                                    </View>)}
 
                                 onClose={() => {this.setState({loadSingleImage: false})}}>
                             </ImageView>

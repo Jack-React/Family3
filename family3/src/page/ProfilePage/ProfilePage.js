@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
-import{ View, Text, StyleSheet, Button, StatusBar, Image} from 'react-native';
+import{ View, Text, StyleSheet, StatusBar} from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Color } from '../../assets/Assets'
 
@@ -28,7 +27,6 @@ export default class ProfilePage extends Component {
                         Profile
                     </Text>                   
                 </View>
-                
             </View>
         )
     }

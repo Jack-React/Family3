@@ -1,16 +1,13 @@
 import React, {Component} from 'react'
-import{ View, Text, StyleSheet, StatusBar, TouchableOpacity, ScrollView} from 'react-native';
+import{ View, Text, StyleSheet, StatusBar, ScrollView} from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Divider } from 'react-native-elements';
-
 
 import { Color } from '../../assets/Assets';
 import GoogleAPIHandler from '../../api/GoogleAPIHandler';
 import TouchablaAlbumComponent from './component/TouchablaAlbumComponent';
 import AddAlbumDialogComponent from './component/AddAlbumDialogComponent';
-
 
 export default class AlbumPage extends Component {
     constructor(){
@@ -19,33 +16,29 @@ export default class AlbumPage extends Component {
         this.state = {
             albums: [],
             loaded: false,
-            spinner: true,
-            showDialog: false
+            isLoading: true,
+            showDialog: false,
         }
     }
 
     async componentDidMount(){
-        setInterval(() => {
-            this.setState({
-                spinner: false
-            });
-        }, 3000);
-        const response = await this.GoogleAPIHandler.getAlbums()
-        this.setState({ albums: response.albums, loaded: true, spinner: false })
+        const sharedAlbums = await this.GoogleAPIHandler.getSharedAlbums()
+        const albums = await this.GoogleAPIHandler.getAlbums()
+        this.mergeAlbums(albums.albums, sharedAlbums.sharedAlbums)
+        this.setState({ albums: albums.albums, loaded: true, isLoading: false })
     }
 
     render() {
-        const {albums, loaded } = this.state; 
+        const { albums, isLoading, showDialog } = this.state; 
         // Show spinner while loading albums
-        if (this.state.spinner){
+        if (isLoading){
             return (
                 <View style = {styles.MainContainer}>
-                    <Spinner visible={this.state.spinner} />
+                    <Spinner visible={isLoading} />
                 </View>
             )
         }
-
-        if (loaded){
+        else{
             return (
                 <View style={styles.MainContainer}>
                     <Header style = {styles.headerContainer}>
@@ -55,6 +48,7 @@ export default class AlbumPage extends Component {
                         />
                         <Body style = {{paddingLeft: 20}}>
                             <Title style = {{color:Color.PRIMARY}}>My Albums</Title>
+            
                         </Body>
                         <Right style = {{paddingRight: 10}}>
                             <ButtonBase
@@ -67,13 +61,11 @@ export default class AlbumPage extends Component {
                     </Header>
                     {albums.length > 0 ?
                         <ScrollView>
-
                             <AddAlbumDialogComponent 
-                            visible={this.state.showDialog} 
+                            visible={ showDialog } 
                             disableDialog={this.disableDialog.bind(this)}
                             recieveAlbumDetails={this.recieveAlbumDetails.bind(this)}
                             />
-
                             <View style = {styles.contentContainer}>
                                 {albums.map((album) => {
                                     return(
@@ -81,19 +73,15 @@ export default class AlbumPage extends Component {
                                             <TouchablaAlbumComponent 
                                             album = {album} 
                                             navigateSelectedAlbum = {this.navigateSelectedAlbums.bind(this)}/>
-                                            <Divider style={styles.dividerStyle}/>
                                         </View>
                                     )
                                 })}
                             </View> 
-
                         </ScrollView>
-                        : <View style = {styles.contentContainer}><Text> No Albums Found! </Text></View> }
+                        : 
+                        <View style = {styles.contentContainer}><Text> No Albums Found! </Text></View> }
                 </View>
             )
-        }
-        else {
-            return null
         }
     }
 
@@ -119,11 +107,43 @@ export default class AlbumPage extends Component {
     // recieve album details from popup dialog component
     async recieveAlbumDetails(albumDetails){
         // Creates Album
-        console.log(albumDetails.shareable)
         const album = await this.GoogleAPIHandler.createAlbum(albumDetails.name);
         if (albumDetails.shareable){
             response = await this.GoogleAPIHandler.shareAlbum(album.id)
-            console.log(response)
+        }
+        this.setState({
+            loaded: false,
+            isLoading: true,
+            albums: []
+        })
+        this.componentDidMount()
+    }
+
+    // Check is album is in array
+    containsAlbum(album, albums) {
+        var i;
+        for (i = 0; i < albums.length; i++) {
+            if (albums[i].id === album.id) 
+                return true;
+        }
+        return false;
+    }
+
+    // Merged Both albums
+    mergeAlbums(albumA, albumB){
+        if (albumA.length > albumB.length){
+            for (i = 0; i < albumB.length; i ++){
+                if (this.containsAlbum(albumB[i], albumA) == false){
+                    albumA.push(albumB[i]);
+                }
+            }
+        }
+        else {
+            for (i = 0; i < albumA.length; i ++){
+                if (this.containsAlbum(albumA[i], albumB) == false){
+                    albumB.push(albumA[i]);
+                }
+            }
         }
     }
 }
@@ -146,11 +166,9 @@ const styles = StyleSheet.create({
         backgroundColor: Color.SECONDARY
     },
 
-    dividerStyle: {
-        backgroundColor: Color.GREY,
-        height: 1
-    },
     albumStyle: {
-        width: '100%'
-    }
+        width: '100%',
+        paddingTop:10,
+        paddingBottom:10
+    },
 })

@@ -29,15 +29,7 @@ export default class UploadPage extends Component {
                     <StatusBar
                         backgroundColor = {Color.STATUS_BAR}
                         barStyle = 'light-content' />
-                    <Left>
-                        <ButtonBase
-                            transparent
-                            onPress={() => this.props.navigation.goBack()}
-                            >
-                            <Icon name="angle-left" size={20} color= {Color.PRIMARY}/>
-                        </ButtonBase>
-                    </Left>
-                    <Body>
+                    <Body style= {{paddingLeft: 15}}>
                         <Title style = {{color:Color.PRIMARY}}>Upload</Title>
                     </Body>
                     <Right />

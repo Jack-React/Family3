@@ -1,26 +1,20 @@
 import React, {Component} from 'react';
 import{ View, Text, StyleSheet, Button, StatusBar} from 'react-native';
-import DrawerIcon from 'react-native-vector-icons/FontAwesome';
-import { GoogleSignin } from 'react-native-google-signin';
 
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import { Color } from '../../assets/Assets';
+import GoogleAPIHandler from '../../api/GoogleAPIHandler';
 
-
-export default class HomeScreen extends Component {
-    static navigationOptions = {
-        // drawerIcon: () => {
-        //     <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>
-        // }
-    }
-    constructor(props){
-        super(props);
+export default class HomePage extends Component {
+    constructor(){
+        super()
+        this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
         this.state = {
             userData: null
         }
     }
     async componentDidMount(){
-        const userData = await GoogleSignin.getCurrentUser()
+        const userData = await this.GoogleAPIHandler.getCurrentUser()
         this.setState({ userData })
     }
 
@@ -34,7 +28,7 @@ export default class HomeScreen extends Component {
                             barStyle="light-content"
                         />
                         <Body>
-                            <Title style = {{paddingLeft: 20, color:Color.PRIMARY}}>Home</Title>
+                            <Title style = {{paddingLeft: 20, color:Color.PRIMARY}}>Family3</Title>
                         </Body>
                         <Right />
                     </Header>

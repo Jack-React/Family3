@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
-import{ View, StyleSheet, Image, FlatList, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import{ View, StyleSheet, Image, FlatList, SafeAreaView, Dimensions, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
+import { Header, Left, Button as ButtonBase, Right, Body, Title } from 'native-base'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { GoogleSignin } from 'react-native-google-signin';
+
 import { Color } from '../../assets/Assets'
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 
@@ -15,16 +17,35 @@ export default class PreviewPage extends Component {
         this.state = {
             numColumns: 3,
             loadSingleImage: false,
-            currentIndex: 0
+            currentIndex: 0,
+            isSubmiting: false
         }  
     }
 
     render() {
-        const images = this.props.navigation.getParam('images')
-        const { numColumns } = this.state;
+        images = this.props.navigation.getParam('images')        
+        const { numColumns } = this.state;        
         return (
             <View style={styles.MainContainer}>
-                <SafeAreaView style = {{flex: 1, alignItems: 'center'}}>
+                <Header style = {styles.headerContainer}>
+					<StatusBar
+						backgroundColor={Color.STATUS_BAR}
+						barStyle="light-content"
+					/>
+					<Left>
+						<ButtonBase
+							transparent
+							onPress={() => this.props.navigation.goBack()}
+							>
+							<Icon name="angle-left" size={20} color= {Color.PRIMARY}/>
+						</ButtonBase>
+					</Left>
+					<Body>
+						<Title style = {{color:Color.PRIMARY}}>{album.title}</Title>
+					</Body>
+					<Right/>
+				</Header>
+                <SafeAreaView style = {{flex: 1, alignItems: 'flex-start'}}>
                     <FlatList
                         numColumns = {numColumns}
                         data = {images}
@@ -43,34 +64,44 @@ export default class PreviewPage extends Component {
                         }}
                         keyExtractor={item => item.path} 
                     />
-                        
+                     {this.state.isSubmiting? 
+                    <View style = {styles.loading}>
+                        <ActivityIndicator  
+                        style = {styles.loading}
+                        size="large" 
+                        color={Color.DRAK_GREY}/>
+                    </View>: null }
                 </SafeAreaView>
                 <View style = {styles.bottomView}>
                     <Button 
                         title = "Submit"
-                        type="clear"
+                        type="outline"
                         titleStyle = {{color: Color.SECONDARY}}
                         buttonStyle = {{width: 200}}
                         onPress = {() => {
+                            this.setState({
+                                isSubmiting: true
+                            })
                             this.handleSubmit();
                     }}/>
                 </View>
+               
             </View>
         )
     }
     
     // Handles the event where submit button is pressed
     async handleSubmit(){
+        // this.setState({isSubmitting:true})
         await this.submitImages()
         this.setState({isSubmitting:false})
-        this.props.navigation.goBack()
+        this.props.navigation.navigate('Album')
     }
 
     // Submits an image to google photo API
     async submitImages(){
         const images = this.props.navigation.getParam('images')
         const album = this.props.navigation.getParam('album')
-        console.log(images.length)
         var datas = []
         for (i = 0; i < (images.length); i ++){
             uploadToken = await this.GoogleAPIHandler.getUploadToken(images[i])
@@ -80,10 +111,7 @@ export default class PreviewPage extends Component {
             }
             datas.push(data)
         }
-        console.log(album.id)
-        console.log(datas)
         await this.GoogleAPIHandler.submitImage(datas ,album.id);
-        // console.log(data)
         console.log("Image Submitted");
     }         
 }
@@ -91,8 +119,13 @@ export default class PreviewPage extends Component {
 const styles = StyleSheet.create({
     MainContainer: {
 		flex: 1,
-        backgroundColor: Color.PRIMARY
+        backgroundColor: Color.PRIMARY,
     },
+
+    headerContainer: {
+        alignItems: 'flex-start',
+        backgroundColor: Color.SECONDARY
+	},
 
     imageStyle: {
         alignItems: 'center',
@@ -109,7 +142,17 @@ const styles = StyleSheet.create({
 		justifyContent: 'center', 
 		alignItems: 'center',
 		position: 'absolute',
-		bottom: 0
+		bottom: 10
     },
 
+    loading: {
+        backgroundColor: '#FFFFFF50',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+      }
 })

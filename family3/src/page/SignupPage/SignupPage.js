@@ -2,13 +2,10 @@ import React, {Component} from 'react'
 import{ View, Text, StyleSheet, StatusBar, Picker} from 'react-native';
 import { Button } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
-import { WheelPicker } from 'react-native-wheel-picker-android'
-
 
 import { Color } from '../../assets/Assets'
 import DBHandler from '../../api/DBHandler'
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
-import { GoogleSignin } from 'react-native-google-signin';
 
 export default class MyPhotoPage extends Component {
     constructor(){
@@ -27,7 +24,6 @@ export default class MyPhotoPage extends Component {
             <View style={styles.MainContainer}>
                 <View style = {styles.contentContainer}>
                     <Text style = {styles.textHeader}> Date of Birth: </Text>
-                   
                     <DatePicker
                         style={{width: 200}}
                         date={this.state.date}
@@ -66,11 +62,9 @@ export default class MyPhotoPage extends Component {
         console.log('Creating Account...')
         // Checks if details are correct
         if (this.verifyDetails()){
-            const album = await this.GoogleAPIHandler.createAlbum("Family3")
             const response = await this.DBHandler.createAccount({
                 dob: this.state.dob.toString(),
                 gender: this.state.gender,
-                albumID: album.id
             })
             if (response.data != null){
                 console.log("Account Creation Success!")

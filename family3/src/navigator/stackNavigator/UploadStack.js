@@ -17,10 +17,16 @@ export default UploadStack = createStackNavigator(
         },
         Preview: {
             screen:PreviewPage,
+            navigationOptions:{
+                header: null
+            }
         },
         
         SingleImagePreview: {
-            screen: PreviewComponent
+            screen: PreviewComponent,
+            navigationOptions:{
+                header: null
+            }
         }
     },
     {  

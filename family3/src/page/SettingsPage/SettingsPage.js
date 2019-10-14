@@ -1,17 +1,16 @@
 import React, {Component} from 'react'
-import{ View, Text, StyleSheet, Button, StatusBar, TouchableHighlight, ScrollView } from 'react-native';
+import{ View, Text, StyleSheet, StatusBar, TouchableHighlight, ScrollView } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
-import { GoogleSignin } from 'react-native-google-signin';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Header, Right, Body, Title } from 'native-base'
 import Dialog, { DialogContent, DialogFooter, DialogButton, DialogTitle } from 'react-native-popup-dialog';
 
 import { Color } from '../../assets/Assets'
-import { Config } from '../../assets/GoogleConfig'
+import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 
 export default class Settings extends Component {
     constructor(){
         super();
+        this.GoogleAPIHandler = GoogleAPIHandler.getInstance()
         this.state = {
             settingDialogVisible: false,
             isSignedOut: false,
@@ -48,7 +47,6 @@ export default class Settings extends Component {
                             text="Confirm"
                             onPress={() => {
                                 this.signOut()
-                                this.setState({ settingDialogVisible: false, isSignedOut: true })
                             }} />
                         </DialogFooter>
                     }>
@@ -65,7 +63,6 @@ export default class Settings extends Component {
                             onPress={() => {this.setState({settingDialogVisible: true})}}>
                         <Text style = {styles.textStyle}> Log Out </Text>
                         </TouchableHighlight>
-                    
                     </View> 
                     <Divider style={styles.dividerStyle} />
                 </ScrollView>
@@ -73,6 +70,7 @@ export default class Settings extends Component {
         )
     }
     
+    /* Check if the user has succesfully signed out */
     checkSignedOut(){
         if (this.state.isSignedOut){
             if (this.state.isRendered)
@@ -80,17 +78,13 @@ export default class Settings extends Component {
             else   
                 this.setState({isRendered: true})
         }
-
     }
     
-    signOut = async () => {
-        try {
-            GoogleSignin.configure(Config);
-            await GoogleSignin.signOut();
-        } catch (error) {
-            console.error(error);
-        }
-      };
+    /* Sign out */
+    async signOut(){
+        await this.GoogleAPIHandler.signOut();
+        this.setState({ settingDialogVisible: false, isSignedOut: true })
+    };
 } 
 
 const styles = StyleSheet.create({
