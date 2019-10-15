@@ -11,6 +11,75 @@ import DBHandler from '../../api/DBHandler'
 
 import { Color } from '../../assets/Assets'
 
+// * There are 2 sample data for you to test your code
+// This is a data get from database with full details
+const sampleData1 = {
+    _id: "108847325318354420000",
+    create_date: "2019-10-13T14:37:49.968Z",
+    firstName: "Xun",
+    lastName: "Zhang",
+    email: "zhangxunsnail@gmail.com",
+    family: "5d89a94281b02708c8e0e24c",
+    __v: 0,
+    DOB: "1998-09-08T00:00:00.000Z",
+    gender: "Female"
+}
+
+// This is a fake data with the server format
+const sampleData2 = {
+    // Althogh there is an _id you don't need to show it
+    _id: "testid",
+    // Same, you don't need to show the create_date
+    create_date: "2019-10-13T14:37:49.968Z",
+    firstName: "First",
+    lastName: "Last",
+    // If there is lack of infomation in database
+    // You will get "undefined" as result, just show it empty
+    email: undefined,
+    family: undefined,
+    __v: 0,
+    // This String is in type Date, research for how to deal with Date type or ask Jenpin
+    DOB: "2000-01-01T00:00:00.000Z",    
+    gender: "Male"
+}
+
+// * This is a sample data for contact pages
+// Actually, it is just an array of userdata in the same family
+// You can use this to test your front end when you work with contact page
+const contactSampleData = [
+    {
+        _id: "07a6e943a89656b28e690756b00ee66134c3f54bda4b2164b48837062245051b",
+        create_date: "2019-10-07T12:46:07.574Z",
+        firstName: "Zhifu",
+        lastName: "Zhang",
+        DOB: "1937-07-20T00:00:00.000Z",
+        gender: "Male",
+        __v: 0,
+        family: "5d89a94281b02708c8e0e24c"
+    },
+    {
+        _id: "108847325318354420000",
+        create_date: "2019-10-13T14:37:49.968Z",
+        firstName: "Xun",
+        lastName: "Zhang",
+        email: "zhangxunsnail@gmail.com",
+        family: "5d89a94281b02708c8e0e24c",
+        __v: 0,
+        DOB: "1998-09-08T00:00:00.000Z",
+        gender: "Female"
+    },
+    {
+        _id: "597b0ddfe8e0bd240cc166f2f1ececb493cfda372865096fc84bb9ecbd362c55",
+        create_date: "2019-10-07T12:41:05.406Z",
+        firstName: "Xiaojian",
+        lastName: "Zhang",
+        DOB: "1963-05-12T00:00:00.000Z",
+        gender: "Male",
+        __v: 0,
+        family: "5d89a94281b02708c8e0e24c"
+    }
+]
+
 export default class ProfilePage extends Component {
     constructor(props){
         super(props);
