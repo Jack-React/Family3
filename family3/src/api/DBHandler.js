@@ -26,14 +26,14 @@ export default class DBHandler {
     /* This function creates an account on the database */
     async createAccount(details){
         userData = await GoogleSignin.getCurrentUser();
-        console.log(details)
         body = {
             firstName: userData.user.givenName,
             lastName: userData.user.familyName,
             _id: userData.user.id,
             email: userData.user.email,
+            album: details.albumID,
             gender: details.gender,
-            DOB: details.dob
+            dob: details.dob
         }
         const response = await this.APIHandler.createAccount(body);
         return response
