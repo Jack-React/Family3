@@ -248,8 +248,9 @@ export default class GoogelAPIHandler {
     /* Function to sign in using google account */
 	async googleSignInHandler() {
 		try {
-			await GoogleSignin.hasPlayServices();
-			return await GoogleSignin.signIn();
+            await GoogleSignin.hasPlayServices();
+            const response =  await GoogleSignin.signIn();
+            return response
 		} catch (error) {
 			console.warn(error);
 		}

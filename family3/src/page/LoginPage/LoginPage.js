@@ -54,10 +54,9 @@ export default class LoginPage extends Component {
 	/* Checks if the user has an account in database. Navigate to home page if true, signup page otherwise */
 	async handleSignIn(){
 		const userData = await this.GoogleAPIHandler.googleSignInHandler()
-		console.log(userData)
 		this.setState({ userData: userData, isUserSignedIn: true });
 		if (this.state.isUserSignedIn){
-			if (await this.DBHandler.hasAccount(userData.idToken)){
+			if (await this.DBHandler.hasAccount()){
 				this.props.navigation.navigate('App', {userData: userData});
 			}
 			else
