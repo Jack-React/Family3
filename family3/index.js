@@ -5,7 +5,6 @@
 import {AppRegistry} from 'react-native';
 import App from './App';
 // ./src/page/FamilyTreePage/GraphMaker.js
-import GraphMaker from ' ./src/page/FamilyTreePage/GraphMaker.js';
 import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => GraphMaker);
+AppRegistry.registerComponent(appName, () => App);
