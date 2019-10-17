@@ -36,9 +36,6 @@ export default class MyPhotoPage extends Component {
                     <Right />
                 </Header>
                 <View style = {styles.contentContainer}>
-                    <Text style = {{color: Color.SECONDARY}}>
-                        Sample Page
-                    </Text>
                     <GraphMaker/>
                 </View>
 
@@ -56,8 +53,6 @@ const styles = StyleSheet.create({
 
     contentContainer: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
     },
 
     headerContainer: {

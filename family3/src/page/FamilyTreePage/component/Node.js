@@ -82,8 +82,8 @@ export default class Node extends Component{
           this.marker.measure((x, y, width, height, pageX, pageY) => {
             console.log('updating location for', this.state.name, x, y, width, height, pageX, pageY);
             var location = {
-              "x" : pageX,
-              "y" : pageY,
+              "x" : pageX + (width/2),
+              "y" : pageY ,
             };
             this.props.updateNodeLocation(this.state.name, location)
           })
