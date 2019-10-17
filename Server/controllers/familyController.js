@@ -261,35 +261,15 @@ exports.findRelationsInfo = (req, res) => {
 
 // get all members in one family
 exports.getmembers = (req, res) => {
-    Family.findById(req.params.family_id , (err, family) => { 
+    Account.find({
+        family: req.params.family_id
+    }, (err, results) => {
         if (err) {
-            res.send(err);
+            res.json(err);
         }
-        
-        var people1 = family.relations.map((e) => { return e.person1; });
-        var people2 = family.relations.map((e) => { return e.person2; });
-        var members = people1.concat(people2);
-
-        var membersid = arrayUnique(members);
-
-        Account.find({
-            '_id': {
-                $in: membersid
-            }
-        }, (err, results) => {
-            if (err) {
-                res.json(err);
-            }
-            res.json({
-                message: "Find all family members",
-                data: results
-            });
+        res.json({
+            message: "Find all family members",
+            data: results
         });
-    });
-};
-
-var arrayUnique = (arr) => {
-    return arr.filter(function (item, index) {
-        return arr.indexOf(item) >= index;
     });
 };
