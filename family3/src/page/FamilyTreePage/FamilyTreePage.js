@@ -7,7 +7,7 @@ import GraphMaker from './GraphMaker';
 
 
 import { Color } from '../../assets/Assets'
-
+import ActionButton from 'react-native-action-button';
 
 export default class MyPhotoPage extends Component {
     constructor(){
@@ -37,6 +37,10 @@ export default class MyPhotoPage extends Component {
                 </Header>
                 <View style = {styles.contentContainer}>
                     <GraphMaker/>
+                    <ActionButton
+  buttonColor="rgba(231,76,60,1)"
+  onPress={() => { console.log("hi")}}
+/>
                 </View>
 
             </View>
