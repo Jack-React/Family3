@@ -3,8 +3,11 @@ import{ View, Text, StyleSheet, Button, StatusBar} from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import GraphMaker from './GraphMaker';
 
-import { Color } from '../../assets/Assets.js'
+
+import { Color } from '../../assets/Assets'
+
 
 export default class MyPhotoPage extends Component {
     constructor(){
@@ -36,6 +39,7 @@ export default class MyPhotoPage extends Component {
                     <Text style = {{color: Color.SECONDARY}}>
                         Sample Page
                     </Text>
+                    <GraphMaker/>
                 </View>
 
             </View>
