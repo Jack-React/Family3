@@ -27,6 +27,9 @@ router.route('/families/members/:family_id')
 
 router.route('/families/albums/:family_id')
     .put(familyController.addShareAlbum)
+    // .delete(familyController.deleteShareAlbum);
+
+router.route('/families/albums/:family_id/:album_id')
     .delete(familyController.deleteShareAlbum);
 
 // Route to accounts

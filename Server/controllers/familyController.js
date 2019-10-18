@@ -88,24 +88,18 @@ exports.deleteShareAlbum = (req, res) => {
         if (err) {
             res.send(err);
         }
-        if (req.body.sharedAlbums !== null) {
-            var deleteid = req.body.albumid;
-            var originAlbums = family.sharedAlbums;
-            family.sharedAlbums = originAlbums.filter(album => album._id != deleteid);
-
-            family.save((err => {
-                if (err) {
-                    res.json(err);
-                }
-                res.json({
-                    message: "Album delete successfully.",
-                    data: family
-                });
-            }));
-        } else {
-            res.send("[Warning] No albumid detected, please check again");
-        }
-    });
+        var originAlbums = family.sharedAlbums;
+        family.sharedAlbums = originAlbums.filter(album => album._id != req.params.album_id);
+        family.save((err => {
+            if (err) {
+                res.json(err);
+            }
+            res.json({
+                message: "Album delete successfully.",
+                data: family
+            });
+        }));
+    })
 }
 
 // Delete a relation of family
