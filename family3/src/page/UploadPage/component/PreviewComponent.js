@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, StatusBar, Text, View, Image, TextInput, Dimensions } from 'react-native'
+import { StyleSheet, StatusBar, Text, View, Image, Dimensions } from 'react-native'
 import { Header, Left, Button as ButtonBase, Right, Body, Title, Form, Textarea } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -23,7 +23,6 @@ export default class PreviewComponent extends Component {
     render() {
 		const images = this.props.navigation.getParam('images')
 		const index = this.props.navigation.getParam('index')
-
 		return (
 			<View style = {styles.MainContainer}>
 				<Header style = {styles.headerContainer}>
@@ -53,6 +52,7 @@ export default class PreviewComponent extends Component {
 				</Header>
 				<Swiper
 				loadMinimalSize={3}
+				style = {{paddingBottom: 50}}
 				index = {index}
 				loadMinimal
 				loop = {false}
@@ -65,12 +65,6 @@ export default class PreviewComponent extends Component {
 										style={{width: '100%', height: 400}} />
 								<View style = {styles.textContainer}>
 									<Text style = {styles.textStyle}>Description:</Text>
-									{/* <TextInput
-										placeholder="Image Description"
-										style={styles.textStyle}
-										onChangeText={text => image.description = text}
-										value={image.description}
-									/> */}
 									<Form style = {{width: SCREEN_WIDTH - 20}}>
 										<Textarea 
 										rowSpan={4} 
@@ -101,13 +95,15 @@ const styles = StyleSheet.create({
 	
     imageStyle: {
 		flex: 1,
-		justifyContent: 'flex-start',
+		paddingBottom:70,
+		justifyContent: 'flex-end',
 		alignItems: 'center',
 		backgroundColor: Color.PRIMARY
 	},
 	
 	textContainer: {
 		flex:1,
+		paddingBottom:70,
 		justifyContent: 'flex-start',
 		alignSelf: 'flex-start',
 		paddingTop: 10,

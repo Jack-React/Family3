@@ -113,6 +113,7 @@ export default class PreviewPage extends Component {
         }
         await this.GoogleAPIHandler.submitImage(datas ,album.id);
         console.log("Image Submitted");
+
     }         
 }
 

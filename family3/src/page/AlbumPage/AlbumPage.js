@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import{ View, Text, StyleSheet, StatusBar, ScrollView} from 'react-native';
+import{ View, Text, StyleSheet, StatusBar, ScrollView, RefreshControl } from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -18,6 +18,7 @@ export default class AlbumPage extends Component {
             loaded: false,
             isLoading: true,
             showDialog: false,
+            refreshing: false,
         }
     }
 
@@ -29,7 +30,7 @@ export default class AlbumPage extends Component {
     }
 
     render() {
-        const { albums, isLoading, showDialog } = this.state; 
+        const { albums, isLoading, showDialog, refreshing } = this.state; 
         // Show spinner while loading albums
         if (isLoading){
             return (
@@ -60,7 +61,11 @@ export default class AlbumPage extends Component {
                         </Right>
                     </Header>
                     {albums.length > 0 ?
-                        <ScrollView>
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl refreshing={refreshing} onRefresh={() => this.refresh()} />
+                            }
+                        >
                             <AddAlbumDialogComponent 
                             visible={ showDialog } 
                             disableDialog={this.disableDialog.bind(this)}
@@ -145,6 +150,20 @@ export default class AlbumPage extends Component {
                 }
             }
         }
+    }
+    
+    // This function updates album
+    async refresh(){
+        this.setState({
+            loaded: false,
+            isLoading: true,
+            albums: []
+        })
+        
+        this.componentDidMount()
+        setTimeout(() => {
+            this.setState({refreshing: false})
+        }, 2000)
     }
 }
 

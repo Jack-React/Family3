@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Dialog, { DialogContent, DialogTitle, DialogFooter, DialogButton} from 'react-native-popup-dialog';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 
 import { Color } from '../../../assets/Assets'
@@ -45,6 +45,13 @@ export default class AddAlbumDialogComponent extends Component{
                 </DialogContent>
                 <DialogFooter>
                     <DialogButton
+                    text="Cancel"
+                    textStyle = {{color: Color.SECONDARY}}
+                    onPress={() => {
+                        this.setState({albumName: '', shareable: false})
+                        this.props.disableDialog()}}
+                    />
+                    <DialogButton
                     disabled = {this.state.albumName == ''}
                     textStyle={this.state.albumName == ''? styles.DialogButtonDisabledTextStyle: styles.DialogButtonTextStyle}
                     text="Create"
@@ -78,7 +85,6 @@ export default class AddAlbumDialogComponent extends Component{
         this.setState({albumName: '', shareable: false})
         this.props.disableDialog();
         this.props.recieveAlbumDetails(data);
-
     }
 }
 

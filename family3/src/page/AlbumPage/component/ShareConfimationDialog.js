@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Dialog, { DialogContent, DialogTitle, DialogFooter, DialogButton} from 'react-native-popup-dialog';
-import { View, Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 
 import { Color } from '../../../assets/Assets'
 
@@ -32,6 +32,12 @@ export default class ShareConfirmationDialog extends Component {
                 </DialogContent>
                 <DialogFooter>
                     <DialogButton
+                    text="Cancel"
+                    textStyle = {{color: Color.SECONDARY}}
+                    onPress={() => {this.props.disableDialog()}}
+                    />
+                    <DialogButton
+                    textStyle = {{color: Color.SECONDARY}}
                     text="Confirm"
                     onPress={() => {this.onButtonPressed()}}
                     />

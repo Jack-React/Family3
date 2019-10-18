@@ -61,8 +61,6 @@ export default class SingleAlbumPage extends Component {
     }
 
     render() {
-        
-        
         const {images, numColumns, loadSingleImage, currentIndex, album, shared, searchedImages } = this.state;
         if (this.state.loaded){
             return (
@@ -100,15 +98,19 @@ export default class SingleAlbumPage extends Component {
                     </Header>
                     {this.state.hasImage? 
                         <SafeAreaView style = {{flex: 1, alignItems: 'flex-start'}}>
-                             <View style = {{width: '100%', borderColor: 'black'}}>
+                             <View style = {{width: '100%', borderColor: 'black', padding:5, marginBottom: 10, marginTop:10}}>
                                 <SearchBar
                                     platform= 'android'
-                                    underlineColorAndroid= {Color.DRAK_GREY}
-                                    placeholder="Search"
-                                    inputContainerStyle = {{height: 40}}
+                                    placeholder="Search for a keyword"
+                                    containerStyle = {{borderRadius: 10, elevation: 15, height: 50, iconSize:1}}
+                                    inputContainerStyle = {{paddingBottom:5, fontSize: 4, iconSize: 1}}
+                                    inputStyle={{fontSize: 14, marginLeft:2, paddingTop:5, iconSize:1}}
+                                    leftIconContainerStyle = {{ paddingBottom: 5 }}
+                                    rightIconContainerStyle = {{ paddingBottom: 5 }}
                                     onChangeText= {(search) => this.updateSearch(search)}
                                     value={this.state.search}
                                 />
+
                              </View>
                             
                             <ImageView
@@ -122,6 +124,7 @@ export default class SingleAlbumPage extends Component {
                                 }
                                 onClose={() => {this.setState({loadSingleImage: false})}}>
                             </ImageView>
+
                             <FlatList
                                 numColumns = {numColumns}
                                 data = {(searchedImages == null)? images: searchedImages}
@@ -220,8 +223,12 @@ export default class SingleAlbumPage extends Component {
     updateSearch(search){
         searchedImages = [];
         for (i = 0; i < this.state.images.length; i ++){
-            if (this.state.images[i].title.includes(search)){
-                searchedImages.push(this.state.images[i])
+            // Checks if theres a desciprion
+            if (this.state.images[i].title){
+                // Checks if description includes search text
+                if (this.state.images[i].title.toLowerCase().includes(search.toLowerCase())){
+                    searchedImages.push(this.state.images[i])
+                }
             }
         }
         if (search == "")
