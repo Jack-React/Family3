@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import{ View, Text, StyleSheet, Button, StatusBar} from 'react-native';
-import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
+import{ View, StyleSheet, StatusBar} from 'react-native';
+import { Header, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import GraphMaker from './GraphMaker';
@@ -22,26 +22,14 @@ export default class MyPhotoPage extends Component {
                         backgroundColor={Color.STATUS_BAR}
                         barStyle="light-content"
                     />
-                    <Left>
-                        <ButtonBase
-                            transparent
-                            onPress={() => this.props.navigation.openDrawer()}
-                            >
-                            <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
-                        </ButtonBase>
-                    </Left>
                     <Body>
-                        <Title style = {{color:Color.SECONDARY}}>Sample</Title>
+                        <Title style = {{paddingLeft: 20, color:Color.PRIMARY}}>Family Tree</Title>
                     </Body>
                     <Right />
                 </Header>
                 <View style = {styles.contentContainer}>
-                    <Text style = {{color: Color.SECONDARY}}>
-                        Sample Page
-                    </Text>
                     <GraphMaker/>
                 </View>
-
             </View>
         )
     }
@@ -62,6 +50,6 @@ const styles = StyleSheet.create({
 
     headerContainer: {
         alignItems: 'flex-start',
-        backgroundColor: Color.PRIMARY
+        backgroundColor: Color.SECONDARY
     },
 })

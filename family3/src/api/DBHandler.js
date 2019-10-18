@@ -45,4 +45,14 @@ export default class DBHandler {
         const response = await this.APIHandler.getAccount(userData.user.id);
         return response.data
     }
+
+    /* Gets all relationship info of a user */
+    async getRelationInfo(userid){
+        return await this.APIHandler.getRelationInfo(userid)
+    }
+
+    /* Gets all relationships of a user */
+    async getRelation(userid){
+        return await this.APIHandler.getRelation(userid)
+    }
 }

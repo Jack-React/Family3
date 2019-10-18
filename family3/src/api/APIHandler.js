@@ -70,6 +70,28 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
+    /* Gets all relationship info of a user */
+    async getRelationInfo(userid){
+        const url = ACCOUNTS + "/relationsinfo/" + userid;
+        data = {
+            URI: url,
+            method: 'GET',
+        }
+        return await this.sendRequest(data)
+    }
+
+    /* Gets all relationships of a user */
+    async getRelation(userid){
+        const url = ACCOUNTS + "/relations/" + userid;
+        data = {
+            URI: url,
+            method: 'GET',
+        }
+        return await this.sendRequest(data)
+    }
+
+
+
     /* Sends data to any uri based on method, headers and body */
     async sendRequest(data){
         try {
