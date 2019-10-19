@@ -39,9 +39,6 @@ const AppTabNavigator = createBottomTabNavigator(
             screen: HomeStack,
             navigationOptions: () =>
             ({ tabBarIcon: ( <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>) })
-            // {
-            //     tabBarLabel: 'home'
-            // }
         },
 
         Profile:{

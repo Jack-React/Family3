@@ -9,7 +9,9 @@ import {
 import Svg, { G, Path, Text as SvgText, Rect, Line, } from 'react-native-svg';
 import Graph from './component/Graph.js';
 
-const ACCOUNTS = "http://52.14.226.1:8080/api/accounts";
+import DBHandler from '../../api/DBHandler';
+
+
 var nodes = [
   {"name": "bulbasure", "image":require("../../assets/familytree/stock-pokemon-photos/bulbasure.png")}, // temprary centerNode
   // {"name": "pikachu", "image":require("./stock-pokemon-photos/pikachu.png")},
@@ -40,8 +42,9 @@ const marriageNodeimg = require('../../assets/familytree/heart-outline.png');
 
 class GraphMaker extends Component{
 	constructor(props){
-		super(props);
-        var inputNodes =nodes
+    super(props);
+    this.DBHandler = DBHandler.getInstance();
+    var inputNodes =nodes
 		this.state = {
 			nodes:JSON.parse(JSON.stringify(inputNodes)),  // makes a deep copy of the original
             originalNodes: inputNodes,
@@ -57,49 +60,69 @@ class GraphMaker extends Component{
         this.getDatafromAPI(centerUsrId);
     }
 
-    getDatafromAPI(userid) {
+    async getDatafromAPI(userid) {
         // fetch data from server
         // this is the url of server for links and nodes
         // ! The centerUsrId is for testing here, you may change it to google user id when runing in Family3
-        linkUrl = ACCOUNTS + "/relations/" + userid;
-        nodeUrl = ACCOUNTS + "/relationsinfo/" + userid;
+        // linkUrl = ACCOUNTS + "/relations/" + userid;
+        // nodeUrl = ACCOUNTS + "/relationsinfo/" + userid;
 
+		console.log(userid);
         // Actually, Networking is an inherently asynchronous operation.
         // Fetch methods will return a Promise that makes it straightforward
         // to write code that works in an asynchronous manner:
-        var firstAPICall = fetch(linkUrl);
-        var secondAPICall = fetch(nodeUrl);
+		const links = (await this.DBHandler.getRelation(userid)).data
+		const nodes = (await this.DBHandler.getRelationInfo(userid)).data
+		console.log(links)
+        // var links = firstAPICall
+        // var nodes = secondAPICall
+        
+        this.idToName(links, nodes);
+
+        console.log("new links is...")
+        console.log(links);
+
+        console.log("center node is ...")
+        console.log(this.FindNode(nodes, userid))
+
+        this.setState({
+			centerNode: this.FindNode(nodes, userid),
+			originalNodes: JSON.parse(JSON.stringify(this.state.originalNodes)),
+			links: links,
+			nodes: nodes,
+			updated: false
+        })
 
         // And here is how we deal with the promise return by fetch()
         // Promise.all() is a function deal with multiple promise, and for details reading the page below
         // https://medium.com/@gianpaul.r/fetching-from-multiple-api-endpoints-at-once-ffb1b54600f9
-        Promise.all([firstAPICall, secondAPICall])
-            .then(responses => Promise.all(responses.map(res => res.json())))
-            .then(responseJsons => {
-                var links = responseJsons[0].data;
-                var nodes = responseJsons[1].data;
+        // Promise.all([firstAPICall, secondAPICall])
+        //     .then(responses => Promise.all(responses.map(res => res.json())))
+        //     .then(responseJsons => {
+        //         var links = responseJsons[0].data;
+        //         var nodes = responseJsons[1].data;
 
-                this.idToName(links, nodes);
+        //         this.idToName(links, nodes);
 
-                console.log("new links is...")
-                console.log(links);
+        //         console.log("new links is...")
+        //         console.log(links);
 
-                console.log("center node is ...")
-                console.log(this.FindNode(nodes, userid))
+        //         console.log("center node is ...")
+        //         console.log(this.FindNode(nodes, userid))
 
-                this.setState({
-                    centerNode: this.FindNode(nodes, userid),
-                    originalNodes: JSON.parse(JSON.stringify(this.state.originalNodes)),
-                    links: links,
-                    nodes: nodes,
-                    updated: false
-                }, function () {
+        //         this.setState({
+        //             centerNode: this.FindNode(nodes, userid),
+        //             originalNodes: JSON.parse(JSON.stringify(this.state.originalNodes)),
+        //             links: links,
+        //             nodes: nodes,
+        //             updated: false
+        //         }, function () {
 
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        //         });
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     }
 
     idToName(links, nodes) {
