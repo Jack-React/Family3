@@ -58,7 +58,7 @@ class GraphMaker extends Component{
         var centerUsrId = '597b0ddfe8e0bd240cc166f2f1ececb493cfda372865096fc84bb9ecbd362c55';
         userid = await this.DBHandler.getDBUserData()
         console.log('user', userid)
-        this.getDatafromAPI(userid._id);
+        this.getDatafromAPI(centerUsrId);
     }
 
     async getDatafromAPI(userid) {
@@ -72,8 +72,8 @@ class GraphMaker extends Component{
         // Actually, Networking is an inherently asynchronous operation.
         // Fetch methods will return a Promise that makes it straightforward
         // to write code that works in an asynchronous manner:
-        const links = (await this.DBHandler.getRelation(userid)).data
-		const nodes = (await this.DBHandler.getRelationInfo(userid)).data
+        const links = (await this.DBHandler.getRelation(userid))
+		    const nodes = (await this.DBHandler.getRelationInfo(userid))
         console.log('printing links and then nodes');
         console.log(links);
         console.log(nodes);
@@ -157,7 +157,8 @@ class GraphMaker extends Component{
         this.setState({
             updated: true
         });
-        // this.getDatafromAPI(id);
+        console.log('updating center node', id);
+        this.getDatafromAPI(id);
         // console.log('test app state while updating centernode');
         // console.log(nodes);
 	}

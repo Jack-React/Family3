@@ -58,7 +58,7 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
-    /* Sends a put request to back end to update account */ 
+    /* Sends a put request to back end to update account */
     async updateAccount(id, body){
         // console.log('Updating account...');
         data = {
@@ -72,7 +72,7 @@ export default class APIHandler {
 
     /* Gets all relationship info of a user */
     async getRelationInfo(userid){
-        const url = ACCOUNTS + "/relationsinfo/" + userid;
+        const url = `${ACCOUNTS}/relationsinfo/${userid}`;
         data = {
             URI: url,
             method: 'GET',
@@ -82,7 +82,7 @@ export default class APIHandler {
 
     /* Gets all relationships of a user */
     async getRelation(){
-        const url = ACCOUNTS + "/relations/" + userid;
+      const url = `${ACCOUNTS}/relations/${userid}`;
         data = {
             URI: url,
             method: 'GET',
@@ -98,7 +98,7 @@ export default class APIHandler {
             if (data.isJson == true)
                 // No need to convert to json object
                 return response
-            else 
+            else
                 return response.json()
         }
         catch (error){
