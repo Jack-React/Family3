@@ -62,7 +62,6 @@ export default class DBHandler {
             albumid: album.albumid,
             sharedToken: album.sharedToken 
         }
-        console.log(body)
         return await this.APIHandler.addSharedAlbum(familyid, body)
     }
 

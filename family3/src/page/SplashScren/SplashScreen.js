@@ -81,10 +81,12 @@ export default class SplashScreen extends Component {
     }
 
     // Check if album is in array or albums
+    // indentifier for album = albumid
+    // identifier for albums = id
     containsAlbum(album, albums) {
         var i;
         for (i = 0; i < albums.length; i++) {
-            if (albums[i].id === album.id) 
+            if (albums[i].id === album.albumid) 
                 return true;
         }
         return false;
@@ -94,9 +96,8 @@ export default class SplashScreen extends Component {
     async joinAlbums(sharedAlbums){
         const googleSharedAlbums = await this.GoogleAPIHandler.getSharedAlbums()
         for (i = 0; i < sharedAlbums.length; i ++){
-            if (!this.containsAlbum(sharedAlbums[i], googleSharedAlbums)){
+            if (!this.containsAlbum(sharedAlbums[i], googleSharedAlbums.sharedAlbums)){
                 this.GoogleAPIHandler.joinSharedAlbum(sharedAlbums[i].sharedTokens)
-                console.log("joined")
             }
         }
     }

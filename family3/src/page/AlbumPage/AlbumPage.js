@@ -140,6 +140,10 @@ export default class AlbumPage extends Component {
 
     // Merged Both shared albums and non shared albums
     mergeAlbums(albumA, albumB){
+        if (albumB == undefined){
+            return
+        }
+                
         if (albumA.length > albumB.length){
             for (i = 0; i < albumB.length; i ++){
                 if (this.containsAlbum(albumB[i], albumA) == false){
