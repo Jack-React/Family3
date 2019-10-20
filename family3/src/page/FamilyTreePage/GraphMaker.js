@@ -159,14 +159,21 @@ class GraphMaker extends Component{
     }
 
     UpdateCenterNode(id) {
-        this.setState({
+      this.setState({
+        centerNode: this.FindNode(id),
+        nodes: JSON.parse(JSON.stringify(this.state.originalNodes)),
             updated: true
         });
-        console.log('updating center node', id);
-        this.getDatafromAPI(id);
         // console.log('test app state while updating centernode');
         // console.log(nodes);
-	}
+    }
+  // UpdateCenterNode(name) {
+  //   this.setState({
+  //     centerNode: this.FindNode(name),
+  //     nodes: JSON.parse(JSON.stringify(this.state.originalNodes)),
+  //     updated: true
+  //   })
+  // }
 
   //update image urls to require, for dynamic image loading and replaces the state
   // UpdateImageUrls(nodes){
