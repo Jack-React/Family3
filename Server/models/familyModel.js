@@ -6,7 +6,14 @@ const familySchema = mongoose.Schema({
         required: true
     },
     sharedAlbums: [{
-        Album: String
+        albumid: {
+            type: String,
+            required: true
+        },
+        sharedToken: {
+            type: String,
+            required: true
+        }
     }],
     relations: [{
         person1: {

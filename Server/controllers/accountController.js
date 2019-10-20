@@ -146,7 +146,7 @@ exports.invite = (req, res) => {
         if (sender == null || sender.family == null) {
             res.json({
                 message: "No invitation info found",
-                data: account
+                data: null
             });
             return
         }
@@ -181,7 +181,7 @@ exports.accept = (req, res) => {
         if (target == null || target.invitation == null) {
             res.json({
                 message: "No invitation info found",
-                data: account
+                data: null
             });
             return
         }
@@ -199,3 +199,4 @@ exports.accept = (req, res) => {
         });
     });
 }
+

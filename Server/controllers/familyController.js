@@ -40,7 +40,8 @@ exports.addShareAlbum = (req, res) => {
         if (err) res.status(400).send(err);
         if (req.body.sharedAlbums !== null) {
             var data = {
-                Album: req.body.sharedAlbums
+                albumid: req.body.albumid,
+                sharedToken: req.body.sharedToken
             }
             family.sharedAlbums.push(data);
         }
