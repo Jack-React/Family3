@@ -11,8 +11,10 @@ import { Color } from '../assets/Assets'
 import SplashScreen from '../page/SplashScren/SplashScreen';
 import SettingsPage from '../page/SettingsPage/SettingsPage';
 import ProfilePage from '../page/ProfilePage/ProfilePage';
-//../page/FamilyTreePage/FamilyTreePage.js relative path
+
 import FamilyTreePage from '../page/FamilyTreePage/FamilyTreePage';
+
+import AddRelationshipsPage from '../page/AddRelationshipsPage/AddRelationshipsPage';
 
 // Navigation Stacks
 import UploadStack from './stackNavigator/UploadStack'
@@ -53,11 +55,11 @@ const AppTabNavigator = createBottomTabNavigator(
             ({ tabBarIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) })
         },
 
-        // Upload: {
-        //     screen: UploadStack,
-        //     navigationOptions: () =>
-        //     ({ tabBarIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) })
-        // },
+        AddRelationships: {
+            screen: AddRelationshipsPage,
+            navigationOptions: () =>
+            ({ tabBarIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) })
+        },
 
         Album: {
             screen: AlbumStack,

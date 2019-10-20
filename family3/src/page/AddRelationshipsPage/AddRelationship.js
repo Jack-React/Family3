@@ -10,7 +10,7 @@ import { Color } from '../../assets/Assets'
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import APIHandler from '../../api/APIHandler'
 
-// sample user data 
+// sample user data
 const sampleData1 = {
     _id: "108847325318354420000",
     create_date: "2019-10-13T14:37:49.968Z",
@@ -81,7 +81,7 @@ const dbData =[
     }
     ]
 
-export default class AddNode extends Component {
+export default class AddRelationship extends Component {
     constructor(){
         super()
         this.state = { 
@@ -90,7 +90,7 @@ export default class AddNode extends Component {
                 familyid: '',
                 person1: '',
                 person2: '',
-                relationship: '', 
+                relationship: '',
                 userData: null
         };
         this.GoogleAPIHandler = new GoogleAPIHandler()
@@ -135,8 +135,8 @@ export default class AddNode extends Component {
         this.setState({'relationship': value});
     }
 
-    
-    // stores linking info in JSON object 
+
+    // stores linking info in JSON object
     storeData() {
         // var links = JSON.stringify(this.state, ['name', 'gender', 'person1', 'person2', 'relationship']);
         // console.log(links)
@@ -168,7 +168,7 @@ export default class AddNode extends Component {
             return (<ActivityIndicator size="large" color="#3275a8" />)
         }
         else {
-            var arr = Array(this.state.userData.length-1); 
+            var arr = Array(this.state.userData.length-1);
         var j = 0;
 
         // var obj = this.state.userData;
@@ -183,8 +183,8 @@ export default class AddNode extends Component {
         //             i += 1;
         //         }
         //     }
-                 
-        // create an array containing all first names of family in database 
+
+        // create an array containing all first names of family in database
         for (var i = 0; i < this.state.userData.length; i++) {
             var object = this.state.userData[i];
             for (var property in object) {
@@ -193,34 +193,16 @@ export default class AddNode extends Component {
                     j += 1;
                      }
                   }
-                }      
+                }
 
         return (
-  
+
             <ScrollView style={styles.MainContainer}>
-                
-                <Header style = {styles.headerContainer}>
-                    <StatusBar
-                        backgroundColor={Color.STATUS_BAR}
-                        barStyle="dark-content"
-                    />
-                    <Left>
-                        <ButtonBase
-                            transparent
-                            onPress={() => {this.props.navigation.openDrawer()}}
-                            >
-                            <Icon name="navicon" size={20} color= {Color.SECONDARY}/>
-                        </ButtonBase>
-                    </Left>
-                    <Body>
-                        <Title style = {{color:Color.SECONDARY}}>Add Relationship </Title>
-                    </Body>
-                    <Right />
-                </Header>
+
                 <View style = {styles.detailsContainer}>
-                    
+
                 <Text style = {{color: Color.SECONDARY}}> {"\n"}  Nodes {"\n"}</Text>
-                
+
                     <Text> {"\n"}  Name: {"\n"}</Text>
 
                     <View style = {styles.viewStyleForLine}></View>
@@ -230,11 +212,11 @@ export default class AddNode extends Component {
 
                     {/* renders selection based on first name in database */}
                     {arr.map((item, index) => {
-                    return (<Picker.Item label={item} value={item} key={index}/>) 
-                    })} 
+                    return (<Picker.Item label={item} value={item} key={index}/>)
+                    })}
 
                     </Picker>
-                    
+
                     {/* {console.log(this.state.name)} */}
                     <Text> {"\n"}  Gender: {"\n"}</Text>
                     <View style = {styles.viewStyleForLine}></View>
@@ -250,13 +232,13 @@ export default class AddNode extends Component {
                     />
                     <Picker.Item label = "Female" value = "female" />
                     </Picker>
-                    
+
                     <Text style = {{color: Color.SECONDARY}}>
-                        {"\n"}  Links   
+                        {"\n"}  Links
                     </Text>
 
                     <Text> {"\n"}  Person 1: {"\n"}</Text>
-                    
+
                     <View style = {styles.viewStyleForLine}></View>
 
                     <Picker style = {styles.pickerContainer}
@@ -264,21 +246,21 @@ export default class AddNode extends Component {
                     onValueChange = {this.setP1}
                     >
                     {arr.map((item, index) => {
-                    return (<Picker.Item label={item} value={item} key={index}/>) 
-                    })} 
-                    
+                    return (<Picker.Item label={item} value={item} key={index}/>)
+                    })}
+
                     </Picker>
 
                     <Text> {"\n"}  Person 2: {"\n"}</Text>
-                    
+
                     <View style = {styles.viewStyleForLine}></View>
                     <Picker style = {styles.pickerContainer}
                     selectedValue = {this.state.person2}
                     style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                     onValueChange = {this.setP2}>
                     {arr.map((item, index) => {
-                    return (<Picker.Item label={item} value={item} key={index}/>) 
-                    })} 
+                    return (<Picker.Item label={item} value={item} key={index}/>)
+                    })}
                     </Picker>
 
                     <Text> {"\n"}  Relationship: {"\n"}</Text>
@@ -294,15 +276,15 @@ export default class AddNode extends Component {
                     <Picker.Item label = "Parent-child" value = "parent-child"
                     />
                     <Picker.Item label = "Husband-wife" value = "husband-wife" />
-                    </Picker>   
-         
+                    </Picker>
+
                     {/* <TextInput style= {styles.pickerContainer}
                     onChangeText = {this.setRelationship}
                     placeholder = "Relationship e.g. parent-child"
                     /> */}
                     </View>
 
-                    <View style = {styles.buttonContainer}> 
+                    <View style = {styles.buttonContainer}>
                     <Button
                     title = "Save"
                     color="black"
@@ -316,7 +298,7 @@ export default class AddNode extends Component {
                     <Text > Save</Text> */}
                     </View>
 
-              
+
             </ScrollView>
         );
     }
@@ -337,13 +319,13 @@ const styles = StyleSheet.create({
                  flexDirection: 'column', 
                  letterSpacing: 10,
                  marginTop: 10
-                 
+
             },
-    
+
 
     headerContainer: {
         alignItems: 'flex-start',
-        backgroundColor: Color.PRIMARY, 
+        backgroundColor: Color.PRIMARY,
         fontSize: 30
     },
 
@@ -351,20 +333,20 @@ const styles = StyleSheet.create({
                 position: 'absolute',
                 top: 65,
                 right: 20,
-                padding: 10, 
-                
+                padding: 10,
+
     },
     viewStyleForLine: {
-        borderBottomColor: "black", 
-        borderBottomWidth: StyleSheet.hairlineWidth, 
+        borderBottomColor: "black",
+        borderBottomWidth: StyleSheet.hairlineWidth,
         alignSelf: 'stretch',
         width: "100%"
-    }, 
+    },
 
     pickerContainer: {
-        height: 40, 
-        borderColor: 'gray', 
+        height: 40,
+        borderColor: 'gray',
         borderWidth: 1
     }
-        
+
 });
