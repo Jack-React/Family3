@@ -120,6 +120,8 @@ export default class Graph extends Component {
     this.RedrawRelationships(name);
   }
 
+  console.log('finish updating location');
+
 
 }
 
@@ -151,9 +153,16 @@ export default class Graph extends Component {
     // eachtime it finds a marriageNode
     // it looks for the links which contains any of the names in the marriage nodes
     // and draws a line between them if all of them has locations
+    // if (!(this.state)) {
+    //
+    // }
+    return;
+    console.log('drawing relationships with links:', this.state.links);
+    console.log(this.state.links);
     for (var i = 0; i < this.state.nodes.length; i++) {
       var node = this.state.nodes[i];
       if (node.type == 'husband-wife') {
+        console.log('printing nodes location in dic', this.state.nodesDic[node.person1],this.state.nodesDic[node.person2] );
 
 
         // linking wife this line causes the crash, may be because of svg
@@ -210,15 +219,22 @@ export default class Graph extends Component {
     this.InsertInto(this.state.centerNode, 'row2');
     insertedNodes.push(this.AddMarriagePartner(links,this.state.centerNode.name, 'row2'));
 
-
      // loop over the relationships to determing positions
      // the order of inserting into row should be center>parents>child>
     for (var i = 0; i < links.length; i++) {
       let link = links[i];
+
       if (debug.relationships) {
         console.log('checking link: ', link);
         console.log('centernode is : ', this.state.centerNode);
         console.log('is p1 or p2 centernode?',link.person1 == this.state.centerNode.name, link.person2== this.state.centerNode.name );
+      }
+
+      // check if both of the people in the relationship exists
+      if (! (this.FindNode(link.person2) && this.FindNode(link.person2)) ) {
+        console.log(new Error(' one of the person in the relationships links doesnt exist'));
+        console.log('displaying relationship link' , link);
+        return;
       }
 
       // if the none of the nodes has been inserted before
@@ -232,6 +248,7 @@ export default class Graph extends Component {
         if(link.person1 == this.state.centerNode.name){// if i am the parent
 
           // then person2 gets sent to row 3
+          console.log('debug l 244');
           this.InsertInto(this.FindNode(link.person2), 'row3');
           insertedNodes.push(this.AddMarriagePartner(links,link.person2, 'row3'));
 
@@ -258,8 +275,8 @@ export default class Graph extends Component {
         return this.state.nodes[i];
       }
     }
-
-    return new Error('FindNode error, no node with matching name in this.state.nodes');
+    console.log(new Error('FindNode error, no node with matching name in this.state.nodes'));
+    return null;
   }
 
   // takes a name, looks through the links to see if they are married,

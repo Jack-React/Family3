@@ -13,7 +13,7 @@ import DBHandler from '../../api/DBHandler';
 
 
 var nodes = [
-  {"name": "bulbasure", "image":require("../../assets/familytree/stock-pokemon-photos/bulbasure.png")}, // temprary centerNode
+  {"name": "Null Req bulbasure :(", "image":require("../../assets/familytree/stock-pokemon-photos/bulbasure.png")}, // temprary centerNode
   // {"name": "pikachu", "image":require("./stock-pokemon-photos/pikachu.png")},
   // {"name": "squrtile", "image":require("./stock-pokemon-photos/squrtile.png")},
   // {"name": "Charmander", "image":require("./stock-pokemon-photos/charmander.png")},
@@ -74,10 +74,21 @@ class GraphMaker extends Component{
         // to write code that works in an asynchronous manner:
         const links = (await this.DBHandler.getRelation(userid)).data
 		const nodes = (await this.DBHandler.getRelationInfo(userid)).data
-		
+        console.log('printing links and then nodes');
+        console.log(links);
+        console.log(nodes);
+        if (!(nodes)) {
+          // console.log('no node data fetched, returning to default');
+          var newState = this.state;
+          newState.updated = false;
+          console.log(newState);
+          this.setState(newState);
+          return new Error('no nodes fetched from the server, using default');
+        }
+
         // var links = firstAPICall
         // var nodes = secondAPICall
-        
+
         this.idToName(links, nodes);
 
         console.log("new links is...")
@@ -186,7 +197,7 @@ class GraphMaker extends Component{
                 </View>
             )
 		}
-		
+
 		console.log('re rendering Graph: displaying  state  ');
 		console.log(this.state);
 		return(
