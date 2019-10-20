@@ -119,11 +119,13 @@ export default class APIHandler {
         return await this.sendRequest(data)
     }
 
-    /* add a person into a family */
-    async addFamily(familyid){
+    /* add a relationship into a family */
+    async addRelation(familyid, body){
         data = {
             URI: `${FAMILIES}/members/${familyid}`,
-            method: 'PUT'
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: this.buildFormBody(body)
         }
         return await this.sendRequest(data)
     }   

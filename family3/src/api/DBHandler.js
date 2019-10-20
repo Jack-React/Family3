@@ -46,7 +46,6 @@ export default class DBHandler {
         return response.data
     }
 
-<<<<<<< Updated upstream
     /* Gets all relationship info of a user */
     async getRelationInfo(userid){
         return await this.APIHandler.getRelationInfo(userid)
@@ -56,7 +55,7 @@ export default class DBHandler {
     async getRelation(userid){
         return await this.APIHandler.getRelation(userid)
     }
-=======
+    
     /* Adds a shared album to the family */
     async addSharedAlbum(familyid, albumName){
         body = {
@@ -91,5 +90,4 @@ export default class DBHandler {
         return await this.DBHandler.getFamilyMembers(familyid)
     }   
 
->>>>>>> Stashed changes
 }

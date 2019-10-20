@@ -8,6 +8,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import { Color } from '../../assets/Assets'
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
+import APIHandler from '../../api/APIHandler'
 
 // sample user data 
 const sampleData1 = {
@@ -86,6 +87,7 @@ export default class AddNode extends Component {
         this.state = { 
                 name: '',
                 gender: '',
+                familyid: '',
                 person1: '',
                 person2: '',
                 relationship: '', 
@@ -96,8 +98,20 @@ export default class AddNode extends Component {
 
     // retrieve stored info when app loads
     componentDidMount = () => {
+        const googleUserData = await GoogleSignin.getCurrentUser()
+
+        const userid = googleUserData.user.id;
+
+        const userData = (await APIHandler.getAccount(userid)).data;
+
+        const familyid = userData.family;
+
+        const membersData = (await APIHandler.getFamilyMembers(familyid)).data;
         // set to family database data loaded from backend
-        this.setState({userData:dbData})
+        this.setState({
+            familyid: familyid,
+            userData: membersData
+        })
     };
 
     setName = (value) => {
@@ -124,8 +138,29 @@ export default class AddNode extends Component {
     
     // stores linking info in JSON object 
     storeData() {
-        var links = JSON.stringify(this.state, ['name', 'gender', 'person1', 'person2', 'relationship']);
+        // var links = JSON.stringify(this.state, ['name', 'gender', 'person1', 'person2', 'relationship']);
+        // console.log(links)
+        var links = JSON.stringify(this.state, ['person1', 'person2', 'relationship']);
         console.log(links)
+        if (this.verifyDetails()) {
+            const response = await this.APIHandler.addRelation(this.state.familyid, links)
+            if (response.data != null) {
+                console.log("Account Creation Success!")
+                // this.props.navigation.navigate('App', { userData: this.state.userData });
+            }
+        }
+        // Invalid information
+        else {
+            console.log('invalid info')
+        }
+    }
+
+    verifyDetails() {
+        const validrelation = ['parent-child', 'husband-wife'];
+        if (validrelation.indexOf(this.state.relationship) < 0) {
+            return false
+        }
+        return true
     }
 
     render (){
@@ -133,7 +168,7 @@ export default class AddNode extends Component {
             return (<ActivityIndicator size="large" color="#3275a8" />)
         }
         else {
-        var arr = Array(dbData.length-1); 
+            var arr = Array(this.state.userData.length-1); 
         var j = 0;
 
         // var obj = this.state.userData;
