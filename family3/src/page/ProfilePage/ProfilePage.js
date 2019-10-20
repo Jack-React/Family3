@@ -73,7 +73,7 @@ export default class ProfilePage extends Component {
                     <Avatar
                         size="xlarge"
                         rounded
-                        source={require('../../assets/Image/NoProfilePic.png')} 
+                        //source={require('../../assets/Image/NoProfilePic.png')} 
                         activeOpacity={0.7}
                         />
                 </View>
