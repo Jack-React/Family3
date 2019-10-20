@@ -33,10 +33,8 @@ export default class Graph extends Component {
       directRelationships : { // to check weather a relationship should be drawn
         "parent-child" : true,
       },
-
-
-
     };
+
     // check initiation
     if (debug.graphInitiation) {
       console.log('graph initiated, centernode is ' + this.state.centerNode.name);
@@ -83,6 +81,7 @@ export default class Graph extends Component {
     return marriageNode;
   }
   updateCenterNode(id){
+    console.log('id', id)
     this.props.updateCenterNode(id);
     // console.log('Graph :you have touched ' + name);
   }

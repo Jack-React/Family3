@@ -9,7 +9,7 @@ import GraphMaker from './GraphMaker';
 import { Color } from '../../assets/Assets'
 import ActionButton from 'react-native-action-button';
 
-export default class MyPhotoPage extends Component {
+export default class FamilyTreePage extends Component {
     constructor(){
         super();
     }
@@ -30,9 +30,9 @@ export default class MyPhotoPage extends Component {
                 <View style = {styles.contentContainer}>
                     <GraphMaker/>
                     <ActionButton
-  buttonColor="rgba(231,76,60,1)"
-  onPress={() => { console.log("hi")}}
-/>
+                    buttonColor="rgba(231,76,60,1)"
+                    onPress={() => { console.log("hi")}}
+                    />
                 </View>
             </View>
         )
@@ -40,16 +40,13 @@ export default class MyPhotoPage extends Component {
 }
 
 const styles = StyleSheet.create({
-
     MainContainer: {
 		flex: 1,
         backgroundColor: Color.PRIMARY
     },
-
     contentContainer: {
         flex: 1,
     },
-
     headerContainer: {
         alignItems: 'flex-start',
         backgroundColor: Color.SECONDARY

@@ -81,7 +81,7 @@ export default class APIHandler {
     }
 
     /* Gets all relationships of a user */
-    async getRelation(userid){
+    async getRelation(){
         const url = ACCOUNTS + "/relations/" + userid;
         data = {
             URI: url,
@@ -89,8 +89,6 @@ export default class APIHandler {
         }
         return await this.sendRequest(data)
     }
-
-
 
     /* Sends data to any uri based on method, headers and body */
     async sendRequest(data){
