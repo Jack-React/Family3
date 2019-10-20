@@ -4,11 +4,14 @@ import{ View, Text, StyleSheet, Button, StatusBar} from 'react-native';
 import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import { Color } from '../../assets/Assets';
 import GoogleAPIHandler from '../../api/GoogleAPIHandler';
+import DBHandler from '../../api/DBHandler';
 
 export default class HomePage extends Component {
     constructor(){
         super()
         this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
+        this.DBHandler = DBHandler.getInstance();
+
         this.state = {
             userData: null
         }
@@ -36,9 +39,8 @@ export default class HomePage extends Component {
                         <Text style = {styles.Text}>Welcome {this.state.userData.user.givenName}!</Text>
                         <Text style = {styles.Text}>This is the home screen</Text>
                     </View>
-                    <View style = {styles.bottomView}>
+                        <View style = {styles.bottomView}>
                     </View>
-                    
                 </View>
             )
         }

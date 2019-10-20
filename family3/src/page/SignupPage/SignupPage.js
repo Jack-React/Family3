@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import{ View, Text, StyleSheet, StatusBar, Picker} from 'react-native';
+import{ View, Text, StyleSheet, StatusBar, Picker, TouchableHighlightBase} from 'react-native';
 import { Button } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
 
@@ -7,7 +7,7 @@ import { Color } from '../../assets/Assets'
 import DBHandler from '../../api/DBHandler'
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 
-export default class MyPhotoPage extends Component {
+export default class SignupPage extends Component {
     constructor(){
         super();
         this.DBHandler = DBHandler.getInstance();
@@ -15,7 +15,8 @@ export default class MyPhotoPage extends Component {
 
         this.state = {
             dob: null, 
-            gender: 'Male',   
+            gender: "Select",
+            validData: false
         }
     }
     
@@ -30,7 +31,7 @@ export default class MyPhotoPage extends Component {
                         mode="date"
                         format="DD-MM-YYYY"
                         showIcon= {false}
-                        onDateChange={(date) => {this.setState({dob: date})}}
+                        onDateChange={(date) => {this.setState({dob: date}, () => {this.verifyDetails()})}}
                     />
                         
                     <Text style = {styles.textHeader}> Gender: </Text>
@@ -38,7 +39,8 @@ export default class MyPhotoPage extends Component {
                         mode = 'dropdown'
                         style = {styles.pickerStyle}
                         selectedValue = {this.state.gender}
-                        onValueChange = {(itemValue, itemIndex) => {this.setState({gender: itemValue})}}>
+                        onValueChange = {(itemValue, itemIndex) => {this.setState({gender: itemValue }, () => {this.verifyDetails()})}}>
+                        <Picker.Item label= "Select" value = "Selecr" />
                         <Picker.Item label= "Male" value = "Male" />
                         <Picker.Item label= "Female" value = "Female" />
                         <Picker.Item label= "Other" value = "Other" />
@@ -47,6 +49,7 @@ export default class MyPhotoPage extends Component {
                 </View>
                 <View style = {styles.bottomView} >
                     <Button 
+                        disabled = {!this.state.validData}
                         title = "Submit"
                         type = "clear"
                         titleStyle = {{color: Color.SECONDARY}}
@@ -82,6 +85,10 @@ export default class MyPhotoPage extends Component {
         if (this.state.dob == null){
             return false
         }
+        if (this.state.gender == 'Select'){
+            return false
+        }
+        this.setState({validData: true})
         return true
     }
 }

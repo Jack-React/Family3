@@ -70,6 +70,56 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
+    /* Add albums to family shared albums */
+    async addSharedAlbum(familyid, body){
+        console.log(body)
+        data = {
+            URI:`${FAMILIES}/albums/${familyid}`,
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: this.buildFormBody(body)
+        }
+        return await this.sendRequest(data)
+    }
+
+    /* Delete albums from family shared albums */
+    async deleteSharedAlbum(familyid, albumid){
+        data = {
+            URI:`${FAMILIES}/albums/${familyid}/${albumid}`,
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+        return await this.sendRequest(data)
+    }
+
+    /* Gets the family object */
+    async getFamilies(familyid){
+        data = {
+            URI:`${FAMILIES}/${familyid}`,
+            method: 'GET',
+        }
+        return await this.sendRequest(data)
+    }
+
+    /* add a person into a family */
+    async addFamily(familyid){
+        data = {
+            URI: `${FAMILIES}/members/${familyid}`,
+            method: 'PUT'
+        }
+        return await this.sendRequest(data)
+    }   
+
+    /* gets members of a family */
+    async getFamilyMembers(familyid){
+        data = {
+            URI: `${FAMILIES}/members/${familyid}`,
+            method: 'GET'
+        }
+        return await this.sendRequest(data)
+    }   
+
+
     /* Sends data to any uri based on method, headers and body */
     async sendRequest(data){
         try {
@@ -85,4 +135,6 @@ export default class APIHandler {
             console.warn(error);
         }
     }
+
+    
 };

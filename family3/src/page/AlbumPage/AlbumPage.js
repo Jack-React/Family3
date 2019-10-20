@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import{ View, Text, StyleSheet, StatusBar, ScrollView, RefreshControl } from 'react-native';
-import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-base'
+import { Header, Right, Button as ButtonBase , Body, Title } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -114,7 +114,11 @@ export default class AlbumPage extends Component {
         // Creates Album
         const album = await this.GoogleAPIHandler.createAlbum(albumDetails.name);
         if (albumDetails.shareable){
-            response = await this.GoogleAPIHandler.shareAlbum(album.id)
+            await this.GoogleAPIHandler.shareAlbum(album.id)
+            familyid = (await this.DBHandler.getDBUserData()).family
+            if (familyid != undefined){
+                response = await this.DBHandler.addSharedAlbum(familyid, album.id)
+            }
         }
         this.setState({
             loaded: false,
@@ -124,7 +128,7 @@ export default class AlbumPage extends Component {
         this.componentDidMount()
     }
 
-    // Check is album is in array
+    // Check if album is in array or albums
     containsAlbum(album, albums) {
         var i;
         for (i = 0; i < albums.length; i++) {
@@ -134,7 +138,7 @@ export default class AlbumPage extends Component {
         return false;
     }
 
-    // Merged Both albums
+    // Merged Both shared albums and non shared albums
     mergeAlbums(albumA, albumB){
         if (albumA.length > albumB.length){
             for (i = 0; i < albumB.length; i ++){

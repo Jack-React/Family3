@@ -45,4 +45,56 @@ export default class DBHandler {
         const response = await this.APIHandler.getAccount(userData.user.id);
         return response.data
     }
+
+    /* Gets all relationship info of a user */
+    async getRelationInfo(userid){
+        return await this.APIHandler.getRelationInfo(userid)
+    }
+
+    /* Gets all relationships of a user */
+    async getRelation(userid){
+        return await this.APIHandler.getRelation(userid)
+    }
+    
+    /* Adds a shared album to the family */
+    async addSharedAlbum(familyid, album){
+        body = {
+            albumid: album.albumid,
+            sharedToken: album.sharedToken 
+        }
+        console.log(body)
+        return await this.APIHandler.addSharedAlbum(familyid, body)
+    }
+
+    /* deletes a shared album to the family */
+    async deleteSharedAlbum(familyid, albumid){
+        const sharedAlbums = (await this.APIHandler.getFamilies(familyid)).data.sharedAlbums
+        const dbalbumid = this.getDbAlbumId(sharedAlbums, albumid)
+        return await this.APIHandler.deleteSharedAlbum(familyid, dbalbumid)
+    }
+    
+    /* Convert an album name to id where databse recognize */
+    getDbAlbumId(sharedAlbums, albumid){
+        for (i = 0; i < sharedAlbums.length; i ++){
+            if (sharedAlbums[i].albumid == albumid){
+                return sharedAlbums[i]._id
+            }
+        }
+    }
+
+    /* add a person into a family */
+    async addFamily(familyid){
+        return await this.APIHandler.addFamily(familyid)
+    }   
+
+    /* gets members of a family */
+    async getFamilyMembers(familyid){
+        return await this.APIHandler.getFamilyMembers(familyid)
+    }   
+
+    /* Gets the family object from back end */
+    async getFamilies(familyid){
+        return await this.APIHandler.getFamilies(familyid)
+    }
+
 }

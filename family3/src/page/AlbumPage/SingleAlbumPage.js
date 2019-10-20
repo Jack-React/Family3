@@ -7,6 +7,7 @@ import ImageView from 'react-native-image-view';
 import { SearchBar } from 'react-native-elements';
 
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
+import DBHandler from '../../api/DBHandler'
 import { Color } from '../../assets/Assets'
 import ShareConfirmationDialog from './component/ShareConfimationDialog';
 
@@ -15,6 +16,7 @@ const IMAGE_WIDTH = Dimensions.get('window').width
 export default class SingleAlbumPage extends Component {
     constructor(){
         super();
+        this.DBHandler = DBHandler.getInstance();
         this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
         this.state = {
             album: {},
@@ -194,16 +196,26 @@ export default class SingleAlbumPage extends Component {
 
     // Handles the event where share button is pressed
     async handleShare(){
-        const { shared } = this.state
+        const { shared, album } = this.state
         if (shared){
             await this.GoogleAPIHandler.unShareAlbum(album.id)
+            familyid = (await this.DBHandler.getDBUserData()).family
+            if (familyid != undefined){
+                response = await this.DBHandler.deleteSharedAlbum(familyid, album.id)
+            }
             this.state.album.shareInfo = null
             this.setState({shared: false})
         }
+        
         else {
-            await this.GoogleAPIHandler.shareAlbum(album.id)
+            const shareToken = (await this.GoogleAPIHandler.shareAlbum(album.id)).shareInfo.shareToken
+            album_data = {albumid: album.id, sharedToken: shareToken}
+            familyid = (await this.DBHandler.getDBUserData()).family
+            if (familyid != undefined){
+                response = await this.DBHandler.addSharedAlbum(familyid, album_data)
+            }
             this.state.album.shareInfo = {}
-            this.setState({shared: true})
+            this.setState({shared: true, spinner:false})   
         }
     }
 

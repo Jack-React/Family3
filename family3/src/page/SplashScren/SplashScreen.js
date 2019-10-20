@@ -13,6 +13,9 @@ export default class SplashScreen extends Component {
         super()
         this.DBHandler = DBHandler.getInstance()
         this.GoogleAPIHandler = GoogleAPIHandler.getInstance()
+        this.state = {
+            userData: null
+        }
     }
 
     componentDidMount() {
@@ -48,6 +51,7 @@ export default class SplashScreen extends Component {
             const isDBSignedIn = await this.DBHandler.hasAccount();
 
             if (isDBSignedIn){
+                this.checkAlbums()
                 this.props.navigation.navigate('App')
             }
             else 
@@ -58,15 +62,44 @@ export default class SplashScreen extends Component {
     };
 
     // Checks if the user has any unjoined family albums
-    // checkAlbums(){
-    //     DBHandler.get
-    // }
+    async checkAlbums(){
+        const userData = await this.DBHandler.getDBUserData()
+        this.setState({userData: userData})
+        if(userData.family != undefined){
+            // console.log(userData.family)
+            const familyData = (await this.DBHandler.getFamilies(userData.family)).data
+            // console.log(familyData)
+            if (familyData.sharedAlbums != undefined){
+                // console.log(familyData.sharedAlbums)
+                if (familyData.sharedAlbums.length > 0){
 
-    // // Joins all family shared albums
-    // async joinAlbums(sharedTokens){
-    //     for (i = 0; i < sharedTokens.length; i ++)
-    //         await this.GoogleAPIHandler.joinSharedAlbum(sharedTokens[i])
-    // }
+                    // console.log(familyData.sharedAlbums)
+                    this.joinAlbums(familyData.sharedAlbums)
+                }
+            }
+        }
+    }
+
+    // Check if album is in array or albums
+    containsAlbum(album, albums) {
+        var i;
+        for (i = 0; i < albums.length; i++) {
+            if (albums[i].id === album.id) 
+                return true;
+        }
+        return false;
+    }
+
+    // Joins all family shared albums
+    async joinAlbums(sharedAlbums){
+        const googleSharedAlbums = await this.GoogleAPIHandler.getSharedAlbums()
+        for (i = 0; i < sharedAlbums.length; i ++){
+            if (!this.containsAlbum(sharedAlbums[i], googleSharedAlbums)){
+                this.GoogleAPIHandler.joinSharedAlbum(sharedAlbums[i].sharedTokens)
+                console.log("joined")
+            }
+        }
+    }
 }
 
 const styles = StyleSheet.create({

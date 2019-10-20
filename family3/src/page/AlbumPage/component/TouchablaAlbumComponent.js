@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import{ StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import { Image } from 'react-native-elements';
+import { Image, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Card, CardItem, Text, Button, Left, Body, Right } from 'native-base';
 
@@ -16,24 +16,25 @@ export default class TouchableAlbumComponent extends Component{
         const {album} = this.props
         return (
             <TouchableOpacity
-            style={styles.touchableButton}
             activeOpacity= {0.5}
             underlayColor= {Color.GREY}
             onPress={() => this.props.navigateSelectedAlbum(this.props.album.id)}>
                 <Card style = {styles.card}>
-                    <CardItem>
-                        <Left>
-                            <Body>
-                            <Text style = {styles.cardText}>{album.title.toUpperCase()}</Text>
-                            </Body>
-                        </Left>
-                    </CardItem>
-                    <CardItem cardBody>
+                    
+                    <CardItem cardBody style = {{borderTopStartRadius: 10, borderTopEndRadius:10, overflow: 'hidden'}}>
                         <Image 
                         source = {album.coverPhotoBaseUrl? {uri: album.coverPhotoBaseUrl}: require('../../../assets/Image/NoImage.jpg')}
                         style={styles.cardImage}/>
                     </CardItem>
-                    <CardItem style = {{height: 50}}>
+                    <CardItem style = {{height: 10}}>
+                        <Left>
+                                <Body>
+                                    <Text style = {styles.cardText}>{album.title.toUpperCase()}</Text>
+                                </Body>
+                            </Left>
+                    </CardItem>
+                    <Divider style = {{alignSelf: 'center', marginTop: 10, width: IMAGE_WIDTH * 0.85}}/>
+                    <CardItem style = {{height: 50, borderBottomStartRadius: 10, borderBottomEndRadius: 10}}>
                         <Left>
                             <Button transparent>
                             <Icon style = {{}} name="photo" size={20} color= {Color.SECONDARY}/>   
@@ -59,24 +60,24 @@ export default class TouchableAlbumComponent extends Component{
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor:Color.SECONDARY,
+        backgroundColor:Color.PRIMARY,
         flex:1,
-        marginLeft: '10%',
-        width: '80%', 
-        elevation: 1,
+        marginLeft: '5%',
+        width: '90%', 
+        borderRadius: 10
     },
 
     cardImage: {
-        flex:1,
-        width: IMAGE_WIDTH * 0.8,
-        height:200,
+        width: IMAGE_WIDTH * 0.90,
+        height: 300,
         resizeMode: 'cover',
     },
 
     cardText:{
-        justifyContent: 'center',
         alignSelf: 'center',
-        fontSize:18,
+        marginTop: 10,
+        marginLeft: -10,
+        fontSize:15,
         color: Color.SECONDARY,
     }
 })
