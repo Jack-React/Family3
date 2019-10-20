@@ -17,7 +17,8 @@ export default class Node extends Component{
         id: null,
         name: null,
         image: require(default_node_image), // current default image
-        imageStyle: (styles.defaultNodeImageStyle),
+	// rounded node, blue border, white background
+        imageStyle: ({width:50, height:50, borderRadius: 50/2, overflow: 'hidden', backgroundColor: '#ffffff', borderWidth: 1.5, borderColor: '#68a4e8'}),
     };
   }
 
