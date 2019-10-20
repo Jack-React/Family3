@@ -102,7 +102,7 @@ export default class APIHandler {
     }
 
     /* Gets all relationships of a user */
-    async getRelation(){
+    async getRelation(userid){
         const url = ACCOUNTS + "/relations/" + userid;
         data = {
             URI: url,

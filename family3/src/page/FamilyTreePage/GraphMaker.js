@@ -58,7 +58,7 @@ class GraphMaker extends Component{
         var centerUsrId = '597b0ddfe8e0bd240cc166f2f1ececb493cfda372865096fc84bb9ecbd362c55';
         userid = await this.DBHandler.getDBUserData()
         console.log('user', userid)
-        this.getDatafromAPI(userid._id);
+        this.getDatafromAPI(centerUsrId);
     }
 
     async getDatafromAPI(userid) {
