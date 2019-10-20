@@ -16,6 +16,7 @@ export default class Node extends Component{
       this.state = {
         id: null,
         name: null,
+        node: null,
         image: require(default_node_image), // current default image
 	// rounded node, blue border, white background
         imageStyle: ({width:50, height:50, borderRadius: 50/2, overflow: 'hidden', backgroundColor: '#ffffff', borderWidth: 1.5, borderColor: '#68a4e8'}),
@@ -43,6 +44,11 @@ export default class Node extends Component{
 	if (this.props.imageStyle) {
 		(this.setState({imageStyle:this.props.imageStyle}))
 	};
+  if (this.props.node) {
+		(this.setState({node:this.props.node}))
+	}else{
+    console.log(new Error(' No node attributes recieved for node component'));
+  }
     // updateNodeLocation(this.state.name, );
   }
 
@@ -89,7 +95,7 @@ export default class Node extends Component{
           })
         }
       }}>
-		<TouchableOpacity style={styles.button} onPress={() => this.updateCenterNode(this.state.id)}>
+		<TouchableOpacity style={styles.button} onPress={() => this.updateCenterNode(this.state.node.id)}>
 			<Image
 				source={this.state.image}
 				style={this.state.imageStyle} />

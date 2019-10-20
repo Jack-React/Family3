@@ -55,25 +55,30 @@ class GraphMaker extends Component{
     }
 
     async componentDidMount() {
-        var centerUsrId = '597b0ddfe8e0bd240cc166f2f1ececb493cfda372865096fc84bb9ecbd362c55';
-        userid = await this.DBHandler.getDBUserData()
-        console.log('user', userid)
-        this.getDatafromAPI(centerUsrId);
+      // const googleUserData = await GoogleSignin.getCurrentUser()
+        // var centerUsrId = '597b0ddfe8e0bd240cc166f2f1ececb493cfda372865096fc84bb9ecbd362c55';
+      const userData = await this.DBHandler.getDBUserData()
+      console.log('user', userData)
+      if (userData.family == null) { 
+        console.log('Error, user have no family')
+        return
+      }
+      this.getDatafromAPI(userData.family);
     }
 
-    async getDatafromAPI(userid) {
+    async getDatafromAPI(familyid) {
         // fetch data from server
         // this is the url of server for links and nodes
         // ! The centerUsrId is for testing here, you may change it to google user id when runing in Family3
         // linkUrl = ACCOUNTS + "/relations/" + userid;
         // nodeUrl = ACCOUNTS + "/relationsinfo/" + userid;
 
-		console.log(userid);
+		console.log(familyid);
         // Actually, Networking is an inherently asynchronous operation.
         // Fetch methods will return a Promise that makes it straightforward
         // to write code that works in an asynchronous manner:
-        const links = (await this.DBHandler.getRelation(userid)).data
-		const nodes = (await this.DBHandler.getRelationInfo(userid)).data
+        const links = (await this.DBHandler.getRelation(familyid))
+		    const nodes = (await this.DBHandler.getFamilyMembers(familyid))
         console.log('printing links and then nodes');
         console.log(links);
         console.log(nodes);
@@ -157,7 +162,8 @@ class GraphMaker extends Component{
         this.setState({
             updated: true
         });
-        // this.getDatafromAPI(id);
+        console.log('updating center node', id);
+        this.getDatafromAPI(id);
         // console.log('test app state while updating centernode');
         // console.log(nodes);
 	}

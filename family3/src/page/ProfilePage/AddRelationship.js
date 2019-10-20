@@ -98,11 +98,7 @@ export default class AddNode extends Component {
 
     // retrieve stored info when app loads
     componentDidMount = () => {
-        const googleUserData = await GoogleSignin.getCurrentUser()
-
-        const userid = googleUserData.user.id;
-
-        const userData = (await APIHandler.getAccount(userid)).data;
+        const userData = await this.DBHandler.getDBUserData()
 
         const familyid = userData.family;
 
