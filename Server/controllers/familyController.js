@@ -51,7 +51,7 @@ exports.addShareAlbum = (req, res) => {
             }
             res.json({
                 message: "Share Albums added",
-                data: family
+                data: null
             });
         });
     });
@@ -76,7 +76,7 @@ exports.addRelation = (req, res) => {
             }
             res.json({
                 message: "successfully added family relationship",
-                data: family
+                data: null
             });
         });
     });
