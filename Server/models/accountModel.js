@@ -31,6 +31,9 @@ const accountSchema = mongoose.Schema({
         default: Date.now
     },
     // belong to which family
+    invitation: {
+        type: String
+    },
     family: {
         type: String // family id
     }

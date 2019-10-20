@@ -25,6 +25,10 @@ router.route('/families/members/:family_id')
     .put(familyController.addRelation)
     .delete(familyController.deleteRelation);
 
+// Route to family tree relations
+router.route('/accounts/relations/:family_id')
+    .get(familyController.findRelations);
+
 router.route('/families/albums/:family_id')
     .put(familyController.addShareAlbum)
     // .delete(familyController.deleteShareAlbum);
@@ -42,14 +46,18 @@ router.route('/accounts/:account_id')
     .put(accountController.update)
     .delete(accountController.delete);
 
+// Route to set family to account
 router.route('/accounts/join/:account_id')
     .put(accountController.joinfamily);
 
-router.route('/accounts/relations/:account_id')
-    .get(familyController.findRelations);
+router.route('/accounts/invite/:sender_id/:target_id')
+    .put(accountController.invite);
 
-router.route('/accounts/relationsinfo/:account_id')
-    .get(familyController.findRelationsInfo);
+router.route('/accounts/invite/accept/:target_id')
+    .put(accountController.accept);
+
+// router.route('/accounts/relationsinfo/:account_id')
+//     .get(familyController.findRelationsInfo);
 
 router.route('/test')
     .get(accountController.test);

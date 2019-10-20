@@ -134,3 +134,68 @@ exports.joinfamily = (req, res) => {
         }));
     });
 }
+
+
+// receive invitation
+exports.invite = (req, res) => {
+    Account.findById(req.params.sender_id, (err, sender) => {
+        if (err) {
+            res.send(err);
+        };
+
+        if (sender == null || sender.family == null) {
+            res.json({
+                message: "No invitation info found",
+                data: account
+            });
+            return
+        }
+        const familyid = sender.family;
+        Account.findById(req.params.target_id, (err, target) => {
+            if (err) {
+                res.json(err);
+            }
+
+            target.invitation = familyid;
+
+            target.save(err => {
+                if (err) {
+                    res.json(err);
+                }
+                res.json({
+                    message: "Set invitation Success!",
+                    data: target
+                });
+            });
+        });
+    });
+}
+
+// accept invitation
+exports.accept = (req, res) => {
+    Account.findById(req.params.target_id, (err, target) => {
+        if (err) {
+            res.json(err);
+        }
+
+        if (target == null || target.invitation == null) {
+            res.json({
+                message: "No invitation info found",
+                data: account
+            });
+            return
+        }
+        target.family = target.invitation;
+        target.invitation = null;
+
+        target.save(err => {
+            if (err) {
+                res.json(err);
+            }
+            res.json({
+                message: "Set invitation Success!",
+                data: target
+            });
+        });
+    });
+}
