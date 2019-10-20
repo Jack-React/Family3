@@ -156,7 +156,7 @@ export default class Graph extends Component {
     // if (!(this.state)) {
     //
     // }
-    return;
+    // return;
     console.log('drawing relationships with links:', this.state.links);
     console.log(this.state.links);
     for (var i = 0; i < this.state.nodes.length; i++) {

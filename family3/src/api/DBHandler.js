@@ -55,4 +55,39 @@ export default class DBHandler {
     async getRelation(userid){
         return await this.APIHandler.getRelation(userid)
     }
+    
+    /* Adds a shared album to the family */
+    async addSharedAlbum(familyid, albumName){
+        body = {
+            sharedAlbums: albumName
+        }
+        return await this.APIHandler.addSharedAlbum(familyid, body)
+    }
+
+    /* deletes a shared album to the family */
+    async deleteSharedAlbum(familyid, albumName){
+        var sharedAlbums = (await this.APIHandler.getFamilies(familyid)).data.sharedAlbums
+        var albumid = this.getSharedeAlbumId(sharedAlbums, albumName)
+        return await this.APIHandler.deleteSharedAlbum(familyid, albumid)
+    }
+    
+    /* Convert an album name to id where databse recognize */
+    getSharedeAlbumId(sharedAlbums, albumName){
+        for (i = 0; i < sharedAlbums.length; i ++){
+            if (sharedAlbums[i].Album == albumName){
+                return sharedAlbums[i]._id
+            }
+        }
+    }
+
+    /* add a person into a family */
+    async addFamily(familyid){
+        return await this.DBHandler.addFamily(familyid)
+    }   
+
+    /* gets members of a family */
+    async getFamilyMembers(familyid){
+        return await this.DBHandler.getFamilyMembers(familyid)
+    }   
+
 }
