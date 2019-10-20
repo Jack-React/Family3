@@ -39,7 +39,7 @@ var links = [
 ];
 
 const marriageNodeimg = require('../../assets/familytree/heart-outline.png');
-
+const centerUsrId = '597b0ddfe8e0bd240cc166f2f1ececb493cfda372865096fc84bb9ecbd362c55';
 class GraphMaker extends Component{
 	constructor(props){
     super(props);
@@ -56,10 +56,10 @@ class GraphMaker extends Component{
 
     async componentDidMount() {
       // const googleUserData = await GoogleSignin.getCurrentUser()
-        // var centerUsrId = '597b0ddfe8e0bd240cc166f2f1ececb493cfda372865096fc84bb9ecbd362c55';
+        var centerUsrId = '597b0ddfe8e0bd240cc166f2f1ececb493cfda372865096fc84bb9ecbd362c55';
       const userData = await this.DBHandler.getDBUserData()
       console.log('user', userData)
-      if (userData.family == null) { 
+      if (userData.family == null) {
         console.log('Error, user have no family')
         return
       }
@@ -77,8 +77,8 @@ class GraphMaker extends Component{
         // Actually, Networking is an inherently asynchronous operation.
         // Fetch methods will return a Promise that makes it straightforward
         // to write code that works in an asynchronous manner:
-        const links = (await this.DBHandler.getRelation(familyid))
-		    const nodes = (await this.DBHandler.getFamilyMembers(familyid))
+        var links = (await this.DBHandler.getRelation(familyid)).data
+		    var nodes = (await this.DBHandler.getFamilyMembers(familyid)).data
         console.log('printing links and then nodes');
         console.log(links);
         console.log(nodes);
@@ -93,17 +93,19 @@ class GraphMaker extends Component{
 
         // var links = firstAPICall
         // var nodes = secondAPICall
+        nodes = this.MakeFamilyMembersIntoNodes(nodes);
+        // console.log('converted nodes',nodes);
 
-        this.idToName(links, nodes);
+        links = this.MakeRelationsIntoLinks(nodes, links)
 
         console.log("new links is...")
         console.log(links);
 
         console.log("center node is ...")
-        console.log(this.FindNode(nodes, userid))
+        console.log(this.FindNode(nodes, centerUsrId,),'currently hardecoded')
 
         this.setState({
-			centerNode: this.FindNode(nodes, userid),
+			centerNode: this.FindNode(nodes, centerUsrId),
 			originalNodes: JSON.parse(JSON.stringify(this.state.originalNodes)),
 			links: links,
 			nodes: nodes,
@@ -142,21 +144,53 @@ class GraphMaker extends Component{
         //     });
     }
 
-    idToName(links, nodes) {
-        links.forEach(element => {
-            var person1id = element.person1;
-            element.person1 = this.findName(nodes, person1id);
-            var person2id = element.person2;
-            element.person2 = this.findName(nodes, person2id);
-        });
-    }
-
+    // idToName(links, nodes) {
+    //     links.forEach(element => {
+    //         var person1id = element.person1;
+    //         element.person1 = this.findName(nodes, person1id);
+    //         var person2id = element.person2;
+    //         element.person2 = this.findName(nodes, person2id);
+    //     });
+    // }
+    //
     findName(nodes, id) {
         for (var i = 0; i < nodes.length; i++) {
             if (id == nodes[i]._id)
                 return nodes[i].name;
         }
+        console.log(new Error('cant find node with relivant id'), id);
     }
+    MakeRelationsIntoLinks (nodes,relations){
+      var links =[];
+      for (var i = 0; i < relations.length; i++) {
+        console.log('finding names for ',relations[i].person1 , relations[i].person2);
+        p1 = this.findName(nodes, relations[i].person1);
+        p2 = this.findName(nodes, relations[i].person2);
+        var link = {person1: p1, person2: p2, relationship:relations[i].relationship }
+        console.log('name found, links built', link);
+        links.push(link)
+      }
+      console.log('relations sorted into links', links);
+      return links;
+    }
+
+    MakeFamilyMembersIntoNodes(familyData){
+      var nodesArray = [];
+
+      for (var i = 0; i < familyData.length; i++) {
+        nodesArray.push(this.ConvertPersonToNode(familyData[i]));
+      }
+      console.log('finished converting Family members into nodes', nodesArray);
+      return nodesArray;
+
+    }
+
+    ConvertPersonToNode(person){
+      var node = {_id: person._id , name: person.firstName + person.lastName, gender: person.gender}
+      return node;
+    }
+
+
 
     UpdateCenterNode(id) {
         this.setState({
