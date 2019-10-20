@@ -182,26 +182,32 @@ exports.findRelations = (req, res) => {
         if (err) {
             res.send(err);
         }
-        if (account){
-            if (account.family){
-                console.log("!@#")
-                var family_id = account.family;
-                Family.findById(family_id, (err, family) => {
-                    if (err) {
-                        res.send(err);
-                    }
-                    var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
-                    res.json({
-                        message: "Find all relations",
-                        data: relations
-                    });
-                });
-            }
+
+        if ((account == null) || (account.family == null)){
+            res.json({
+                message: "No relations found",
+                data: account
+            });
+            return
         }
-        res.json({
-            message: "Error getting relation",
-            data: account
-        })
+
+        var family_id = account.family;
+        Family.findById(family_id, (err, family) => {
+            if (err) {
+                res.send(err);
+            }
+            var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
+            res.json({
+                message: "Find all relations",
+                data: relations
+            });
+        });
+            // }
+        // }
+        // res.json({
+        //     message: "Error getting relation",
+        //     data: account
+        // })
     });
 }
 
@@ -213,55 +219,55 @@ exports.findRelationsInfo = (req, res) => {
         if (err) {
             res.send(err);
         }
-        if (account){
-            if (account.family){
-                var family_id = account.family;
-                Family.findById(family_id, (err, family) => {
-                    if (err) {
-                        res.send(err);
-                    }
-
-                    var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
-
-                    // get unique id from links
-                    var userids = [];
-
-                    for (var i = 0; i < relations.length; i++) {
-                        var person1id = relations[i].person1;
-                        var person2id = relations[i].person2;
-                        if (userids.indexOf(person1id) < 0)
-                            userids.push(person1id);
-                        if (userids.indexOf(person2id) < 0)
-                            userids.push(person2id);
-                    }
-
-                    Account.find({
-                        '_id': {
-                            $in: userids
-                        }
-                    }, (err, results) => {
-                            var output = results.map(e => { 
-                                var data = {
-                                    _id: e._id,
-                                    name: e.firstName + " " + e.lastName
-                                }
-                                return data;
-                            });
-                        if (err) {
-                            res.json(err);
-                        }
-                        res.json({
-                            message: "Find all relations info nodes",
-                            data: output
-                        });
-                    });
-                });
-            }
+        if ((account == null) || (account.family == null)){
+            res.json({
+                message: "No Relation info found",
+                data: account
+            });
+            return
         }
-        res.json({
-            message: "Error getting relation info",
-            data: account
-        })
+        
+        var family_id = account.family;
+        Family.findById(family_id, (err, family) => {
+            if (err) {
+                res.send(err);
+            }
+
+            var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
+
+            // get unique id from links
+            var userids = [];
+
+            for (var i = 0; i < relations.length; i++) {
+                var person1id = relations[i].person1;
+                var person2id = relations[i].person2;
+                if (userids.indexOf(person1id) < 0)
+                    userids.push(person1id);
+                if (userids.indexOf(person2id) < 0)
+                    userids.push(person2id);
+            }
+
+            Account.find({
+                '_id': {
+                    $in: userids
+                }
+            }, (err, results) => {
+                    var output = results.map(e => { 
+                        var data = {
+                            _id: e._id,
+                            name: e.firstName + " " + e.lastName
+                        }
+                        return data;
+                    });
+                if (err) {
+                    res.json(err);
+                }
+                res.json({
+                    message: "Find all relations info nodes",
+                    data: output
+                });
+            });
+        });
     });
 }
 
