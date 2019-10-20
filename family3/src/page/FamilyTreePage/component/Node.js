@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 // constants
-const default_node_image = '../../../assets/familytree/stock-pokemon-photos/bulbasure.png';
+const default_node_image = '../../../assets/icon/default_avatar.png';
 
 export default class Node extends Component{
   constructor(props){
