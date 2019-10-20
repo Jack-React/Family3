@@ -70,6 +70,27 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
+    /* Adds shared album to family */
+    async addSharedAlbum(familyid, body){
+        data = {
+            URI:`${FAMILIES}/albums/${familyid}`,
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: this.buildFormBody(body)
+        }
+        return await this.sendRequest(data)
+    }
+
+    /* remove a shared album from family */
+    async deleteSharedAlbum(familyid, albumid){
+        data = {
+            URI:`${FAMILIES}/albums/${familyid}/${albumid}`,
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+        return await this.sendRequest(data)
+    }
+
     /* Gets all relationship info of a user */
     async getRelationInfo(userid){
         const url = ACCOUNTS + "/relationsinfo/" + userid;
@@ -85,10 +106,37 @@ export default class APIHandler {
         const url = ACCOUNTS + "/relations/" + userid;
         data = {
             URI: url,
+            method: 'GET'
+        }
+        return await this.sendRequest(data)
+    }
+    
+    async getFamilies(familyid){
+        data = {
+            URI:`${FAMILIES}/${familyid}`,
             method: 'GET',
         }
         return await this.sendRequest(data)
     }
+
+    /* add a person into a family */
+    async addFamily(familyid){
+        data = {
+            URI: `${FAMILIES}/members/${familyid}`,
+            method: 'PUT'
+        }
+        return await this.sendRequest(data)
+    }   
+
+    /* gets members of a family */
+    async getFamilyMembers(familyid){
+        data = {
+            URI: `${FAMILIES}/members/${familyid}`,
+            method: 'GET'
+        }
+        return await this.sendRequest(data)
+    }   
+
 
     /* Sends data to any uri based on method, headers and body */
     async sendRequest(data){
@@ -105,4 +153,6 @@ export default class APIHandler {
             console.warn(error);
         }
     }
+
+    
 };
