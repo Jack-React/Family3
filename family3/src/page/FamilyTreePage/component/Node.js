@@ -30,6 +30,9 @@ export default class Node extends Component{
 
   updateCenterNode(id){
     this.props.updateCenterNode(id);
+    console.log('updateCenterNode called with id',id);
+    console.log('current id is ', this.state.node.id);
+    console.log('you have touched', this.state);
     // console.log('you have touched' + this.state.name);
   }
 
@@ -95,7 +98,7 @@ export default class Node extends Component{
           })
         }
       }}>
-		<TouchableOpacity style={styles.button} onPress={() => this.updateCenterNode(this.state.node.id)}>
+		<TouchableOpacity style={styles.button} onPress={() => this.updateCenterNode(this.state.node._id)}>
 			<Image
 				source={this.state.image}
 				style={this.state.imageStyle} />

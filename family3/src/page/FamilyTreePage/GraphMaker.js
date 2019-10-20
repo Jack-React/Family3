@@ -193,11 +193,13 @@ class GraphMaker extends Component{
 
 
     UpdateCenterNode(id) {
+        var newNode = this.FindNode(this.state.nodes,id);
         this.setState({
-            updated: true
+            updated: true,
+            centerNode : newNode
         });
-        console.log('updating center node', id);
-        this.getDatafromAPI(id);
+        console.log('updating center id, node,',id, newNode );
+        // this.getDatafromAPI(id);
         // console.log('test app state while updating centernode');
         // console.log(nodes);
 	}
@@ -231,6 +233,9 @@ class GraphMaker extends Component{
 
     render() {
         if (this.state.updated) {
+          this.setState({
+              updated: false
+          });
             return (
                 <View style={{ flex: 1, padding: 20 }}>
                     <ActivityIndicator />
@@ -240,10 +245,12 @@ class GraphMaker extends Component{
 
 		console.log('re rendering Graph: displaying  state  ');
 		console.log(this.state);
+    var newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+    var newCenternode = JSON.parse(JSON.stringify(this.state.centerNode));
 		return(
             < Graph
-                centerNode = { this.state.centerNode }
-                nodes = { this.state.nodes }
+                centerNode = { newCenternode }
+                nodes = { newNodes }
                 links = { this.state.links }
                 updateCenterNode = { this.UpdateCenterNode.bind(this) }
             />
