@@ -124,7 +124,7 @@ export default class AddNode extends Component {
     
     // stores linking info in JSON object 
     storeData() {
-        var links = JSON.stringify(this.state, ['person1', 'person2', 'relationship']);
+        var links = JSON.stringify(this.state, ['name', 'gender', 'person1', 'person2', 'relationship']);
         console.log(links)
     }
 
@@ -192,6 +192,8 @@ export default class AddNode extends Component {
                     <Picker style = {styles.pickerContainer}
                     selectedValue = {this.state.name}
                     onValueChange = {this.setName}>
+
+                    {/* renders selection based on first name in database */}
                     {arr.map((item, index) => {
                     return (<Picker.Item label={item} value={item} key={index}/>) 
                     })} 
@@ -226,7 +228,6 @@ export default class AddNode extends Component {
                     selectedValue = {this.state.person1}
                     onValueChange = {this.setP1}
                     >
-                    {/* renders selection based on first name in database */}
                     {arr.map((item, index) => {
                     return (<Picker.Item label={item} value={item} key={index}/>) 
                     })} 
@@ -244,17 +245,40 @@ export default class AddNode extends Component {
                     return (<Picker.Item label={item} value={item} key={index}/>) 
                     })} 
                     </Picker>
+
+                    <Text> {"\n"}  Relationship: {"\n"}</Text>
+                    <View style = {styles.viewStyleForLine}></View>
+                    <Picker
+                    selectedValue = {this.state.relationship}
+                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                    onValueChange = {this.setRelationship}
+                    mode = 'dialog'
+                    placeholder={'Relationship'}
+                    prompt = {'Relationship'}>
+
+                    <Picker.Item label = "Parent-child" value = "parent-child"
+                    />
+                    <Picker.Item label = "Husband-wife" value = "husband-wife" />
+                    </Picker>   
          
-                    <TextInput style= {styles.pickerContainer}
+                    {/* <TextInput style= {styles.pickerContainer}
                     onChangeText = {this.setRelationship}
                     placeholder = "Relationship e.g. parent-child"
-                    />
+                    /> */}
                     </View>
 
                     <View style = {styles.buttonContainer}> 
-                    <TouchableOpacity
+                    <Button
+                    title = "Save"
+                    color="black"
+                    titleStyle = '#ffffff'
+                    buttonStyle = {{width: 100}}
+                    backgroundColor = "#841584"
                     onPress = {() => {this.props.navigation.navigate('Home'); this.storeData()}}/>
-                    <Text > Save</Text>
+                    {/* <TouchableOpacity
+                    onPress = {() => {this.props.navigation.navigate('Home'); this.storeData()}}
+                    TouchableOpacity/>
+                    <Text > Save</Text> */}
                     </View>
 
               
@@ -293,11 +317,7 @@ const styles = StyleSheet.create({
                 top: 65,
                 right: 20,
                 padding: 10, 
-                backgroundColor: '#fccf03',
-                shadowColor: '#2AC062',
-                shadowOpacity: 0.8,
-                shadowOffset: { height: 10, width: 0 },
-                shadowRadius: 20,
+                
     },
     viewStyleForLine: {
         borderBottomColor: "black", 
