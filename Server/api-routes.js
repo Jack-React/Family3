@@ -26,7 +26,7 @@ router.route('/families/members/:family_id')
     .delete(familyController.deleteRelation);
 
 // Route to family tree relations
-router.route('/accounts/relations/:family_id')
+router.route('/families/relations/:family_id')
     .get(familyController.findRelations);
 
 router.route('/families/albums/:family_id')
