@@ -9,6 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Color } from '../../assets/Assets'
 import GoogleAPIHandler from '../../api/GoogleAPIHandler'
 import APIHandler from '../../api/APIHandler'
+import DBHandler from '../../api/DBHandler'
 
 // sample user data
 const sampleData1 = {
@@ -94,15 +95,17 @@ export default class AddRelationship extends Component {
                 userData: null
         };
         this.GoogleAPIHandler = new GoogleAPIHandler()
+        this.APIHandler = new APIHandler()
+        this.DBHandler = new DBHandler()
     }
 
     // retrieve stored info when app loads
-    componentDidMount = () => {
+    async componentDidMount() {
         const userData = await this.DBHandler.getDBUserData()
 
         const familyid = userData.family;
 
-        const membersData = (await APIHandler.getFamilyMembers(familyid)).data;
+        const membersData = (await this.APIHandler.getFamilyMembers(familyid)).data;
         // set to family database data loaded from backend
         this.setState({
             familyid: familyid,
@@ -133,7 +136,7 @@ export default class AddRelationship extends Component {
 
 
     // stores linking info in JSON object
-    storeData() {
+    async storeData() {
         // var links = JSON.stringify(this.state, ['name', 'gender', 'person1', 'person2', 'relationship']);
         // console.log(links)
         var links = JSON.stringify(this.state, ['person1', 'person2', 'relationship']);
