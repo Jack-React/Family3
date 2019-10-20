@@ -178,25 +178,30 @@ exports.delete = (req, res) => {
 // find relations of one account
 exports.findRelations = (req, res) => {
     var user_id = req.params.account_id;
-
     Account.findById(user_id, (err, account) => {
         if (err) {
             res.send(err);
         }
-
-        var family_id = account.family;
-        Family.findById(family_id, (err, family) => {
-            if (err) {
-                res.send(err);
+        if (account){
+            if (account.family){
+                console.log("!@#")
+                var family_id = account.family;
+                Family.findById(family_id, (err, family) => {
+                    if (err) {
+                        res.send(err);
+                    }
+                    var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
+                    res.json({
+                        message: "Find all relations",
+                        data: relations
+                    });
+                });
             }
-
-            var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
-
-            res.json({
-                message: "Find all relations",
-                data: relations
-            });
-        });
+        }
+        res.json({
+            message: "Error getting relation",
+            data: account
+        })
     });
 }
 
@@ -208,48 +213,55 @@ exports.findRelationsInfo = (req, res) => {
         if (err) {
             res.send(err);
         }
+        if (account){
+            if (account.family){
+                var family_id = account.family;
+                Family.findById(family_id, (err, family) => {
+                    if (err) {
+                        res.send(err);
+                    }
 
-        var family_id = account.family;
-        Family.findById(family_id, (err, family) => {
-            if (err) {
-                res.send(err);
-            }
+                    var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
 
-            var relations = family.relations.filter(relation => relation.person1 == user_id || relation.person2 == user_id);
+                    // get unique id from links
+                    var userids = [];
 
-            // get unique id from links
-            var userids = [];
+                    for (var i = 0; i < relations.length; i++) {
+                        var person1id = relations[i].person1;
+                        var person2id = relations[i].person2;
+                        if (userids.indexOf(person1id) < 0)
+                            userids.push(person1id);
+                        if (userids.indexOf(person2id) < 0)
+                            userids.push(person2id);
+                    }
 
-            for (var i = 0; i < relations.length; i++) {
-                var person1id = relations[i].person1;
-                var person2id = relations[i].person2;
-                if (userids.indexOf(person1id) < 0)
-                    userids.push(person1id);
-                if (userids.indexOf(person2id) < 0)
-                    userids.push(person2id);
-            }
-
-            Account.find({
-                '_id': {
-                    $in: userids
-                }
-            }, (err, results) => {
-                    var output = results.map(e => { 
-                        var data = {
-                            _id: e._id,
-                            name: e.firstName + " " + e.lastName
+                    Account.find({
+                        '_id': {
+                            $in: userids
                         }
-                        return data;
+                    }, (err, results) => {
+                            var output = results.map(e => { 
+                                var data = {
+                                    _id: e._id,
+                                    name: e.firstName + " " + e.lastName
+                                }
+                                return data;
+                            });
+                        if (err) {
+                            res.json(err);
+                        }
+                        res.json({
+                            message: "Find all relations info nodes",
+                            data: output
+                        });
                     });
-                if (err) {
-                    res.json(err);
-                }
-                res.json({
-                    message: "Find all relations info nodes",
-                    data: output
                 });
-            });
-        });
+            }
+        }
+        res.json({
+            message: "Error getting relation info",
+            data: account
+        })
     });
 }
 
