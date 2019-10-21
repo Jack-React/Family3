@@ -9,7 +9,9 @@ import { Color } from '../assets/Assets'
 
 // Pages
 import SplashScreen from '../page/SplashScren/SplashScreen';
-import SettingsPage from '../page/SettingsPage/SettingsPage'; 
+import SettingsPage from '../page/SettingsPage/SettingsPage';
+//../page/FamilyTreePage/FamilyTreePage.js relative path
+import FamilyTreePage from '../page/FamilyTreePage/FamilyTreePage';
 
 // Navigation Stacks
 import UploadStack from './stackNavigator/UploadStack'
@@ -50,8 +52,8 @@ const AppTabNavigator = createBottomTabNavigator(
 
         // Upload: {
         //     screen: UploadStack,
-        //     navigationOptions: () => 
-        //     ({ tabBarIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) }) 
+        //     navigationOptions: () =>
+        //     ({ tabBarIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) })
         // },
 
         Album: {
@@ -59,7 +61,12 @@ const AppTabNavigator = createBottomTabNavigator(
             navigationOptions: () => ({
                 title: 'My Albums',
                 tabBarIcon: ( <DrawerIcon name="picture" size={20} color= {Color.SECONDARY} />)
-            }) 
+            })
+        },
+        FamilyTree:{
+            screen: FamilyTreePage,
+            navigationOptions: () =>
+            ({ tabBarIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) })
         },
 
         // Settings: {
@@ -82,8 +89,8 @@ const AppDrawerNavigator = createDrawerNavigator(
     {
         Home: {
             screen: HomeStack,
-            navigationOptions: () => 
-            ({ drawerIcon: ( <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>) }) 
+            navigationOptions: () =>
+            ({ drawerIcon: ( <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>) })
         },
 
         // Profile:{
@@ -94,8 +101,8 @@ const AppDrawerNavigator = createDrawerNavigator(
 
         Upload: {
             screen: UploadStack,
-            navigationOptions: () => 
-            ({ drawerIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) }) 
+            navigationOptions: () =>
+            ({ drawerIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) })
         },
 
         Photo: {
@@ -103,15 +110,15 @@ const AppDrawerNavigator = createDrawerNavigator(
             navigationOptions: () => ({
                 title: 'My Photos',
                 drawerIcon: ( <DrawerIcon name="picture" size={20} color= {Color.SECONDARY} />)
-            }) 
+            })
         },
 
         Settings: {
             screen: SettingsPage,
-            navigationOptions: () => 
-            ({ drawerIcon: ( <DrawerIcon name="setting" size={20} color= {Color.SECONDARY}/>) }) 
+            navigationOptions: () =>
+            ({ drawerIcon: ( <DrawerIcon name="setting" size={20} color= {Color.SECONDARY}/>) })
         }
-    }, 
+    },
     {
         drawerBackgroundColor: Color.PRIMARY,
         contentComponent: props => <DrawerComponent {...props} />,
@@ -132,7 +139,7 @@ export default createAppContainer(
             Splash: SplashScreen,
             Auth: AuthStack,
             App: AppTabNavigator
-        },  
+        },
     )
 )
 
@@ -145,7 +152,7 @@ const styles = StyleSheet.create({
     },
 
     iconStyle: {
-        width: 100, 
+        width: 100,
         height: 100
     }
 })

@@ -4,7 +4,7 @@ import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-import { Color } from '../assets/Assets'
+import { Color } from '../../assets/Assets.js'
 
 export default class MyPhotoPage extends Component {
     constructor(){
@@ -37,7 +37,7 @@ export default class MyPhotoPage extends Component {
                         Sample Page
                     </Text>
                 </View>
-                
+
             </View>
         )
     }

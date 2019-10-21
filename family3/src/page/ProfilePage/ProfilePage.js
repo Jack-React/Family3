@@ -14,6 +14,20 @@ import InvitationDialog from './component/InvitationDialog';
 import { Color } from '../../assets/Assets'
 import NoInvitationDialog from './component/NoInvitationDialog';
 
+// * There are 2 sample data for you to test your code
+// This is a data get from database with full details
+// const sampleData1 = {
+//     _id: "108847325318354420000",
+//     create_date: "2019-10-13T14:37:49.968Z",
+//     firstName: "Xun",
+//     lastName: "Zhang",
+//     email: "zhangxunsnail@gmail.com",
+//     family: "5d89a94281b02708c8e0e24c",
+//     __v: 0,
+//     DOB: "1998-09-08T00:00:00.000Z",
+//     gender: "Female"
+// }
+
 export default class ProfilePage extends Component {
     constructor(props){
         super(props);
