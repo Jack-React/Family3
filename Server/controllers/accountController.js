@@ -200,3 +200,30 @@ exports.accept = (req, res) => {
     });
 }
 
+// decline invitation
+exports.decline = (req, res) => {
+    Account.findById(req.params.target_id, (err, target) => {
+        if (err) {
+            res.json(err);
+        }
+
+        if (target == null || target.invitation == null) {
+            res.json({
+                message: "No invitation info found",
+                data: null
+            });
+            return
+        }
+        target.invitation = null;
+
+        target.save(err => {
+            if (err) {
+                res.json(err);
+            }
+            res.json({
+                message: "Set invitation Success!",
+                data: target
+            });
+        });
+    });
+}

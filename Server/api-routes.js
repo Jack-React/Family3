@@ -56,6 +56,8 @@ router.route('/accounts/invite/:sender_id/:target_id')
 router.route('/accounts/accept/:target_id')
     .put(accountController.accept);
 
+router.route('accounts/decline/:target_id')
+    .put(accountController.decline);
 // router.route('/accounts/relationsinfo/:account_id')
 //     .get(familyController.findRelationsInfo);
 
