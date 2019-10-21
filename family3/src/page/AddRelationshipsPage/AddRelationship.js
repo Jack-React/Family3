@@ -208,38 +208,6 @@ export default class AddRelationship extends Component {
 
                 <View>
 
-                <Text style = {{color: Color.SECONDARY}}> {"\n"}  Nodes {"\n"}</Text>
-
-                    <Text> {"\n"}  Name: {"\n"}</Text>
-
-                    <View style = {styles.viewStyleForLine}></View>
-                    <Picker style = {styles.pickerContainer}
-                    selectedValue = {this.state.name}
-                    onValueChange = {this.setName}>
-
-                    {/* renders selection based on first name in database */}
-                    {arr.map((item, index) => {
-                    return (<Picker.Item label={item} value={item} key={index}/>)
-                    })}
-
-                    </Picker>
-
-                    {/* {console.log(this.state.name)} */}
-                    <Text> {"\n"}  Gender: {"\n"}</Text>
-                    <View style = {styles.viewStyleForLine}></View>
-                    <Picker
-                    selectedValue = {this.state.gender}
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                    onValueChange = {this.setGender}
-                    mode = 'dialog'
-                    placeholder={'Gender'}
-                    prompt = {'Gender'}>
-
-                    <Picker.Item label = "Male" value = "male"
-                    />
-                    <Picker.Item label = "Female" value = "female" />
-                    </Picker>
-
                     <Text style = {{color: Color.SECONDARY}}>
                         {"\n"}  Links
                     </Text>
@@ -296,7 +264,7 @@ export default class AddRelationship extends Component {
                     title = "Save"
                     color="black"
                     titleStyle = '#ffffff'
-                    buttonStyle = {{width: 100}}
+                    buttonStyle = {{width: 70, height: 30}}
                     backgroundColor = "#841584"
                     onPress = {() => {this.props.navigation.navigate('Home'); this.storeData()}}/>
                     {/* <TouchableOpacity
@@ -336,8 +304,8 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
                 position: 'absolute',
-                top: 65,
-                right: 20,
+                top: 0,
+                right: 0,
                 padding: 10,
 
     },
