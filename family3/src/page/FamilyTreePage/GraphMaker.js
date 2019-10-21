@@ -167,9 +167,14 @@ class GraphMaker extends Component{
     MakeRelationsIntoLinks (nodes,relations){
       var links =[];
       for (var i = 0; i < relations.length; i++) {
+
         console.log('finding names for ',relations[i].person1 , relations[i].person2);
         p1 = this.findName(nodes, relations[i].person1);
         p2 = this.findName(nodes, relations[i].person2);
+        if (!(p1 && p2)) { // if empty print error
+          console.log(Error('cannot find Name for id, link not created'));
+          continue;
+        }
         var link = {person1: p1, person2: p2, relationship:relations[i].relationship }
         console.log('name found, links built', link);
         links.push(link)
