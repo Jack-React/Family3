@@ -33,9 +33,9 @@ export default class AddRelationshipsPage extends Component {
                     <Right />
                 </Header>
                 <View style = {styles.contentContainer}>
-                    <Text style = {{color: Color.SECONDARY}}>
-                       <AddRelationship/>
-                    </Text>
+
+                     <AddRelationship/>
+
                 </View>
 
             </View>
