@@ -14,8 +14,8 @@ var debug= {
   'graphInitiation': true,
 }
 
-const marriageNodeimg = '../../../assets/familytree/heart-outline.png';
 
+const marriageNodeimg = require('../../../assets/familytree/heart-outline.png');
 // used to render nodes and links in the right positions
 export default class Graph extends Component {
   constructor(props) {
@@ -444,7 +444,8 @@ const styles = {
   marriageNodeImageStyle: {
     width: 20,
     height: 20,
-    borderRadius: 100 / 2
+    borderRadius: 100 / 2,
+    paddingTop: 10,
   },
 
 }
