@@ -4,24 +4,24 @@ import { Text, StyleSheet } from 'react-native'
 
 import { Color } from '../../../assets/Assets'
 
-export default class NoInvitationDialog extends Component {
+export default class MemberAddedDialog extends Component {
     render(){
         return (
             <Dialog
             visible={this.props.visible}
             dialogTitle={<DialogTitle 
-                        title={"Invitation"}
+                        title={"Add Member"}
                         hasTitleBar= {false}
                         style={styles.DialogTitleStyle}
                         textStyle= {styles.DialogTitleTextStyle}/>}
             dialogStyle = {styles.DialogStyle}
-            onTouchOutside={() => { 
-                this.props.disableDialog()
-            }}
+            // onTouchOutside={() => { 
+            //     this.props.disableDialog()
+            // }}
             >
                 <DialogContent>
                     <Text>
-                        There are currently no family invitation
+                        Invitation  Sent Successfully
                     </Text>
                 </DialogContent>
                 <DialogFooter>

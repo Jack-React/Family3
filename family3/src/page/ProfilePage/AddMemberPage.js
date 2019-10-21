@@ -9,6 +9,7 @@ import { SearchBar, Divider } from 'react-native-elements';
 
 import { Color } from '../../assets/Assets'
 import AddMemberDialog from './component/AddMemberDialog'
+import MemberAddedDialog from './component/MemberAddedDialog'
 
 export default class ProfilePage extends Component {
     constructor(props){
@@ -18,7 +19,8 @@ export default class ProfilePage extends Component {
             users: null,
             showDialog: false,
             searchedUsers: [],
-            selectedUser: null
+            selectedUser: null,
+            memberAddedDialog: false
         }; 
         this.GoogleAPIHandler = new GoogleAPIHandler()
         this.DBHandler = new DBHandler()
@@ -56,6 +58,10 @@ export default class ProfilePage extends Component {
                     visible={this.state.showDialog}
                     disableDialog={this.disableDialog.bind(this)}
                     approvalRecieved={this.approvalRecieved.bind(this)}
+                />
+                 <MemberAddedDialog
+                    visible={this.state.memberAddedDialog}
+                    disableDialog={this.disableDialog.bind(this)}
                 />
 
                 <View>
@@ -97,7 +103,8 @@ export default class ProfilePage extends Component {
     // Disables the dialog
     disableDialog(){
         this.setState({
-            showDialog: false
+            showDialog: false,
+            AddMemberDialog: false
         })
     }
     // recieve confirmation
@@ -107,8 +114,8 @@ export default class ProfilePage extends Component {
 
     // Sends an invitation to target user to join the family
     async addToFamily(){
-        console.log(await this.DBHandler.sendFamilyInvitation(this.state.selectedUser._id))
-        this.setState({search: "", searchedUsers: []})
+        await this.DBHandler.sendFamilyInvitation(this.state.selectedUser._id)
+        this.setState({search: "", searchedUsers: [], memberAddedDialog: true})
     }
     // Update the searched images
     updateSearch(search){
