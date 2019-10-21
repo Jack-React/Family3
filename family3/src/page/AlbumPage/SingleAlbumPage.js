@@ -112,7 +112,6 @@ export default class SingleAlbumPage extends Component {
                                     onChangeText= {(search) => this.updateSearch(search)}
                                     value={this.state.search}
                                 />
-
                              </View>
                             
                             <ImageView

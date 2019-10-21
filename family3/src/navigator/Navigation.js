@@ -10,7 +10,6 @@ import { Color } from '../assets/Assets'
 // Pages
 import SplashScreen from '../page/SplashScren/SplashScreen';
 import SettingsPage from '../page/SettingsPage/SettingsPage'; 
-import ProfilePage from '../page/ProfilePage/ProfilePage';
 
 // Navigation Stacks
 import UploadStack from './stackNavigator/UploadStack'
@@ -18,6 +17,7 @@ import HomeStack from './stackNavigator/HomeStack';
 import AuthStack from './stackNavigator/AuthStack';
 import MyPhotoStack from './stackNavigator/MyPhotoStack'
 import AlbumStack from './stackNavigator/AlbumStack'
+import ProfileStack from './stackNavigator/ProfileStack'
 
 const DrawerComponent = props => (
     <ScrollView style = {{flex: 1}}>
@@ -33,17 +33,17 @@ const DrawerComponent = props => (
 
 const AppTabNavigator = createBottomTabNavigator(
     {
-        Home: {
-            screen: HomeStack,
-            navigationOptions: () => 
-            ({ tabBarIcon: ( <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>) }) 
-            // {
-            //     tabBarLabel: 'home'
-            // }
-        },
+        // Home: {
+        //     screen: HomeStack,
+        //     navigationOptions: () => 
+        //     ({ tabBarIcon: ( <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>) }) 
+        //     // {
+        //     //     tabBarLabel: 'home'
+        //     // }
+        // },
 
         Profile:{
-            screen: ProfilePage,
+            screen: ProfileStack,
             navigationOptions: () => 
             ({ tabBarIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) }) 
         },
@@ -62,14 +62,14 @@ const AppTabNavigator = createBottomTabNavigator(
             }) 
         },
 
-        Settings: {
-            screen: SettingsPage,
-            navigationOptions: () => 
-            ({ tabBarIcon: ( <DrawerIcon name="setting" size={20} color= {Color.SECONDARY}/>) }) 
-        }
+        // Settings: {
+        //     screen: SettingsPage,
+        //     navigationOptions: () => 
+        //     ({ tabBarIcon: ( <DrawerIcon name="setting" size={20} color= {Color.SECONDARY}/>) }) 
+        // }
     },
     {   
-        initialRouteName: 'Home',
+        initialRouteName: 'Profile',
         tabBarOptions: {
             activeTintColor: Color.SECONDARY,
             inactiveTintColor: 'gray',
@@ -86,11 +86,11 @@ const AppDrawerNavigator = createDrawerNavigator(
             ({ drawerIcon: ( <DrawerIcon name="home" size={20} color= {Color.SECONDARY}/>) }) 
         },
 
-        Profile:{
-            screen: ProfilePage,
-            navigationOptions: () => 
-            ({ drawerIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) }) 
-        },
+        // Profile:{
+        //     screen: ProfilePage,
+        //     navigationOptions: () => 
+        //     ({ drawerIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) }) 
+        // },
 
         Upload: {
             screen: UploadStack,

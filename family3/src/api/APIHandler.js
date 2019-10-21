@@ -119,6 +119,34 @@ export default class APIHandler {
         return await this.sendRequest(data)
     }   
 
+     /* Get all users in the database */
+     async getAllUsers(){
+        data = {
+            URI: `${ACCOUNTS}`,
+            method: 'GET'
+        }
+        return await this.sendRequest(data)
+    }
+
+    /* Sends an family invitation to target user id */
+    async sendFamilyInvitation(body, senderid, targetid){
+        data = {
+            URI: `${ACCOUNTS}/invite/${senderid}/${targetid}`,
+            method: 'PUT',
+            body: this.buildFormBody(body)
+        }
+        console.log(data)
+        return await this.sendRequest(data)
+    }
+
+    /* Accepts an invitation to join a family */
+    async acceptFamilyInvitation(targetid){
+        data = {
+            URI: `${ACCOUNTS}/accept/${targetid}`,
+            method: 'PUT',
+        }
+        return await this.sendRequest(data)
+    }
 
     /* Sends data to any uri based on method, headers and body */
     async sendRequest(data){
@@ -136,5 +164,7 @@ export default class APIHandler {
         }
     }
 
+
+   
     
 };

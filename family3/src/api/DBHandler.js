@@ -96,4 +96,25 @@ export default class DBHandler {
         return await this.APIHandler.getFamilies(familyid)
     }
 
+    /* Get all users in the database */
+    async getAllUsers(){
+        return await this.APIHandler.getAllUsers()
+    }
+
+    /* Sends an family invitation to target user id */
+    async sendFamilyInvitation(targetid){
+        const userData = await this.getDBUserData()
+        const familyid = userData.family
+        const senderid = userData._id
+        body = {
+            family: familyid
+        }
+        this.APIHandler.sendFamilyInvitation(body, senderid, targetid)
+    }
+
+    /* Accepts an invitation to join a family */
+    async acceptFamilyInvitation(){
+        const userData = await this.getDBUserData()
+        this.APIHandler.acceptFamilyInvitation(userData._id)
+    }
 }
