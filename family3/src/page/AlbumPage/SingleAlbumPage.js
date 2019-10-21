@@ -31,16 +31,22 @@ export default class SingleAlbumPage extends Component {
             shared: false,
             showDialog: false,
             search: "",
-            searchedImages: null
+            searchedImages: null,
+            owned: false,
         }
     }
 
     async componentDidMount(){
         album = this.props.navigation.getParam('album')
+        if (album.shareInfo != undefined){
+            this.setState({sharedAlbum: true})
+            if (album.shareInfo.isOwned != undefined){
+                this.setState({owned : true})
+            }
+        }
         if (album.mediaItemsCount){
             const response = await this.GoogleAPIHandler.getMediaItems(album.id)
             const images = this.prepareImages(response);
-
             setInterval(() => {
                 this.setState({
                     hasImage: true,
@@ -90,12 +96,16 @@ export default class SingleAlbumPage extends Component {
                         >
                             <Icon name="plus" size={20} color= {Color.PRIMARY}/>
                         </ButtonBase>
+                        {(this.state.owned) || (!this.state.shared)?
                         <TouchableOpacity
                         onPress={() => this.setState({showDialog: true})}>
                             <Text style = {styles.headerButtonStyle}>
                                 {shared? "Unshare": "Share"}
                             </Text>
                         </TouchableOpacity>
+                        :
+                        null
+                        }
                         </Right>
                     </Header>
                     {this.state.hasImage? 
@@ -104,8 +114,8 @@ export default class SingleAlbumPage extends Component {
                                 <SearchBar
                                     platform= 'android'
                                     placeholder="Search for a keyword"
-                                    containerStyle = {{borderRadius: 10, elevation: 15, height: 50, iconSize:1}}
-                                    inputContainerStyle = {{paddingBottom:5, fontSize: 4, }}
+                                    containerStyle = {{borderRadius: 10, elevation: 15, height: 50 }}
+                                    inputContainerStyle = {{paddingBottom:5, }}
                                     inputStyle={{fontSize: 14, marginLeft:2, paddingTop:5, }}
                                     leftIconContainerStyle = {{ paddingBottom: 5 }}
                                     rightIconContainerStyle = {{ paddingBottom: 5 }}
@@ -196,6 +206,7 @@ export default class SingleAlbumPage extends Component {
     // Handles the event where share button is pressed
     async handleShare(){
         const { shared, album } = this.state
+        // Handles when the user ushared the abum
         if (shared){
             await this.GoogleAPIHandler.unShareAlbum(album.id)
             familyid = (await this.DBHandler.getDBUserData()).family
@@ -206,6 +217,7 @@ export default class SingleAlbumPage extends Component {
             this.setState({shared: false})
         }
         
+        // Handles when user shares the album
         else {
             const shareToken = (await this.GoogleAPIHandler.shareAlbum(album.id)).shareInfo.shareToken
             album_data = {albumid: album.id, sharedToken: shareToken}
@@ -214,7 +226,7 @@ export default class SingleAlbumPage extends Component {
                 response = await this.DBHandler.addSharedAlbum(familyid, album_data)
             }
             this.state.album.shareInfo = {}
-            this.setState({shared: true, spinner:false})   
+            this.setState({shared: true, spinner:false, owned: true})   
         }
     }
 

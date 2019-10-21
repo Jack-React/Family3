@@ -72,8 +72,8 @@ export default class SplashScreen extends Component {
             if (familyData.sharedAlbums != undefined){
                 // console.log(familyData.sharedAlbums)
                 if (familyData.sharedAlbums.length > 0){
-
                     // console.log(familyData.sharedAlbums)
+                    console.log("Yes")
                     this.joinAlbums(familyData.sharedAlbums)
                 }
             }
@@ -84,7 +84,9 @@ export default class SplashScreen extends Component {
     // indentifier for album = albumid
     // identifier for albums = id
     containsAlbum(album, albums) {
-        var i;
+        if (albums == undefined){
+            return false
+        }
         for (i = 0; i < albums.length; i++) {
             if (albums[i].id === album.albumid) 
                 return true;
@@ -95,9 +97,10 @@ export default class SplashScreen extends Component {
     // Joins all family shared albums
     async joinAlbums(sharedAlbums){
         const googleSharedAlbums = await this.GoogleAPIHandler.getSharedAlbums()
+        console.log(googleSharedAlbums)
         for (i = 0; i < sharedAlbums.length; i ++){
             if (!this.containsAlbum(sharedAlbums[i], googleSharedAlbums.sharedAlbums)){
-                this.GoogleAPIHandler.joinSharedAlbum(sharedAlbums[i].sharedTokens)
+                console.log( await this.GoogleAPIHandler.joinSharedAlbum(sharedAlbums[i].sharedToken))
             }
         }
     }

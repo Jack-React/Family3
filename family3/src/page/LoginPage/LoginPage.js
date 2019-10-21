@@ -57,12 +57,57 @@ export default class LoginPage extends Component {
 		this.setState({ userData: userData, isUserSignedIn: true });
 		if (this.state.isUserSignedIn){
 			if (await this.DBHandler.hasAccount()){
+				this.checkAlbums()
 				this.props.navigation.navigate('App', {userData: userData});
 			}
 			else
 				this.props.navigation.navigate('Signup', {userData: userData});
 		}
 	}
+
+	// Checks if the user has any unjoined family albums
+    async checkAlbums(){
+        const userData = await this.DBHandler.getDBUserData()
+        this.setState({userData: userData})
+        if(userData.family != undefined){
+            // console.log(userData.family)
+            const familyData = (await this.DBHandler.getFamilies(userData.family)).data
+            // console.log(familyData)
+            if (familyData.sharedAlbums != undefined){
+                // console.log(familyData.sharedAlbums)
+                if (familyData.sharedAlbums.length > 0){
+                    // console.log(familyData.sharedAlbums)
+                    console.log("Yes")
+                    this.joinAlbums(familyData.sharedAlbums)
+                }
+            }
+        }
+    }
+
+    // Check if album is in array or albums
+    // indentifier for album = albumid
+    // identifier for albums = id
+    containsAlbum(album, albums) {
+        if (albums == undefined){
+            return false
+        }
+        for (i = 0; i < albums.length; i++) {
+            if (albums[i].id === album.albumid) 
+                return true;
+        }
+        return false;
+    }
+
+    // Joins all family shared albums
+    async joinAlbums(sharedAlbums){
+        const googleSharedAlbums = await this.GoogleAPIHandler.getSharedAlbums()
+        console.log(googleSharedAlbums)
+        for (i = 0; i < sharedAlbums.length; i ++){
+            if (!this.containsAlbum(sharedAlbums[i], googleSharedAlbums.sharedAlbums)){
+                console.log( await this.GoogleAPIHandler.joinSharedAlbum(sharedAlbums[i].sharedToken))
+            }
+        }
+    }
 }
 
 const styles = StyleSheet.create({

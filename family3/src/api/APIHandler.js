@@ -72,7 +72,6 @@ export default class APIHandler {
 
     /* Add albums to family shared albums */
     async addSharedAlbum(familyid, body){
-        console.log(body)
         data = {
             URI:`${FAMILIES}/albums/${familyid}`,
             method: 'PUT',

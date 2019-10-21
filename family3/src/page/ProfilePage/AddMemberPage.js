@@ -63,9 +63,9 @@ export default class ProfilePage extends Component {
                         <SearchBar
                             platform= 'android'
                             placeholder="Enter a name"
-                            containerStyle = {{borderRadius: 10, elevation: 5, height: 50, iconSize:1}}
-                            inputContainerStyle = {{paddingBottom:5, fontSize: 4, iconSize: 1}}
-                            inputStyle={{fontSize: 14, marginLeft:2, paddingTop:5, iconSize:1}}
+                            containerStyle = {{borderRadius: 10, elevation: 5, height: 50 }}
+                            inputContainerStyle = {{paddingBottom:5}}
+                            inputStyle={{fontSize: 14, marginLeft:2, paddingTop:5 }}
                             leftIconContainerStyle = {{ paddingBottom: 5 }}
                             rightIconContainerStyle = {{ paddingBottom: 5 }}
                             onChangeText= {(search) => this.updateSearch(search)}
