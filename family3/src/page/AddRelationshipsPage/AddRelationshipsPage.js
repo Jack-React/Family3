@@ -32,11 +32,11 @@ export default class AddRelationshipsPage extends Component {
                     </Body>
                     <Right />
                 </Header>
-                <View style = {styles.contentContainer}>
+//                 <View style = {styles.contentContainer}>
 
                      <AddRelationship/>
 
-                </View>
+//                 </View>
 
             </View>
         )
