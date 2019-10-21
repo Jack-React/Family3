@@ -168,6 +168,10 @@ export default class ProfilePage extends Component {
             this.DBHandler.acceptFamilyInvitation()
             this.setState({invitation: null})
         }
+        else {
+            this.DBHandler.declineFamilyInvitation()
+            this.setState({invitation: null})
+        }
     }
 
 }

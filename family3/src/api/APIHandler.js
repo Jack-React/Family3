@@ -148,6 +148,15 @@ export default class APIHandler {
         return await this.sendRequest(data)
     }
 
+    /* Declines an invitation to join a family */
+    async declineFamilyInvitation(targetid){
+        data = {
+            URI: `${ACCOUNTS}/decline/${targetid}`,
+            method: 'PUT',
+        }
+        return await this.sendRequest(data)
+    }
+
     /* Sends data to any uri based on method, headers and body */
     async sendRequest(data){
         try {

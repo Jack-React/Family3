@@ -117,4 +117,11 @@ export default class DBHandler {
         const userData = await this.getDBUserData()
         this.APIHandler.acceptFamilyInvitation(userData._id)
     }
+
+    /* Declines an invitation to join a family */
+    async declineFamilyInvitation(){
+        const userData = await this.getDBUserData()
+        this.APIHandler.declineFamilyInvitation(userData._id)
+    }
+
 }
