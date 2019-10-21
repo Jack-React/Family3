@@ -150,7 +150,7 @@ const styles = {
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#ecf5fd',
+    backgroundColor: 'white',
     padding: 10
   },
   defaultNodeImageStyle:{ width: 60, height: 60, borderRadius: 100 / 2 },

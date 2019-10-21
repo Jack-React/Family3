@@ -46,6 +46,7 @@ export default class SingleAlbumPage extends Component {
         }
         if (album.mediaItemsCount){
             const response = await this.GoogleAPIHandler.getMediaItems(album.id)
+            console.log(response)
             const images = this.prepareImages(response);
             setInterval(() => {
                 this.setState({
@@ -188,7 +189,7 @@ export default class SingleAlbumPage extends Component {
         if (JSON.stringify(images) == "{}"){
             return imageList;
         }
-        
+        console.log(images)
         // Else convert
         for (i = 0; i < images.length; i ++){
             output = {

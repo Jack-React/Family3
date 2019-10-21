@@ -15,9 +15,9 @@ export default class MemberAddedDialog extends Component {
                         style={styles.DialogTitleStyle}
                         textStyle= {styles.DialogTitleTextStyle}/>}
             dialogStyle = {styles.DialogStyle}
-            // onTouchOutside={() => { 
-            //     this.props.disableDialog()
-            // }}
+            onTouchOutside={() => { 
+                this.props.disableDialog()
+            }}
             >
                 <DialogContent>
                     <Text>

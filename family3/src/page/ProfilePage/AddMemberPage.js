@@ -104,7 +104,8 @@ export default class ProfilePage extends Component {
     disableDialog(){
         this.setState({
             showDialog: false,
-            AddMemberDialog: false
+            AddMemberDialog: false,
+            memberAddedDialog: false
         })
     }
     // recieve confirmation

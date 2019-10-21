@@ -411,7 +411,7 @@ const styles = {
   elementsContainer: {
     flex: 1,
     justifyContent: 'space-around',
-    backgroundColor: '#ecf5fd',
+    backgroundColor: 'white',
     // marginLeft: 24,
     // marginRight: 24,
     marginBottom: 24,
