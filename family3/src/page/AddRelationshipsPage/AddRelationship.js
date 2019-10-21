@@ -92,7 +92,8 @@ export default class AddRelationship extends Component {
                 person1: '',
                 person2: '',
                 relationship: '',
-                userData: null
+                userData: null,
+                isLoading: true
         };
         this.GoogleAPIHandler = new GoogleAPIHandler()
         this.APIHandler = new APIHandler()
@@ -109,7 +110,8 @@ export default class AddRelationship extends Component {
         // set to family database data loaded from backend
         this.setState({
             familyid: familyid,
-            userData: membersData
+            userData: membersData,
+            isLoading: false
         })
     };
 
@@ -162,12 +164,18 @@ export default class AddRelationship extends Component {
         return true
     }
 
-    render (){
-        if(this.state.userData==null){
-            return (<ActivityIndicator size="large" color="#3275a8" />)
+    render() {
+        if (this.state.isLoading) {
+            console.log('loading...')
+            return (<ActivityIndicator size="large" color="#3275a8" />);
         }
-        else {
-            var arr = Array(this.state.userData.length-1);
+
+        console.log('familyid is')
+        console.log(this.state.familyid)
+
+        console.log('membersData is')
+        console.log(this.state.membersData)
+        var arr = Array(this.state.userData.length-1);
         var j = 0;
 
         // var obj = this.state.userData;
@@ -187,11 +195,11 @@ export default class AddRelationship extends Component {
         for (var i = 0; i < this.state.userData.length; i++) {
             var object = this.state.userData[i];
             for (var property in object) {
-               if (property == "firstName") {
+            if (property == "firstName") {
                     arr.splice(j,0,object[property]);
                     j += 1;
-                     }
-                  }
+                    }
+                }
                 }
 
         return (
@@ -296,12 +304,10 @@ export default class AddRelationship extends Component {
                     TouchableOpacity/>
                     <Text > Save</Text> */}
                     </View>
-
-
             </ScrollView>
         );
+        
     }
-}
 }
 
 const styles = StyleSheet.create({
