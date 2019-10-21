@@ -32,7 +32,8 @@ export default class AddRelationshipsPage extends Component {
 					</Body>
 					<Right/>
 				</Header>
-                <AddRelationship/>
+                <AddRelationship
+                navigation = {this.props.navigation}/>
             </View>
         )
     }

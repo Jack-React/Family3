@@ -264,7 +264,7 @@ export default class AddRelationship extends Component {
                     titleStyle = '#ffffff'
                     buttonStyle = {{width: 70, height: 30}}
                     backgroundColor = "#841584"
-                    onPress = {() => {this.props.navigation.navigate('Home'); this.storeData()}}/>
+                    onPress = {() => {this.props.navigation.goBack(); this.storeData()}}/>
                     {/* <TouchableOpacity
                     onPress = {() => {this.props.navigation.navigate('Home'); this.storeData()}}
                     TouchableOpacity/>
