@@ -21,9 +21,9 @@ export default class PreviewPage extends Component {
             isSubmiting: false
         }  
     }
-
+    
     render() {
-        images = this.props.navigation.getParam('images')        
+        images = this.props.navigation.getParam('images')      
         const { numColumns } = this.state;        
         return (
             <View style={styles.MainContainer}>
@@ -45,9 +45,9 @@ export default class PreviewPage extends Component {
 					</Body>
 					<Right/>
 				</Header>
-                <SafeAreaView style = {{flex: 1, alignItems: 'flex-start'}}>
+                <SafeAreaView style = {{flex: 1, alignItems: 'flex-start', paddingBottom: 50}}>
                     <FlatList
-                        numColumns = {numColumns}
+                        numColumns = {images.length>1? 2 : 1}
                         data = {images}
                         renderItem = {({item, index}) => {
                             return(
@@ -57,14 +57,14 @@ export default class PreviewPage extends Component {
                                 onPress={() => {this.props.navigation.navigate('SingleImagePreview', {images, index})}}>
                                     <View style = { styles.imageStyle }>
                                         <Image source={{uri: item.path}}
-                                            style={{width: IMAGE_WIDTH/this.state.numColumns - 6, height: IMAGE_WIDTH/this.state.numColumns - 6}}/>
+                                            style={{width: IMAGE_WIDTH/(images.length>1? 2 : 1) - 6, height: IMAGE_WIDTH/(images.length>1? 2 : 1) - 6}}/>
                                     </View>
                                 </TouchableOpacity>
                             )
                         }}
                         keyExtractor={item => item.path} 
                     />
-                     {this.state.isSubmiting? 
+                    {this.state.isSubmiting? 
                     <View style = {styles.loading}>
                         <ActivityIndicator  
                         style = {styles.loading}
@@ -82,39 +82,37 @@ export default class PreviewPage extends Component {
                             this.setState({
                                 isSubmiting: true
                             })
-                            this.handleSubmit();
+                            this.handleSubmit(images);
                     }}/>
                 </View>
-               
             </View>
         )
     }
     
     // Handles the event where submit button is pressed
-    async handleSubmit(){
+    async handleSubmit(images){
         // this.setState({isSubmitting:true})
-        await this.submitImages()
+        await this.submitImages(images)
         this.setState({isSubmitting:false})
         this.props.navigation.navigate('Album')
     }
 
     // Submits an image to google photo API
-    async submitImages(){
-        const images = this.props.navigation.getParam('images')
+    async submitImages(images){
         const album = this.props.navigation.getParam('album')
         var datas = []
         for (i = 0; i < (images.length); i ++){
             uploadToken = await this.GoogleAPIHandler.getUploadToken(images[i])
             data = {
                 uploadToken: uploadToken,
-                description: images.description
+                description: images[i].description
             }
             datas.push(data)
         }
-        await this.GoogleAPIHandler.submitImage(datas ,album.id);
+        this.GoogleAPIHandler.submitImage(datas, album.id);
         console.log("Image Submitted");
 
-    }         
+    }        
 }
 
 const styles = StyleSheet.create({
@@ -138,12 +136,11 @@ const styles = StyleSheet.create({
     bottomView:{
 		width: '100%', 
         height: 50, 
-        flexDirection: 'row',
 		backgroundColor: Color.PRIMARY,
 		justifyContent: 'center', 
 		alignItems: 'center',
 		position: 'absolute',
-		bottom: 10
+        bottom: 0,
     },
 
     loading: {

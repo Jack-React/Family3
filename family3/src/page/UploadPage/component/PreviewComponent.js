@@ -69,6 +69,8 @@ export default class PreviewComponent extends Component {
 										<Textarea 
 										rowSpan={4} 
 										bordered placeholder="Enter a description"
+										onChangeText={(text) => { image.description = text}}
+										value = {image.description}
 										style={{}}/>
 									</Form>
 								</View>	

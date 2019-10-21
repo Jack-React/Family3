@@ -105,8 +105,8 @@ export default class SingleAlbumPage extends Component {
                                     platform= 'android'
                                     placeholder="Search for a keyword"
                                     containerStyle = {{borderRadius: 10, elevation: 15, height: 50, iconSize:1}}
-                                    inputContainerStyle = {{paddingBottom:5, fontSize: 4, iconSize: 1}}
-                                    inputStyle={{fontSize: 14, marginLeft:2, paddingTop:5, iconSize:1}}
+                                    inputContainerStyle = {{paddingBottom:5, fontSize: 4, }}
+                                    inputStyle={{fontSize: 14, marginLeft:2, paddingTop:5, }}
                                     leftIconContainerStyle = {{ paddingBottom: 5 }}
                                     rightIconContainerStyle = {{ paddingBottom: 5 }}
                                     onChangeText= {(search) => this.updateSearch(search)}

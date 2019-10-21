@@ -12,6 +12,7 @@ import SettingsDialog from './component/SettingsDialog';
 import InvitationDialog from './component/InvitationDialog';
 
 import { Color } from '../../assets/Assets'
+import NoInvitationDialog from './component/NoInvitationDialog';
 
 export default class ProfilePage extends Component {
     constructor(props){
@@ -19,8 +20,10 @@ export default class ProfilePage extends Component {
         this.state = {
             googleUserData: null,
             showDialog: false,
-            showInvitationDialog: false,
-            invitation: null
+            showAcceptInvitationDialog: false,
+            invitation: null,
+            showInvitationDiaog: false
+
         }; 
         this.GoogleAPIHandler = new GoogleAPIHandler()
         this.DBHandler = new DBHandler()
@@ -62,15 +65,18 @@ export default class ProfilePage extends Component {
                         signOutApprovalRecieved={this.signOutApprovalRecieved.bind(this)}
                     />
 
-                    {this.state.invitation != null ?
                     <InvitationDialog
                         invitation = {this.state.invitation}
-                        visible={this.state.showInvitationDialog}
+                        visible={this.state.showAcceptInvitationDialog}
                         disableDialog={this.disableDialog.bind(this)}
                         invitationApprovalRecieved={this.invitationApprovalRecieved.bind(this)}
-                    />:
-                    null
-                    }
+                    />
+                    
+
+                    <NoInvitationDialog
+                        visible={this.state.showInvitationDiaog}
+                        disableDialog={this.disableDialog.bind(this)}
+                    />
 
                     <View style = {styles.avatarContainer}>
                         <Avatar
@@ -97,7 +103,14 @@ export default class ProfilePage extends Component {
                                 style={styles.touchableButton}
                                 activeOpacity= {0.5}
                                 underlayColor= {Color.GREY}
-                                onPress={() => {this.setState({showInvitationDialog: true})}}>
+                                onPress={() => {
+                                    if (this.state.invitation != null){
+                                        this.setState({showAcceptInvitationDialog: true})
+                                    }
+                                    else {
+                                        this.setState({showInvitationDiaog: true})
+                                    }
+                                    }}>
                             <Icon name="envelope-o" size={20} color= {Color.SECONDARY}/>
                             {this.state.invitation == null? 
                             <Text style = {{paddingLeft: 17}}> Invitations </Text>
@@ -124,7 +137,8 @@ export default class ProfilePage extends Component {
     disableDialog(){
         this.setState({
             showDialog: false,
-            showInvitationDialog: false
+            showAcceptInvitationDialog: false,
+            showInvitationDiaog: false
         })
     }
 
@@ -150,9 +164,10 @@ export default class ProfilePage extends Component {
     }
 
     invitationApprovalRecieved(approved){
-        if (approved)
+        if (approved){
             this.DBHandler.acceptFamilyInvitation()
-            this.componentDidMount()
+            this.setState({invitation: null})
+        }
     }
 
 }

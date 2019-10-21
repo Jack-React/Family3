@@ -27,7 +27,6 @@ export default class ProfilePage extends Component {
     async componentDidMount(){
         this.DBHandler.getAllUsers()
         .then((users) => {
-            console.log(users)
             this.setState({users: users.data})})
     }
 
@@ -128,7 +127,6 @@ export default class ProfilePage extends Component {
                 searchedUsers.push(this.state.users[i])
             }
         }
-        console.log(searchedUsers) 
         this.setState({search: search, searchedUsers: searchedUsers})
     }
 }
