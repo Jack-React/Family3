@@ -53,7 +53,7 @@ router.route('/accounts/join/:account_id')
 router.route('/accounts/invite/:sender_id/:target_id')
     .put(accountController.invite);
 
-router.route('/accounts/invite/accept/:target_id')
+router.route('/accounts/accept/:target_id')
     .put(accountController.accept);
 
 // router.route('/accounts/relationsinfo/:account_id')
