@@ -204,9 +204,9 @@ export default class AddRelationship extends Component {
 
         return (
 
-            <ScrollView style={styles.MainContainer}>
+            <ScrollView>
 
-                <View style = {styles.detailsContainer}>
+                <View>
 
                 <Text style = {{color: Color.SECONDARY}}> {"\n"}  Nodes {"\n"}</Text>
 
