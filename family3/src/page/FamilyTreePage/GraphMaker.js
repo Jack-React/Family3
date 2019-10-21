@@ -44,12 +44,12 @@ class GraphMaker extends Component{
 	constructor(props){
     super(props);
     this.DBHandler = DBHandler.getInstance();
-    var inputNodes =defaultNodes
+    var inputNodes =null
 		this.state = {
-			nodes:JSON.parse(JSON.stringify(inputNodes)),  // makes a deep copy of the original
-            originalNodes: inputNodes,
-			centerNode: inputNodes[0], // hardcoded center node
-			links: defaultLinks,
+			nodes:JSON.parse(JSON.stringify(null)),  // makes a deep copy of the original
+            originalNodes: null,
+			centerNode: null, // hardcoded center node
+			links: null,
             updated: true
 		};
     }
@@ -88,7 +88,7 @@ class GraphMaker extends Component{
         if (!(nodes)) {
           // console.log('no node data fetched, returning to default');
           var newState = this.state;
-          newState.updated = false;
+          newState.updated = true;
           console.log(newState);
           this.setState(newState);
           console.log(new Error('no nodes fetched from the server, using default'));
@@ -252,6 +252,16 @@ class GraphMaker extends Component{
                 </View>
             )
 		}
+
+    if (!(this.state.nodes)) {
+      console.log('noStates yet recieved, awaiting server');
+
+        return (
+            <View style={{ flex: 1, padding: 20 }}>
+                <ActivityIndicator />
+            </View>
+        )
+  }
 
 		console.log('re rendering Graph: displaying  state  ');
 		console.log(this.state);
