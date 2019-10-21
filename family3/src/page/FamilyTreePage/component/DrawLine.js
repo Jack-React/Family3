@@ -25,7 +25,7 @@ export default class DrawLine extends Component{
         <Path
          d={d}
          fill="none"
-         stroke="red"
+         stroke="gray"
        />
       </Svg>
       </View>
