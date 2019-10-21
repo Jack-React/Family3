@@ -158,7 +158,6 @@ export default class Graph extends Component {
     // }
     // return;
     console.log('drawing relationships with links:', this.state.links);
-    console.log(this.state.links);
     for (var i = 0; i < this.state.nodes.length; i++) {
       var node = this.state.nodes[i];
       if (node.type == 'husband-wife') {
