@@ -4,14 +4,14 @@ import { createDrawerNavigator, DrawerNavigatorItems } from 'react-navigation-dr
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import DrawerIcon from 'react-native-vector-icons/AntDesign';
+import DrawerEntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Color } from '../assets/Assets'
 
 // Pages
 import SplashScreen from '../page/SplashScren/SplashScreen';
 import SettingsPage from '../page/SettingsPage/SettingsPage';
-//../page/FamilyTreePage/FamilyTreePage.js relative path
-import FamilyTreePage from '../page/FamilyTreePage/FamilyTreePage';
+
 
 // Navigation Stacks
 import UploadStack from './stackNavigator/UploadStack'
@@ -20,6 +20,8 @@ import AuthStack from './stackNavigator/AuthStack';
 import MyPhotoStack from './stackNavigator/MyPhotoStack'
 import AlbumStack from './stackNavigator/AlbumStack'
 import ProfileStack from './stackNavigator/ProfileStack'
+import FamilyTreeStack from './stackNavigator/FamilyTreeStack';
+
 
 const DrawerComponent = props => (
     <ScrollView style = {{flex: 1}}>
@@ -50,12 +52,6 @@ const AppTabNavigator = createBottomTabNavigator(
             ({ tabBarIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) }) 
         },
 
-        // Upload: {
-        //     screen: UploadStack,
-        //     navigationOptions: () =>
-        //     ({ tabBarIcon: ( <DrawerIcon name="upload" size={20} color= {Color.SECONDARY} />) })
-        // },
-
         Album: {
             screen: AlbumStack,
             navigationOptions: () => ({
@@ -64,9 +60,9 @@ const AppTabNavigator = createBottomTabNavigator(
             })
         },
         FamilyTree:{
-            screen: FamilyTreePage,
+            screen: FamilyTreeStack,
             navigationOptions: () =>
-            ({ tabBarIcon: ( <DrawerIcon name="user" size={20} color= {Color.SECONDARY}/>) })
+            ({ tabBarIcon: ( <DrawerEntypoIcon name="flow-tree" size={20} color= {Color.SECONDARY}/>) })
         },
 
         // Settings: {

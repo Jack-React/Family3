@@ -31,7 +31,7 @@ export default class FamilyTreePage extends Component {
                     <GraphMaker/>
                     <ActionButton
                     buttonColor="rgba(231,76,60,1)"
-                    onPress={() => { console.log("hi")}}
+                    onPress={() => { this.props.navigation.navigate("AddRelationship")}}
                     />
                 </View>
             </View>
