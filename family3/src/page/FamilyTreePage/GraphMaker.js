@@ -12,7 +12,7 @@ import Graph from './component/Graph.js';
 import DBHandler from '../../api/DBHandler';
 
 
-var nodes = [
+var defaultNodes = [
   {"name": "Null Req bulbasure :(", "image":require("../../assets/familytree/stock-pokemon-photos/bulbasure.png")}, // temprary centerNode
   // {"name": "pikachu", "image":require("./stock-pokemon-photos/pikachu.png")},
   // {"name": "squrtile", "image":require("./stock-pokemon-photos/squrtile.png")},
@@ -24,7 +24,7 @@ var nodes = [
 
 ];
 
-var links = [
+var defaultLinks = [
   {"person1": "bulbasure", "person2": "pikachu", "relationship": "parent-child" },
   // {"person1": "bulbasure", "person2": "squrtile", "relationship": "parent-child" },
   // {"person1": "Wartortle", "person2": "pikachu", "relationship": "parent-child" },
@@ -44,12 +44,12 @@ class GraphMaker extends Component{
 	constructor(props){
     super(props);
     this.DBHandler = DBHandler.getInstance();
-    var inputNodes =nodes
+    var inputNodes =defaultNodes
 		this.state = {
 			nodes:JSON.parse(JSON.stringify(inputNodes)),  // makes a deep copy of the original
             originalNodes: inputNodes,
 			centerNode: inputNodes[0], // hardcoded center node
-			links: links,
+			links: defaultLinks,
             updated: true
 		};
     }
@@ -63,7 +63,10 @@ class GraphMaker extends Component{
         console.log('Error, user have no family')
         return
       }
+
+      // setTimeout(this.getDatafromAPI(userData.family), 5000);
       this.getDatafromAPI(userData.family);
+
     }
 
     async getDatafromAPI(familyid) {
@@ -88,7 +91,8 @@ class GraphMaker extends Component{
           newState.updated = false;
           console.log(newState);
           this.setState(newState);
-          return new Error('no nodes fetched from the server, using default');
+          console.log(new Error('no nodes fetched from the server, using default'));
+          return ;
         }
 
         // var links = firstAPICall
@@ -106,10 +110,10 @@ class GraphMaker extends Component{
 
         this.setState({
 			centerNode: this.FindNode(nodes, centerUsrId),
-			originalNodes: JSON.parse(JSON.stringify(this.state.originalNodes)),
+			originalNodes: JSON.parse(JSON.stringify(nodes)),
 			links: links,
 			nodes: nodes,
-			updated: false
+			updated: true
         })
 
         // And here is how we deal with the promise return by fetch()
@@ -232,6 +236,7 @@ class GraphMaker extends Component{
 	}
 
     render() {
+
         if (this.state.updated) {
           this.setState({
               updated: false
