@@ -58,7 +58,7 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
-    /* Sends a put request to back end to update account */ 
+    /* Sends a put request to back end to update account */
     async updateAccount(id, body){
         // console.log('Updating account...');
         data = {
@@ -70,9 +70,8 @@ export default class APIHandler {
         return await this.sendRequest(data)
     };
 
-    /* Add albums to family shared albums */
+    /* Adds shared album to family */
     async addSharedAlbum(familyid, body){
-        console.log(body)
         data = {
             URI:`${FAMILIES}/albums/${familyid}`,
             method: 'PUT',
@@ -92,7 +91,27 @@ export default class APIHandler {
         return await this.sendRequest(data)
     }
 
-    /* Gets the family object */
+    /* Gets all relationship info of a user */
+    // ! Go to getFamilyMembers()
+    // async getRelationInfo(userid){
+    //     const url = `${ACCOUNTS}/relationsinfo/${userid}`;
+    //     data = {
+    //         URI: url,
+    //         method: 'GET',
+    //     }
+    //     return await this.sendRequest(data)
+    // }
+
+    /* Gets all relationships of a family */
+    async getRelation(familyid){
+      const url = `${FAMILIES}/relations/${familyid}`;
+        data = {
+            URI: url,
+            method: 'GET'
+        }
+        return await this.sendRequest(data)
+    }
+    
     async getFamilies(familyid){
         data = {
             URI:`${FAMILIES}/${familyid}`,
@@ -101,11 +120,13 @@ export default class APIHandler {
         return await this.sendRequest(data)
     }
 
-    /* add a person into a family */
-    async addFamily(familyid){
+    /* add a relationship into a family */
+    async addRelation(familyid, body){
         data = {
             URI: `${FAMILIES}/members/${familyid}`,
-            method: 'PUT'
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: this.buildFormBody(body)
         }
         return await this.sendRequest(data)
     }   
@@ -165,15 +186,11 @@ export default class APIHandler {
             if (data.isJson == true)
                 // No need to convert to json object
                 return response
-            else 
+            else
                 return response.json()
         }
         catch (error){
             console.warn(error);
         }
     }
-
-
-   
-    
 };
