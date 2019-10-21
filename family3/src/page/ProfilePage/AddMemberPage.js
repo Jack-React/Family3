@@ -108,6 +108,7 @@ export default class ProfilePage extends Component {
     // Sends an invitation to target user to join the family
     async addToFamily(){
         console.log(await this.DBHandler.sendFamilyInvitation(this.state.selectedUser._id))
+        this.setState({search: "", searchedUsers: []})
     }
     // Update the searched images
     updateSearch(search){
