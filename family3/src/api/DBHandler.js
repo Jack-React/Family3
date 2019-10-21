@@ -47,13 +47,14 @@ export default class DBHandler {
     }
 
     /* Gets all relationship info of a user */
-    async getRelationInfo(userid){
-        return await this.APIHandler.getRelationInfo(userid)
-    }
+    // ! Go to getFamilyMembers()
+    // async getRelationInfo(userid){
+    //     return await this.APIHandler.getRelationInfo(userid)
+    // }
 
     /* Gets all relationships of a user */
-    async getRelation(userid){
-        return await this.APIHandler.getRelation(userid)
+    async getRelation(familyid){
+        return await this.APIHandler.getRelation(familyid)
     }
     
     /* Adds a shared album to the family */
