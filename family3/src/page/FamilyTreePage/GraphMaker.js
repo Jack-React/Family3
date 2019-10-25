@@ -50,7 +50,8 @@ class GraphMaker extends Component{
             originalNodes: inputNodes,
 			centerNode: inputNodes[0], // hardcoded center node
 			links: defaultLinks,
-            updated: true
+            updated: true,
+            hasFamily: false
 		};
     }
 
@@ -60,7 +61,7 @@ class GraphMaker extends Component{
       const userData = await this.DBHandler.getDBUserData()
       console.log('user', userData)
       if (userData.family == null) {
-        console.log('Error, user have no family')
+          console.log('Error, user have no family')
         return
       }
 
@@ -113,7 +114,8 @@ class GraphMaker extends Component{
 			originalNodes: JSON.parse(JSON.stringify(nodes)),
 			links: links,
 			nodes: nodes,
-			updated: true
+            updated: true,
+            hasFamily: true
         })
 
         // And here is how we deal with the promise return by fetch()
@@ -251,7 +253,10 @@ class GraphMaker extends Component{
                     <ActivityIndicator />
                 </View>
             )
-		}
+        }
+        if (!this.state.hasFamily) { 
+            // TODO Show the page of no family find info
+        }
 
 		console.log('re rendering Graph: displaying  state  ');
 		console.log(this.state);
