@@ -125,11 +125,15 @@ export default class AddRelationship extends Component {
     }
     setP1 = (value) => {
         //AsyncStorage.setItem('person1', value);
+
         this.setState({'person1': value});
+        console.log('p1 selection confirmed' , this.findName(this.state.userData, value));
+
     }
     setP2 = (value) => {
         //AsyncStorage.setItem('person2', value);
         this.setState({'person2': value});
+        console.log('p2 selection confirmed' , this.findName(this.state.userData, value));
     }
     setRelationship = (value) => {
         //AsyncStorage.setItem('relationship', value);
@@ -156,6 +160,13 @@ export default class AddRelationship extends Component {
         else {
             console.log('invalid info')
         }
+    }
+    findName(nodes, id) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (id == nodes[i]._id)
+                return nodes[i].firstName +" " + nodes[i].lastName ;
+        }
+        console.log(new Error('cant find node with relivant id'), id);
     }
 
     verifyDetails() {
@@ -209,9 +220,10 @@ export default class AddRelationship extends Component {
                     <View style = {styles.viewStyleForLine}></View>
 
                     <Picker style = {styles.pickerContainer}
-                    selectedValue = "please select person1"
+                    selectedValue = {this.state.person1}
                     onValueChange = {this.setP1}
                     >
+                    <Picker.Item label={"please select p1"} value= "" key="a"/>
                     {(this.state.userData).map((member) => {
                     return (<Picker.Item label={member.firstName +" "+ member.lastName} value={member._id} key={member._id}/>)
                     })}
@@ -222,9 +234,10 @@ export default class AddRelationship extends Component {
 
                     <View style = {styles.viewStyleForLine}></View>
                     <Picker style = {styles.pickerContainer}
-                    selectedValue = "please select person2"
+                    selectedValue = {this.state.person2}
                     style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                     onValueChange = {this.setP2}>
+                    <Picker.Item label={"please select p2"} value= "" key="a"/>
                     {(this.state.userData).map((member) => {
                     return (<Picker.Item label={member.firstName +" "+ member.lastName} value={member._id} key={member._id}/>)
                     })}
