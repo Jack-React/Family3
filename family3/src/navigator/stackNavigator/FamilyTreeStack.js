@@ -2,7 +2,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 
 import FamilyTreePage from '../../page/FamilyTreePage/FamilyTreePage';
 import AddRelationshipPage from '../../page/FamilyTreePage/AddRelationshipsPage';
-import MemberProfilePage from '../../page/FamilyTreePage/component/MemberProfilePage.js';
+import MemberProfilePage from '../../page/FamilyTreePage/MemberProfilePage.js';
 
 export default UploadStack = createStackNavigator(
     {
