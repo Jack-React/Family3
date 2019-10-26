@@ -146,8 +146,10 @@ export default class AddRelationship extends Component {
         if (this.verifyDetails()) {
             const response = await this.APIHandler.addRelation(this.state.familyid, links)
             if (response.data != null) {
-                console.log("Account Creation Success!")
+                console.log("link addition sucess")
                 // this.props.navigation.navigate('App', { userData: this.state.userData });
+            } else{
+              console.log('create failed : ', respose.data);
             }
         }
         // Invalid information
@@ -207,11 +209,11 @@ export default class AddRelationship extends Component {
                     <View style = {styles.viewStyleForLine}></View>
 
                     <Picker style = {styles.pickerContainer}
-                    selectedValue = {this.state.person1}
+                    selectedValue = "please select person1"
                     onValueChange = {this.setP1}
                     >
-                    {arr.map((item, index) => {
-                    return (<Picker.Item label={item} value={item} key={index}/>)
+                    {(this.state.userData).map((member) => {
+                    return (<Picker.Item label={member.firstName +" "+ member.lastName} value={member._id} key={member._id}/>)
                     })}
 
                     </Picker>
@@ -220,11 +222,11 @@ export default class AddRelationship extends Component {
 
                     <View style = {styles.viewStyleForLine}></View>
                     <Picker style = {styles.pickerContainer}
-                    selectedValue = {this.state.person2}
+                    selectedValue = "please select person2"
                     style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                     onValueChange = {this.setP2}>
-                    {arr.map((item, index) => {
-                    return (<Picker.Item label={item} value={item} key={index}/>)
+                    {(this.state.userData).map((member) => {
+                    return (<Picker.Item label={member.firstName +" "+ member.lastName} value={member._id} key={member._id}/>)
                     })}
                     </Picker>
 
