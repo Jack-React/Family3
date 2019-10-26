@@ -4,15 +4,17 @@ import { Header, Left, Right, Button as ButtonBase , Body, Title } from 'native-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-import { Color } from '../../../assets/Assets'
+import { Color } from '../../assets/Assets'
 
-export default class MyPhotoPage extends Component {
+export default class MemberProfilePage extends Component {
     constructor(){
         super();
     }
 
     render() {
-      const node = this.props.navigation.getParams('node','nothing sent');
+        // Fix Here. getParam should only have one parameter. 
+    //   const node = this.props.navigation.getParam('node','nothing sent');
+    
         return (
             <View style={styles.MainContainer}>
                 <Header style = {styles.headerContainer}>
