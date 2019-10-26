@@ -85,13 +85,13 @@ const dbData =[
 export default class AddRelationship extends Component {
     constructor(){
         super()
-        this.state = { 
+        this.state = {
                 name: '',
                 gender: '',
                 familyid: '',
                 person1: '',
                 person2: '',
-                relationship: '',
+                relationship: 'parent-child',
                 userData: null,
                 isLoading: true
         };
@@ -159,6 +159,7 @@ export default class AddRelationship extends Component {
     verifyDetails() {
         const validrelation = ['parent-child', 'husband-wife'];
         if (validrelation.indexOf(this.state.relationship) < 0) {
+            console.log('relationship doesnt exist, current relationship', this.state.relationship);
             return false
         }
         return true
@@ -176,20 +177,11 @@ export default class AddRelationship extends Component {
         console.log('membersData is')
         console.log(this.state.membersData)
         var arr = Array(this.state.userData.length-1);
+        // this makes an array and doesnt fill it, tbh dont know how its filling it
+        console.log(this.state.userData.length-1);
         var j = 0;
-
-        // var obj = this.state.userData;
-        //     var array = Array(8);
-        //     var i = 0;
-        //     var j = 0;
-        //     for (var key in obj) {
-        //         if (obj.hasOwnProperty(key)) {
-        //             var val = obj[key];
-        //             //array.push(val);
-        //             array.splice(i, 0, val);
-        //             i += 1;
-        //         }
-        //     }
+        console.log('userdata is ' ,arr);
+        console.log(this.state.userData);
 
         // create an array containing all first names of family in database
         for (var i = 0; i < this.state.userData.length; i++) {
@@ -272,7 +264,7 @@ export default class AddRelationship extends Component {
                     </View>
             </ScrollView>
         );
-        
+
     }
 }
 
