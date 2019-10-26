@@ -79,8 +79,14 @@ export default class Node extends Component{
 		console.log(this.props.node);
  	}
 
+  _onLongPressButton(){
+    console.log('you have longpressed: ', this.state.node);
+    this.props.navigation.navigate('MemberProfilePage', {node: this.state.node });
+  }
+
   render(){
     // var icon = (this.props.image)? this.props.image : require('./stock-pokemon-photos/bulbasure.png')
+    console.log('node loaded', this.state.node);
 
 
     return(
@@ -98,7 +104,8 @@ export default class Node extends Component{
           })
         }
       }}>
-		<TouchableOpacity style={styles.button} onPress={() => this.updateCenterNode(this.state.node._id)}>
+		<TouchableOpacity style={styles.button} onPress={() => this.updateCenterNode(this.state.node._id)}
+    onLongPress={(this._onLongPressButton())} >
 			<Image
 				source={this.state.image}
 				style={this.state.imageStyle} />

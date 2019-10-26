@@ -28,7 +28,7 @@ export default class FamilyTreePage extends Component {
                     <Right />
                 </Header>
                 <View style = {styles.contentContainer}>
-                    <GraphMaker/>
+                    <GraphMaker navigation={this.props.navigation} />
                     <ActionButton
                     buttonColor="rgba(231,76,60,1)"
                     onPress={() => { this.props.navigation.navigate("AddRelationship")}}

@@ -254,7 +254,7 @@ class GraphMaker extends Component{
                 </View>
             )
         }
-        if (!this.state.hasFamily) { 
+        if (!this.state.hasFamily) {
             // TODO Show the page of no family find info
         }
 
@@ -268,6 +268,7 @@ class GraphMaker extends Component{
                 nodes = { newNodes }
                 links = { this.state.links }
                 updateCenterNode = { this.UpdateCenterNode.bind(this) }
+                navigation={this.props.navigation}
             />
 		);
 	}
