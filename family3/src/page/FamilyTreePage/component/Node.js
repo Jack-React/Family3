@@ -79,9 +79,9 @@ export default class Node extends Component{
 		console.log(this.props.node);
  	}
 
-  _onLongPressButton(){
-    console.log('you have longpressed: ', this.state.node);
-    this.props.navigation.navigate('MemberProfilePage', {node: this.state.node });
+  _onLongPressButton(node){
+    console.log('you have longpressed: ', node);
+    this.props.navigation.navigate('MemberProfilePage', {node: node });
   }
 
   render(){
@@ -105,7 +105,7 @@ export default class Node extends Component{
         }
       }}>
 		<TouchableOpacity style={styles.button} onPress={() => this.updateCenterNode(this.state.node._id)}
-    onLongPress={(this._onLongPressButton())} >
+    onLongPress={() =>  this._onLongPressButton(this.state.node)} >
 			<Image
 				source={this.state.image}
 				style={this.state.imageStyle} />

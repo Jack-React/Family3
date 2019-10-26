@@ -349,7 +349,8 @@ export default class Graph extends Component {
           updateCenterNode={this.updateCenterNode.bind(this)}
           node = {node}
           imageStyle = {imageStyle}
-          navigation={this.props.navigation}/>
+          navigation={this.props.navigation}
+          key = {node._id}/>
       </View>
       )
   }
