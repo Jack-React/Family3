@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { Color } from '../../../assets/Assets.js'
-const IMAGE_WIDTH = Dimensions.get('window').widt
+const IMAGE_WIDTH = Dimensions.get('window').width;
 class ImageGrid extends React.Component {
 
   constructor(props) {
@@ -31,6 +31,9 @@ class ImageGrid extends React.Component {
 
   render() {
     const { numColumns,  searchedImages } = this.state;
+    console.log('state is', this.state);
+    console.log('width',IMAGE_WIDTH);
+    console.log('width', IMAGE_WIDTH/this.state.numColumns - 6, 'height', IMAGE_WIDTH/this.state.numColumns - 6);
     return(
       <FlatList
           numColumns = {numColumns}
@@ -40,7 +43,7 @@ class ImageGrid extends React.Component {
                   <TouchableOpacity
                   activeOpacity= {0.5}
                   underlayColor= {Color.GREY}
-                  onPress={() => {this.setState({currentIndex: index, loadSingleImage: true})}}>
+                  >
                       <View style = {{ alignItems: 'center', paddingBottom: 2, paddingLeft: 2, paddingRight: 2}}>
                           <Image source={{uri: item.source.uri}}
                               style={{width: IMAGE_WIDTH/this.state.numColumns - 6, height: IMAGE_WIDTH/this.state.numColumns - 6}}/>
