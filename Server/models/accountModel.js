@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// TODO need to test google login work with this model, especially String id
 const accountSchema = mongoose.Schema({
     _id: {
         type: String,
@@ -15,32 +16,27 @@ const accountSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
+    DOB: {
+        type: Date
+    },
+    gender: {
+        type: String
+    },
     email: {
-        type: String,
-        required: true
+        type: String
     },
 
     create_date: {
         type: Date,
         default: Date.now
     },
-    
+    // belong to which family
+    invitation: {
+        type: String
+    },
     family: {
-        type: Number,
-        required: false
-    },
-
-    gender: {
-        type: String,
-        required: true
-    },
-
-    dob: {
-        type: String,
-        required: true
+        type: String // family id
     }
-    
 }, { _id: false });
 
 var Account = module.exports = mongoose.model('account', accountSchema);
