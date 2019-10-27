@@ -125,6 +125,7 @@ export default class MemberProfilePage extends Component {
       // }, 3000);
       // make 2d array into 1darray
       var flatted = [].concat.apply([], imageList);
+      
       return flatted;
 
     }
@@ -171,7 +172,7 @@ export default class MemberProfilePage extends Component {
 
     render() {
         // Fix Here. getParam should only have one parameter.
-    //   const node = this.props.navigation.getParam('node','nothing sent');
+      const node = this.props.navigation.getParam('node','nothing sent');
 
       const {  isLoading , refreshing } = this.state;
       // Show spinner while loading albums

@@ -153,7 +153,7 @@ export default class AddRelationship extends Component {
                 console.log("link addition sucess")
                 // this.props.navigation.navigate('App', { userData: this.state.userData });
             } else{
-              console.log('create failed : ', respose.data);
+              console.log('create failed : ', response.data);
             }
         }
         // Invalid information
