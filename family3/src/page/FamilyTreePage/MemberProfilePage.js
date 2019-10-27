@@ -204,10 +204,19 @@ export default class MemberProfilePage extends Component {
             </View>
         );
       }else {
-        imageGridPlaceholder = (
-            <ImageGrid searchedImages = {this.state.searchedImages}/>
-        );
+
+        if (!(this.state.searchedImages)) {
+          imageGridPlaceholder = (<Text style = {styles.card} > Couldn't find any images tagged with #{node.name}, try adding some images :) </Text>)
+        }else {
+          imageGridPlaceholder = (
+              <ImageGrid searchedImages = {this.state.searchedImages}/>
+          );
+        }
+
+
       }
+
+
 
 
 
@@ -308,6 +317,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 10,
         marginLeft: -10,
+        fontSize:15,
+        color: Color.SECONDARY,
+    },
+    centerMessage:{
+        position:'absolute',
+        left:0,
+        right:0,
+        marginLeft :'auto',
+        marginRight :'auto',
         fontSize:15,
         color: Color.SECONDARY,
     }
