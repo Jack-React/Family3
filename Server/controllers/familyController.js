@@ -77,7 +77,7 @@ exports.addRelation = (req, res) => {
             }
             res.json({
                 message: "successfully added family relationship",
-                data: null
+                data: data
             });
         });
     });
