@@ -18,6 +18,7 @@
     "react-native-gesture-handler": "^1.4.1",
     "react-native-google-signin": "^2.0.0",
     "react-native-image-crop-picker": "^0.25.2",
+    "react-native-image-grid": "^1.0.0",
     "react-native-image-view": "^2.1.6",
     "react-native-loading-spinner-overlay": "1.0.1",
     "react-native-material-dropdown": "^0.11.1",

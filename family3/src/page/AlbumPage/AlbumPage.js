@@ -39,11 +39,11 @@ export default class AlbumPage extends Component {
         }
         else {
             if (sharedAlbums.sharedAlbums == undefined){
-                console.log("!")
+                console.log("no shared albums")
                 this.setState({ albums: albums.albums, loaded: true, isLoading: false })
             }
             else {
-                console.log("@")
+                console.log("yes shared albums")
                 this.mergeAlbums(albums.albums, sharedAlbums.sharedAlbums)
                 this.setState({ albums: albums.albums, loaded: true, isLoading: false })
             }
@@ -51,7 +51,7 @@ export default class AlbumPage extends Component {
     }
 
     render() {
-        const { albums, isLoading, showDialog, refreshing } = this.state; 
+        const { albums, isLoading, showDialog, refreshing } = this.state;
         // Show spinner while loading albums
         if (isLoading){
             return (
@@ -70,7 +70,7 @@ export default class AlbumPage extends Component {
                         />
                         <Body style = {{paddingLeft: 20}}>
                             <Title style = {{color:Color.PRIMARY}}>My Albums</Title>
-            
+
                         </Body>
                         <Right style = {{paddingRight: 10}}>
                             <ButtonBase
@@ -87,8 +87,8 @@ export default class AlbumPage extends Component {
                                 <RefreshControl refreshing={refreshing} onRefresh={() => this.refresh()} />
                             }
                         >
-                            <AddAlbumDialogComponent 
-                            visible={ showDialog } 
+                            <AddAlbumDialogComponent
+                            visible={ showDialog }
                             disableDialog={this.disableDialog.bind(this)}
                             recieveAlbumDetails={this.recieveAlbumDetails.bind(this)}
                             />
@@ -96,15 +96,15 @@ export default class AlbumPage extends Component {
                                 {albums.map((album) => {
                                     return(
                                         <View key={album.id} style={styles.albumStyle}>
-                                            <TouchablaAlbumComponent 
-                                            album = {album} 
+                                            <TouchablaAlbumComponent
+                                            album = {album}
                                             navigateSelectedAlbum = {this.navigateSelectedAlbums.bind(this)}/>
                                         </View>
                                     )
                                 })}
-                            </View> 
+                            </View>
                         </ScrollView>
-                        : 
+                        :
                         <View style = {styles.contentContainer}><Text> No Albums Found! </Text></View> }
                 </View>
             )
@@ -118,7 +118,7 @@ export default class AlbumPage extends Component {
                 album = this.state.albums[index]
                 this.props.navigation.navigate('SingleAlbum', {album});
                 return
-            }   
+            }
         }
         console.warn('Album ID Not Found.')
     }
@@ -154,7 +154,7 @@ export default class AlbumPage extends Component {
     containsAlbum(album, albums) {
         var i;
         for (i = 0; i < albums.length; i++) {
-            if (albums[i].id === album.id) 
+            if (albums[i].id === album.id)
                 return true;
         }
         return false;
@@ -170,7 +170,7 @@ export default class AlbumPage extends Component {
         }
         console.log('album', albumA)
     }
-    
+
     // This function updates album
     async refresh(){
         this.setState({
@@ -178,7 +178,7 @@ export default class AlbumPage extends Component {
             isLoading: true,
             albums: []
         })
-        
+
         this.componentDidMount()
         setTimeout(() => {
             this.setState({refreshing: false})
