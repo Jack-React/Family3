@@ -124,16 +124,28 @@ export default class AddRelationship extends Component {
         this.setState({'gender': value});
     }
     setP1 = (value) => {
-        //AsyncStorage.setItem('person1', value);
-        this.setState({'person1': value});
+        if (value !== -1){
+            this.setState({'person1': value});
+        }
+        else {
+            alert("Please select a value for Person 1");
+        }
     }
     setP2 = (value) => {
-        //AsyncStorage.setItem('person2', value);
-        this.setState({'person2': value});
+        if (value !== -1){
+            this.setState({'person2': value});
+        }
+        else {
+             alert("Please select a value for Person 2");
+        }
     }
     setRelationship = (value) => {
-        //AsyncStorage.setItem('relationship', value);
-        this.setState({'relationship': value});
+        if (value !== -1){
+            this.setState({'relationship': value});
+        }
+        else {
+            alert("Please select a value for Relationship");
+        }
     }
 
 
@@ -164,11 +176,26 @@ export default class AddRelationship extends Component {
         return true
     }
 
+    
+
+    hasMembers() {
+        if (this.state.membersData == null) {
+            
+            return false
+        }
+        return true
+    }
+
     render() {
         if (this.state.isLoading) {
             console.log('loading...')
             return (<ActivityIndicator size="large" color="#3275a8" />);
         }
+	    
+	if (this.hasMembers == false) {
+            alert("family is empty! Please add members to your family first.")
+        }
+        else {
 
         console.log('familyid is')
         console.log(this.state.familyid)
@@ -220,6 +247,7 @@ export default class AddRelationship extends Component {
                     selectedValue = {this.state.person1}
                     onValueChange = {this.setP1}
                     >
+		    <Picker.Item label = "Please select a value" value = "-1" />
                     {arr.map((item, index) => {
                     return (<Picker.Item label={item} value={item} key={index}/>)
                     })}
@@ -233,6 +261,7 @@ export default class AddRelationship extends Component {
                     selectedValue = {this.state.person2}
                     style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                     onValueChange = {this.setP2}>
+		    <Picker.Item label = "Please select a value" value = "-1" />
                     {arr.map((item, index) => {
                     return (<Picker.Item label={item} value={item} key={index}/>)
                     })}
@@ -247,7 +276,7 @@ export default class AddRelationship extends Component {
                     mode = 'dialog'
                     placeholder={'Relationship'}
                     prompt = {'Relationship'}>
-
+		    <Picker.Item label = "Select type of relationship" value = "-1" />
                     <Picker.Item label = "Parent-child" value = "parent-child"
                     />
                     <Picker.Item label = "Husband-wife" value = "husband-wife" />
@@ -266,6 +295,7 @@ export default class AddRelationship extends Component {
                     titleStyle = '#ffffff'
                     buttonStyle = {{width: 70, height: 30}}
                     backgroundColor = "#841584"
+		    //onPress = {() => {this.props.navigation.goBack(); this.storeData()}}/>
                     onPress = {() => {this.props.navigation.navigate('Home'); this.storeData()}}/>
                     {/* <TouchableOpacity
                     onPress = {() => {this.props.navigation.navigate('Home'); this.storeData()}}
@@ -274,7 +304,7 @@ export default class AddRelationship extends Component {
                     </View>
             </ScrollView>
         );
-        
+	}
     }
 }
 
