@@ -99,7 +99,7 @@ class GraphMaker extends Component{
         // var links = firstAPICall
         // var nodes = secondAPICall
         nodes = this.MakeFamilyMembersIntoNodes(nodes);
-        // console.log('converted nodes',nodes);
+        console.log('converted nodes',nodes);
 
         links = this.MakeRelationsIntoLinks(nodes, links)
 
@@ -197,7 +197,12 @@ class GraphMaker extends Component{
     }
 
     ConvertPersonToNode(person){
-      var node = {_id: person._id , name: person.firstName + person.lastName, gender: person.gender}
+      var node = {
+        _id: person._id ,
+        name: person.firstName + person.lastName,
+        gender: person.gender,
+        data: person
+      }
       return node;
     }
 
