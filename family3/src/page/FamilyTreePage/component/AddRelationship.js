@@ -146,15 +146,16 @@ export default class AddRelationship extends Component {
         // var links = JSON.stringify(this.state, ['name', 'gender', 'person1', 'person2', 'relationship']);
         // console.log(links)
         var links = JSON.stringify(this.state, ['person1', 'person2', 'relationship']);
-        console.log(links)
+        console.log('adding link',links)
         if (this.verifyDetails()) {
-            const response = await this.APIHandler.addRelation(this.state.familyid, links)
-            if (response.data != null) {
-                console.log("link addition sucess")
-                // this.props.navigation.navigate('App', { userData: this.state.userData });
-            } else{
-              console.log('create failed : ', response.data);
-            }
+            const response = await this.APIHandler.addRelation(this.state.familyid, links);
+            // since i dont get a responce
+            // if (response.data != null) {
+            //     console.log("link addition sucess")
+            //     // this.props.navigation.navigate('App', { userData: this.state.userData });
+            // } else{
+            //   console.log('create failed : ', response.data);
+            // }
         }
         // Invalid information
         else {

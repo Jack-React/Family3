@@ -1,58 +1,60 @@
-import React from 'react-native';
-import PhotoGrid from 'react-native-image-grid';
-let { Image, TouchableOpacity, Text } = React;
+import React, {Component} from 'react'
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
+  Dimensions,
+} from 'react-native';
 
-class BestGrid extends React.Component {
+import { Color } from '../../../assets/Assets.js'
+const IMAGE_WIDTH = Dimensions.get('window').widt
+class ImageGrid extends React.Component {
 
-  constructor() {
-    super();
-    this.state = { items: [] };
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchedImages: this.props.searchedImages,
+      numColumns: 3,
+     };
   }
 
-  componentDidMount() {
-    // Build an array of 60 photos
-    let items = Array.apply(null, Array(60)).map((v, i) => {
-      return { id: i, src: 'http://placehold.it/200x200?text='+(i+1) }
-    });
-    this.setState({ items });
-  }
+  // componentDidMount() {
+  //   // Build an array of 60 photos
+  //   let items = Array.apply(null, Array(60)).map((v, i) => {
+  //     return { id: i, src: 'http://placehold.it/200x200?text='+(i+1) }
+  //   });
+  //   this.setState({ items });
+  // }
 
   render() {
+    const { numColumns,  searchedImages } = this.state;
     return(
-      <PhotoGrid
-        data = { this.state.items }
-        itemsPerRow = { 3 }
-        itemMargin = { 1 }
-        itemPaddingHorizontal={1}
-        renderHeader = { this.renderHeader }
-        renderItem = { this.renderItem }
+      <FlatList
+          numColumns = {numColumns}
+          data = {(searchedImages == null)? console.log(new Error('no image to display')): searchedImages}
+          renderItem = {({item, index}) => {
+              return(
+                  <TouchableOpacity
+                  activeOpacity= {0.5}
+                  underlayColor= {Color.GREY}
+                  onPress={() => {this.setState({currentIndex: index, loadSingleImage: true})}}>
+                      <View style = {{ alignItems: 'center', paddingBottom: 2, paddingLeft: 2, paddingRight: 2}}>
+                          <Image source={{uri: item.source.uri}}
+                              style={{width: IMAGE_WIDTH/this.state.numColumns - 6, height: IMAGE_WIDTH/this.state.numColumns - 6}}/>
+                      </View>
+                  </TouchableOpacity>
+              )
+          }}
+          keyExtractor={item => item.id}
       />
     );
   }
 
-  renderHeader() {
-    return(
-      <Text>I'm on top!</Text>
-    );
-  }
 
-  renderItem(item, itemSize, itemPaddingHorizontal) {
-    return(
-      <TouchableOpacity
-        key = { item.id }
-        style = {{ width: itemSize, height: itemSize, paddingHorizontal: itemPaddingHorizontal }}
-        onPress = { () => {
-          // Do Something
-        }}>
-        <Image
-          resizeMode = "cover"
-          style = {{ flex: 1 }}
-          source = {{ uri: item.src }}
-        />
-      </TouchableOpacity>
-    )
-  }
 
 }
 
-export default BestGrid;
+export default ImageGrid;

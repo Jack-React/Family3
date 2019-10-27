@@ -5,6 +5,7 @@ import { Card, ListItem, ButtonCard, IconCard } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Spinner from 'react-native-loading-spinner-overlay';
 import GoogleAPIHandler from '../../api/GoogleAPIHandler';
+import ImageGrid from './component/SearchedPhotoGrid.js';
 
 
 import { Color } from '../../assets/Assets.js'
@@ -16,9 +17,10 @@ export default class MemberProfilePage extends Component {
         this.GoogleAPIHandler = GoogleAPIHandler.getInstance();
         this.state = {
             albums: [],
+            searchedImages: [],
 
             loaded: false,
-            isLoading: false,
+            isLoading: true,
 
             refreshing: false,
             // node: this.props.navigation.getParam('node','nothing sent')
@@ -55,30 +57,45 @@ export default class MemberProfilePage extends Component {
         console.log('shared album' ,sharedAlbums)
         if (albums.albums == undefined){
             if (sharedAlbums.sharedAlbums == undefined){
-                this.setState({ loaded: true, isLoading: false })
+                this.setState({ loaded: true })
             }
             else {
-                this.setState({ albums: sharedAlbums.sharedAlbums, loaded: true, isLoading: false })
+                this.setState({ albums: sharedAlbums.sharedAlbums, loaded: true })
             }
         }
         else {
             if (sharedAlbums.sharedAlbums == undefined){
                 console.log("no shared albums")
-                this.setState({ albums: albums.albums, loaded: true, isLoading: false })
+                this.setState({ albums: albums.albums, loaded: true })
             }
             else {
                 console.log("yes shared albums")
                 this.mergeAlbums(albums.albums, sharedAlbums.sharedAlbums)
-                this.setState({ albums: albums.albums, loaded: true, isLoading: false })
+                this.setState({ albums: albums.albums, loaded: true })
             }
-            var allImages = this.mergePicsFromAlbums(albums.albums);
+            var allImages = await this.mergePicsFromAlbums(albums.albums);
             const node = this.props.navigation.getParam('node');
             var name = node.name;
-            var searchedImages = this.updateSearch(name, allImages); // upgrade: do inclusive or for search
+            // var searchedImages = this.updateSearch(name, allImages);
+            var searchedImages = this.updateSearch('test', allImages); // upgrade: do inclusive or for search
             console.log('searched images',searchedImages);
+            this.setState({ searchedImages: searchedImages, loaded: true, isLoading: false })
 
         }
     }
+
+    // makes image object acceptable format for grid
+    // makesearchedImages(imageList){
+    //   var array = [];
+    //   for (var i = 0; i < imageList.length; i++) {
+    //     var url = imageList[i].source.uri;
+    //     var id = imageList[i].id;
+    //     var img = {id: id, src: url};
+    //     array.push(img);
+    //   }
+    //   console.log('searchedImages made from', imageList, 'to', array);
+    //   return array;
+    // }
 
     mergeAlbums(albumA, albumB){
         console.log("merging albums")
@@ -125,7 +142,7 @@ export default class MemberProfilePage extends Component {
       // }, 3000);
       // make 2d array into 1darray
       var flatted = [].concat.apply([], imageList);
-      
+
       return flatted;
 
     }
@@ -164,6 +181,8 @@ export default class MemberProfilePage extends Component {
                 }
             }
         }
+
+        console.log('searching for', search,'in',imageList, 'found', searchedImages);
         if (search == "")
             return imageList
         else
@@ -184,6 +203,8 @@ export default class MemberProfilePage extends Component {
           )
       }
       console.log('recieved node', node);
+      const searchedImages = this.state.searchedImages;
+      console.log('searchedImages is ', searchedImages);
 
         return (
             <View style={styles.MainContainer}>
@@ -212,6 +233,9 @@ export default class MemberProfilePage extends Component {
                 }>
                   <View>
                     <ProfileCard node= {node} />
+                  </View>
+                  <View>
+                    <ImageGrid searchedImages = {this.state.searchedImages}/>
                   </View>
                 </ScrollView>
                 </View>
