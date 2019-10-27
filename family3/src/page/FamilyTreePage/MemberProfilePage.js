@@ -76,10 +76,11 @@ export default class MemberProfilePage extends Component {
             var allImages = await this.mergePicsFromAlbums(albums.albums);
             const node = this.props.navigation.getParam('node');
             var name = node.name;
-            // var searchedImages = this.updateSearch(name, allImages);
-            var searchedImages = this.updateSearch('test', allImages); // upgrade: do inclusive or for search
+            var searchedImages = this.updateSearch(name, allImages);
+            // var searchedImages = this.updateSearch('test', allImages); // upgrade: do inclusive or for search
             console.log('searched images',searchedImages);
-            this.setState({ searchedImages: searchedImages, loaded: true, isLoading: false })
+            this.setState({ searchedImages: searchedImages, loaded: true, isLoading: false });
+
 
         }
     }
@@ -195,13 +196,21 @@ export default class MemberProfilePage extends Component {
 
       const {  isLoading , refreshing } = this.state;
       // Show spinner while loading albums
+      var imageGridPlaceholder;
       if (isLoading){
-          return (
-              <View style = {styles.MainContainer}>
-                  <Spinner visible={isLoading} />
-              </View>
-          )
+        imageGridPlaceholder = (
+            <View style = {styles.MainContainer}>
+                <Spinner visible={isLoading} />
+            </View>
+        );
+      }else {
+        imageGridPlaceholder = (
+            <ImageGrid searchedImages = {this.state.searchedImages}/>
+        );
       }
+
+
+
       console.log('recieved node', node);
       const searchedImages = this.state.searchedImages;
       console.log('searchedImages is ', searchedImages);
@@ -235,7 +244,7 @@ export default class MemberProfilePage extends Component {
                     <ProfileCard node= {node} />
                   </View>
                   <View>
-                    <ImageGrid searchedImages = {this.state.searchedImages}/>
+                    {imageGridPlaceholder}
                   </View>
                 </ScrollView>
                 </View>
@@ -279,7 +288,7 @@ const styles = StyleSheet.create({
 
     headerContainer: {
         alignItems: 'flex-start',
-        backgroundColor: Color.PRIMARY
+        backgroundColor: Color.SECONDARY
     },
     card: {
         backgroundColor:Color.PRIMARY,
