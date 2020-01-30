@@ -1,5 +1,5 @@
 
-<img src="https://github.com/jtv199/COMP30022-DiamondDoesnt/blob/master/readme_material/family3_github/tree.png" width="64">
+<img src="https://github.com/Jack-React/Family3/blob/master/readme_material/family3_github/tree.png" width="64">
 
 # Family3
 _for your family tree needs_
@@ -16,25 +16,25 @@ Family3 is a combonation of photo storage and family tree directory app we built
 6. Family tree browsing/ adding relationships
 
 ## Architecture
-![](https://github.com/jtv199/COMP30022-DiamondDoesnt/blob/master/readme_material/family3_github/architecture_diagram.png)
+![](https://github.com/Jack-React/Family3/blob/master/readme_material/family3_github/architecture_diagram.png)
 ## Demonstration
 
 #### Google login
 <a name="google-login"></a>
-![](https://github.com/jtv199/COMP30022-DiamondDoesnt/blob/master/readme_material/gifs/google-login.gif)
+![](https://github.com/Jack-React/Family3/blob/master/readme_material/gifs/google-login.gif)
 #### Add members to share group
 <a name="add-memer"></a>
-![](https://github.com/jtv199/COMP30022-DiamondDoesnt/blob/master/readme_material/gifs/add-members.gif)
+![](https://github.com/Jack-React/Family3/blob/master/readme_material/gifs/add-members.gif)
 #### OCR / Tag searching
 <a name="tag-searching"></a>
-![](https://github.com/jtv199/COMP30022-DiamondDoesnt/blob/master/readme_material/gifs/queen-searching.gif)
+![](https://github.com/Jack-React/Family3/blob/master/readme_material/gifs/queen-searching.gif)
 #### Adding images with tags
 <a name="adding-tags"></a>
-![](https://github.com/jtv199/COMP30022-DiamondDoesnt/blob/master/readme_material/gifs/dog-tagging.gif)
-![](https://github.com/jtv199/COMP30022-DiamondDoesnt/blob/master/readme_material/gifs/tag-searching.gif)
+![](https://github.com/Jack-React/Family3/blob/master/readme_material/gifs/dog-tagging.gif)
+![](https://github.com/Jack-React/Family3/blob/master/readme_material/gifs/tag-searching.gif)
 #### Family tree browsing / adding relationships
 <a name="family-tree"></a>
-![](https://github.com/jtv199/COMP30022-DiamondDoesnt/blob/master/readme_material/gifs/family-tree-functions.gif)
+![](https://github.com/Jack-React/Family3/blob/master/readme_material/gifs/family-tree-functions.gif)
 
 
 ## Acknowledgement
