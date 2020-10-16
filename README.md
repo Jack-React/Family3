@@ -4,7 +4,7 @@
 # Family3
 _for your family tree needs_
 
-Family3 is a combonation of photo storage and family tree directory app we built in 4 months. It was designed to be easy to use, easy to share and to have infinite storage. 
+Family3 is a combination of photo storage and family tree directory app we built in 4 months. It was designed to be easy to use, easy to share and to have infinite storage. 
 
 #### It's functionalities include:
 
